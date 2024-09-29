@@ -91,12 +91,23 @@
                                         </label>
 
                                         <select class="form-select @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
-                                            <option selected="" disabled="">Select a bank:</option>
-                                            <option value="BRI" @if(old('bank_name') == 'BRI')selected="selected"@endif>BRI</option>
-                                            <option value="BNI" @if(old('bank_name') == 'BNI')selected="selected"@endif>BNI</option>
-                                            <option value="BCA" @if(old('bank_name') == 'BCA')selected="selected"@endif>BCA</option>
-                                            <option value="BSI" @if(old('bank_name') == 'BSI')selected="selected"@endif>BSI</option>
-                                            <option value="Mandiri" @if(old('bank_name') == 'Mandiri')selected="selected"@endif>Mandiri</option>
+                                            <option selected="" disabled="">Chọn ngân hàng:</option>
+                                            <option value="Agribank" @if(old('bank_name') == 'Agribank') selected="selected" @endif>Agribank</option>
+                                            <option value="BIDV" @if(old('bank_name') == 'BIDV') selected="selected" @endif>BIDV</option>
+                                            <option value="Vietcombank" @if(old('bank_name') == 'Vietcombank') selected="selected" @endif>Vietcombank</option>
+                                            <option value="VietinBank" @if(old('bank_name') == 'VietinBank') selected="selected" @endif>VietinBank</option>
+                                            <option value="Techcombank" @if(old('bank_name') == 'Techcombank') selected="selected" @endif>Techcombank</option>
+                                            <option value="Sacombank" @if(old('bank_name') == 'Sacombank') selected="selected" @endif>Sacombank</option>
+                                            <option value="Eximbank" @if(old('bank_name') == 'Eximbank') selected="selected" @endif>Eximbank</option>
+                                            <option value="MB Bank" @if(old('bank_name') == 'MB Bank') selected="selected" @endif>MB Bank</option>
+                                            <option value="ACB" @if(old('bank_name') == 'ACB') selected="selected" @endif>ACB</option>
+                                            <option value="VPBank" @if(old('bank_name') == 'VPBank') selected="selected" @endif>VPBank</option>
+                                            <option value="SHB" @if(old('bank_name') == 'SHB') selected="selected" @endif>SHB</option>
+                                            <option value="OceanBank" @if(old('bank_name') == 'OceanBank') selected="selected" @endif>OceanBank</option>
+                                            <option value="HDBank" @if(old('bank_name') == 'HDBank') selected="selected" @endif>HDBank</option>
+                                            <option value="Kiên Long Bank" @if(old('bank_name') == 'Kiên Long Bank') selected="selected" @endif>Kiên Long Bank</option>
+                                            <option value="NAB Bank" @if(old('bank_name') == 'NAB Bank') selected="selected" @endif>NAB Bank</option>
+                                            <option value="TPBank" @if(old('bank_name') == 'TPBank') selected="selected" @endif>TPBank</option>
                                         </select>
                                         @error('bank_name')
                                         <div class="invalid-feedback">
