@@ -31,7 +31,9 @@ class Product extends Model
         'created_at',
         'updated_at',
         "user_id",
-        "uuid"
+        "uuid",
+        'supplier_id' // Thêm dòng này
+
     ];
 
     protected $casts = [
@@ -43,6 +45,10 @@ class Product extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
 
     public function category(): BelongsTo

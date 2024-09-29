@@ -27,6 +27,7 @@ class ProductFactory extends Factory
             'quantity_alert' => fake()->randomElement([5,10,15]),
             'tax' => fake()->randomElement([5,10,15,20,25]),
             'tax_type' => fake()->randomElement([1,2]),
+            'supplier_id' => fake()->randomElement([1, 2, 3, 4]),
         ];
     }
 }

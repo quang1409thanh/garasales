@@ -7,6 +7,7 @@ use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Supplier;
 use App\Models\Unit;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class ProductController extends Controller
     {
         $categories = Category::where("user_id", auth()->id())->get(['id', 'name']);
         $units = Unit::where("user_id", auth()->id())->get(['id', 'name']);
+        $suppliers = Supplier::all(); // Lấy danh sách tất cả nhà cung cấp từ DB
 
         if ($request->has('category')) {
             $categories = Category::where("user_id", auth()->id())->whereSlug($request->get('category'))->get();
@@ -40,6 +42,7 @@ class ProductController extends Controller
         return view('products.create', [
             'categories' => $categories,
             'units' => $units,
+            'suppliers' => $suppliers,
         ]);
     }
 
@@ -74,7 +77,8 @@ class ProductController extends Controller
             'notes'             => $request->notes,
             "user_id" => auth()->id(),
             "slug" => Str::slug($request->name, '-'),
-            "uuid" => Str::uuid()
+            "uuid" => Str::uuid(),
+            'supplier_id'       => $request->supplier_id,  // Thêm dòng này để lưu supplier_id
         ]);
 
 
@@ -98,10 +102,13 @@ class ProductController extends Controller
     public function edit($uuid)
     {
         $product = Product::where("uuid", $uuid)->firstOrFail();
+        $suppliers = Supplier::all(); // Lấy danh sách tất cả nhà cung cấp từ DB
+
         return view('products.edit', [
             'categories' => Category::where("user_id", auth()->id())->get(),
             'units' => Unit::where("user_id", auth()->id())->get(),
-            'product' => $product
+            'product' => $product,
+            'suppliers' => $suppliers,
         ]);
     }
 
@@ -113,9 +120,13 @@ class ProductController extends Controller
         $image = $product->product_image;
         if ($request->hasFile('product_image')) {
 
-            // Delete Old Photo
             if ($product->product_image) {
-                unlink(public_path('storage/') . $product->product_image);
+                $oldImagePath = public_path('storage/') . $product->product_image;
+
+                // Kiểm tra xem tệp có tồn tại không trước khi xóa
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
             $image = $request->file('product_image')->store('products', 'public');
         }
@@ -158,5 +169,17 @@ class ProductController extends Controller
         return redirect()
             ->route('products.index')
             ->with('success', 'Product has been deleted!');
+    }
+
+    public function indexBySupplier($uuid)
+    {
+        // Tìm nhà cung cấp theo UUID
+        $supplier = Supplier::where('uuid', $uuid)->firstOrFail();
+
+        // Lấy danh sách sản phẩm của nhà cung cấp
+        $products = Product::where('supplier_id', $supplier->id)->get();
+
+        // Trả về view với danh sách sản phẩm và nhà cung cấp
+        return view('suppliers.products', compact('supplier', 'products'));
     }
 }

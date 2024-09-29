@@ -16,36 +16,35 @@ class CategorySeeder extends Seeder
         $categories = collect([
             [
                 'id'    => 1,
-                'name'  => 'Laptops',
-                'slug'  => 'laptops',
+                'name'  => 'Quần áo',
+                'slug'  => 'quan-ao',
                 'user_id' => 1,
             ],
             [
                 'id'    => 2,
-                'name'  => 'Hardware',
-                'slug'  => 'hardware',
+                'name'  => 'Sách vở',
+                'slug'  => 'sach-vo',
                 'user_id' => 1,
             ],
             [
                 'id'    => 3,
-                'name'  => 'Smartphones',
-                'slug'  => 'smartphones',
+                'name'  => 'Đồ dùng phụ kiện',
+                'slug'  => 'do-dung-phu-kien',
                 'user_id' => 1,
             ],
             [
                 'id'    => 4,
-                'name'  => 'Speakers',
-                'slug'  => 'speakers',
+                'name'  => 'Đồ điện tử',
+                'slug'  => 'do-dien-tu',
                 'user_id' => 1,
             ],
             [
                 'id'    => 5,
-                'name'  => 'Software',
-                'slug'  => 'software',
+                'name'  => 'Mỹ phẩm',
+                'slug'  => 'my-pham',
                 'user_id' => 1,
             ]
         ]);
-
         $categories->each(function ($category) {
             Category::insert($category);
         });

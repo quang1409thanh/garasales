@@ -79,6 +79,20 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <label for="supplier_id">Supplier</label>
+                                            <select name="supplier_id" id="supplier_id" class="form-control" disabled>
+                                                <option value="">-- Select Supplier --</option>
+                                                @foreach($suppliers as $supplier)
+                                                    <option value="{{ $supplier->id }}"
+                                                        {{ $product->supplier_id == $supplier->id ? 'selected' : '' }}>
+                                                        {{ $supplier->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <small class="form-text text-muted">This field is not editable.</small> <!-- Ghi chú cho người dùng -->
+                                        </div>
+
 
                                         <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">

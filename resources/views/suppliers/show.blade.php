@@ -85,6 +85,15 @@
                                     <td>Bank name</td>
                                     <td>{{ $supplier->bank_name }}</td>
                                 </tr>
+                                <tr>
+                                    <td>List of Product</td>
+                                    <td>
+                                        <a href="{{ route('suppliers.products', $supplier->uuid) }}" class="btn btn-primary">
+                                            View Products
+                                        </a>
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>
