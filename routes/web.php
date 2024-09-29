@@ -60,6 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
     Route::resource('/suppliers', SupplierController::class);
+// Route để hiển thị sản phẩm của nhà cung cấp
+    Route::get('suppliers/{uuid}/products', [ProductController::class, 'indexBySupplier'])->name('suppliers.products');
+
     Route::resource('/categories', CategoryController::class);
     Route::resource('/units', UnitController::class);
 

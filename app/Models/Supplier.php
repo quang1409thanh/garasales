@@ -50,6 +50,10 @@ class Supplier extends Model
             ->orWhere('shopname', 'like', "%{$value}%")
             ->orWhere('type', 'like', "%{$value}%");
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class); // Quan hệ 1-n với sản phẩm
+    }
 
      /**
      * Get the user that owns the Category

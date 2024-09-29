@@ -66,6 +66,17 @@
                                                  value="{{ old('name') }}"
                                         />
                                     </div>
+                                    <div class="col-md-12">
+                                        <label for="supplier_id">Select Supplier</label>
+                                        <select name="supplier_id" id="supplier_id" class="form-control">
+                                            <option value="">-- Select Supplier --</option>
+                                            @foreach($suppliers as $supplier)
+                                                <option value="{{ $supplier->id }}" {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                                                    {{ $supplier->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
                                     <div class="col-sm-6 col-md-6">
                                         <div class="mb-3">

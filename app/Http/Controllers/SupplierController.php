@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Supplier;
 use App\Http\Requests\Supplier\StoreSupplierRequest;
 use App\Http\Requests\Supplier\UpdateSupplierRequest;
@@ -16,6 +17,16 @@ class SupplierController extends Controller
         return view('suppliers.index', [
             'suppliers' => $suppliers
         ]);
+    }
+
+    public  function showProducts()
+    {
+        $products = Product::where("user_id", auth()->id())->count();
+
+        return view('suppliers.products', [
+            'products' => $products
+        ]);
+
     }
 
     public function create()

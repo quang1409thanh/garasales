@@ -29,15 +29,23 @@ return new class extends Migration
 
             $table->string('product_image')->nullable();
 
+            // Liên kết với bảng Category
             $table->foreignIdFor(\App\Models\Category::class)
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
 
+            // Liên kết với bảng Unit
             $table->foreignIdFor(\App\Models\Unit::class)->constrained()
                 ->cascadeOnDelete();
             $table->timestamps();
+            // Thêm khóa ngoại supplier_id liên kết với bảng suppliers
+            $table->foreignIdFor(\App\Models\Supplier::class)
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
         });
+
     }
 
     /**

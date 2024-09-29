@@ -154,7 +154,7 @@ class OrderController extends Controller
         // $order = Order::
         //     ->where('id', $order)
         //     ->first();
-
+//        dd($order);
         return view('orders.print-invoice', [
             'order' => $order,
         ]);
