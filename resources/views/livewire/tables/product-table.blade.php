@@ -73,9 +73,9 @@
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
-                        <a wire:click.prevent="sortBy('code')" href="#" role="button">
-                            {{ __('Code') }}
-                            @include('inclues._sort-icon', ['field' => 'code'])
+                        <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
+                            {{ __('consignment date') }}
+                            @include('inclues._sort-icon', ['field' => 'created_at'])
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
@@ -110,7 +110,7 @@
                             {{ $product->name }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->code }}
+                            {{ $product->created_at }}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->category ? $product->category->name : '--' }}
