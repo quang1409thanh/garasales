@@ -26,13 +26,13 @@ Inventory Management System with Laravel 10 and MySql.
 1. Clone Repository
 
 ```bash
-git clone https://github.com/fajarghifar/inventory-management-system
+git clone https://github.com/quang1409thanh/garasales
 ```
 
 2. Go into the repository 
 
 ```bash
-cd inventory-management-system
+cd garasales
 ```
 
 3. Install Packages 
@@ -98,23 +98,3 @@ and password:
 password
 
 ```
-
-## 🚀 Config
-
-1. **Config Chart**
-
-    Open file `./config/cart.php`. You can set a tax, format number, etc.
-    > For More details, visit this link [hardevine/shoppingcart](https://packagist.org/packages/hardevine/shoppingcart).
-
-## 📝 Contributing
-
-If you have any ideas to make it more interesting, please send a PR or create an issue for a feature request.
-
-# 🤝 License
-
-### [MIT](LICENSE)
-
-> Github [@fajarghifar](https://github.com/fajarghifar) &nbsp;&middot;&nbsp;
-> Instagram [@fajarghifar](https://instagram.com/fajarghifar)
-# garasales
-# garasales
