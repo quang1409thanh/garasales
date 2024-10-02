@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class
         ]);
 
-        Customer::factory(3)->create();
+        Customer::factory(1)->create();
 
         /*
         for ($i=0; $i < 10; $i++) {

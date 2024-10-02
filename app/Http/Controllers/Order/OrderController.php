@@ -30,12 +30,27 @@ class OrderController extends Controller
             'orders' => $orders
         ]);
     }
+    public function detail($uuid)
+    {
+        // Lấy khách hàng dựa trên UUID
+        $customer = Customer::where('uuid', $uuid)->firstOrFail();
+
+        // Lấy danh sách đơn hàng của khách hàng
+        $orders = Order::where('customer_id', $customer->id)->get();
+
+        return view('orders.order_of_customer', [
+            'orders' => $orders
+        ]);
+    }
+
 
     public function create()
     {
         $products = Product::where('user_id', auth()->id())->with(['category', 'unit'])->get();
 
         $customers = Customer::where('user_id', auth()->id())->get(['id', 'name']);
+        // Nếu chỉ có một khách hàng, có thể lấy trực tiếp
+        $customer = $customers->first(); // Lấy khách hàng đầu tiên
 
         $carts = Cart::content();
 
@@ -43,6 +58,8 @@ class OrderController extends Controller
             'products' => $products,
             'customers' => $customers,
             'carts' => $carts,
+            'customer' => $customer, // Truyền khách hàng duy nhất đến view
+
         ]);
     }
 

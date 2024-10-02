@@ -20,4 +20,5 @@ class OrderCompleteController extends Controller
             'orders' => $orders
         ]);
     }
+
 }

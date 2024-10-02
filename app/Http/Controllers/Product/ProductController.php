@@ -18,13 +18,15 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where("user_id", auth()->id())->count();
+        // Chỉ lấy tên và ID của nhà cung cấp
+        $products = Product::where("user_id", auth()->id())
+            ->with(['supplier:id,name']) // Eager load chỉ các trường cần thiết
+            ->get();
 
         return view('products.index', [
             'products' => $products,
         ]);
     }
-
     public function create(Request $request)
     {
         $categories = Category::where("user_id", auth()->id())->get(['id', 'name']);

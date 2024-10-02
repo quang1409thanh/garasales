@@ -1,3 +1,4 @@
+@php use App\Models\Product; @endphp
 <div class="card">
     <div class="card-header">
         <div>
@@ -91,6 +92,22 @@
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
+                            {{ __('Price') }}
+{{--                            số lượng đã bán--}}
+                            @include('inclues._sort-icon', ['field' => 'quantity'])
+                        </a>
+                    </th>
+
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('supplier_id')" href="#" role="button">
+                            {{ __('Owner Information') }}
+                            {{-- Owner Information --}}
+                            @include('inclues._sort-icon', ['field' => 'owner'])
+                        </a>
+                    </th>
+
+                    <th scope="col" class="align-middle text-center">
                         {{ __('Action') }}
                     </th>
                 </tr>
@@ -118,6 +135,17 @@
                         <td class="align-middle text-center">
                             {{ $product->quantity }}
                         </td>
+                        <td class="align-middle text-center">
+                            {{ $product->selling_price }}
+                        </td>
+                        <td>
+                            <a href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) : '#' }}">
+                                {{ optional($product->supplier)->name ?? '--' }}
+                            </a>
+                        </td>
+                        <!-- Các cột khác -->
+
+
                         <td class="align-middle text-center" style="width: 10%">
                             <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}" />
                             <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
