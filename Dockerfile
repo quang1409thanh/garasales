@@ -17,7 +17,12 @@ RUN apt-get update && apt-get install -y \
     wget \
     curl \
     nginx \
-    netcat-openbsd
+    netcat-openbsd \
+    # Install Node.js and npm
+    curl \
+    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 # Thêm Cloud SQL Auth Proxy
 ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
@@ -41,19 +46,27 @@ COPY . /app
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
 RUN cd /app && /usr/local/bin/composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --verbose
 
+# Install npm dependencies
+RUN cd /app && npm install
+
+# Build assets
+RUN cd /app && npm run build
+
 # Change ownership of /app to www-data
 RUN chown -R www-data: /app
+
 # Chuyển đến thư mục /app
 WORKDIR /app
 
-
 # Expose port 80
 EXPOSE 80
+
 # Cập nhật cấu hình Nginx
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
-# Khởi chạy Cloud SQL Auth Proxy và ứng dụng
-ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=garasalecss:asia-east2:garasale=tcp:3306 & \
-                              php-fpm -D && \
-                              while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && \
-                              nginx -g 'daemon off;'"]
+# Tạo một script để khởi động các dịch vụ
+COPY docker/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Khởi động script
+ENTRYPOINT ["/start.sh"]
