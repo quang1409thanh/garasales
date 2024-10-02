@@ -42,7 +42,17 @@ Route::get('/', function () {
         return redirect('/dashboard');
     }
     // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm
-    return redirect('/login');
+    return redirect('/test');
+});
+
+Route::get('test/', function (){
+    return view('test');
+})->withoutMiddleware('auth');
+
+// Các route cho khách (chưa đăng nhập)
+Route::middleware('guest')->group(function () {
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index'); // Route để hiển thị sản phẩm cho khách
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show'); // Route để xem chi tiết sản phẩm
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -134,12 +144,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('test/', function (){
-    return view('test');
-});
-
-// Các route cho khách (chưa đăng nhập)
-Route::middleware('guest')->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index'); // Route để hiển thị sản phẩm cho khách
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show'); // Route để xem chi tiết sản phẩm
-});
