@@ -52,7 +52,7 @@ EXPOSE 80
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
 # Khởi chạy Cloud SQL Auth Proxy và ứng dụng
-ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=auction-430716:asia-east2:auction=tcp:3306 & \
+ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=garasalecss:asia-east2:garasale=tcp:3306 & \
                               php-fpm -D && \
                               while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && \
                               nginx -g 'daemon off;'"]
