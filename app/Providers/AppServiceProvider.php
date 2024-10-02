@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Breadcrumbs\Breadcrumbs;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+        if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
 
         Request::macro('breadcrumbs', function (){
             return new Breadcrumbs($this);
