@@ -25,7 +25,7 @@ class ProductSeeder extends Seeder
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 1, // Quần áo
-                'unit_id' => 1,
+                'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/ao-thun-nam.png',
@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 2, // Sách vở
-                'unit_id' => 1,
+                'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/sach-giao-khoa-toan.png',
@@ -63,7 +63,7 @@ class ProductSeeder extends Seeder
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 3, // Đồ dùng phụ kiện
-                'unit_id' => 1,
+                'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/ba-lo-hoc-sinh.png',
@@ -81,7 +81,7 @@ class ProductSeeder extends Seeder
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 4, // Đồ điện tử
-                'unit_id' => 1,
+                'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/tai-nghe-bluetooth.png',
@@ -100,7 +100,7 @@ class ProductSeeder extends Seeder
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 5, // Mỹ phẩm
-                'unit_id' => 1,
+                'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/son-moi-li.png',

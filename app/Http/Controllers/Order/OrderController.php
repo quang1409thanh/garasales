@@ -53,6 +53,9 @@ class OrderController extends Controller
         $customer = $customers->first(); // Lấy khách hàng đầu tiên
 
         $carts = Cart::content();
+        foreach (Cart::content() as $item) {
+            Cart::setTax($item->rowId, 0);
+        }
 
         return view('orders.create', [
             'products' => $products,
@@ -65,6 +68,7 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request)
     {
+
         $order = Order::create([
             'customer_id' => $request->customer_id,
             'payment_type' => $request->payment_type,

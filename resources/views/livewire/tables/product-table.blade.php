@@ -130,7 +130,9 @@
                             {{ $product->created_at }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->category ? $product->category->name : '--' }}
+                            <a href="{{ $product->category ? route('categories.show', $product->category) : '#' }}" class="badge bg-blue-lt">
+                                {{ $product->category ? $product->category->name : '--' }}
+                            </a>
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->quantity }}
@@ -139,9 +141,10 @@
                             {{ $product->selling_price }}
                         </td>
                         <td>
-                            <a href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) : '#' }}">
+                            <a href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
                                 {{ optional($product->supplier)->name ?? '--' }}
                             </a>
+
                         </td>
                         <!-- Các cột khác -->
 
