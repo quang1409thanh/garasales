@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Install dependencies for the operating system software
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -17,12 +17,11 @@ RUN apt-get update && apt-get install -y \
     wget \
     curl \
     nginx \
-    netcat-openbsd  # Cài đặt netcat từ gói netcat-openbsd
+    netcat-openbsd
 
-# Thêm Cloud SQL Auth Proxy
+# Add Cloud SQL Auth Proxy
 ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
 RUN chmod +x /cloud_sql_proxy
-
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
@@ -37,21 +36,22 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY . /app
 
 # Install Composer
-RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
-RUN cd /app && /usr/local/bin/composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+RUN wget http://getcomposer.org/composer.phar && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer
+RUN cd /app && composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Change ownership of /app to www-data
 RUN chown -R www-data: /app
-# Chuyển đến thư mục /app
-WORKDIR /app
 
+# Set working directory
+WORKDIR /app
 
 # Expose port 80
 EXPOSE 80
-# Cập nhật cấu hình Nginx
+
+# Update nginx config
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
-# Khởi chạy Cloud SQL Auth Proxy và ứng dụng
+# Run Cloud SQL Auth Proxy and application
 ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=garasalecss:asia-east2:garasale=tcp:3306 & \
                               php-fpm -D && \
                               while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && \
