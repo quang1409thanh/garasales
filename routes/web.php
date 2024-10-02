@@ -36,9 +36,12 @@ Route::get('php/', function () {
 });
 
 Route::get('/', function () {
+    // Kiểm tra nếu người dùng đã đăng nhập
     if (Auth::check()) {
+        // Nếu đã đăng nhập, điều hướng đến trang dashboard
         return redirect('/dashboard');
     }
+    // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm
     return redirect('/login');
 });
 
@@ -133,4 +136,10 @@ require __DIR__.'/auth.php';
 
 Route::get('test/', function (){
     return view('test');
+});
+
+// Các route cho khách (chưa đăng nhập)
+Route::middleware('guest')->group(function () {
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index'); // Route để hiển thị sản phẩm cho khách
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show'); // Route để xem chi tiết sản phẩm
 });
