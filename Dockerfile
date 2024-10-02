@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     curl \
     nginx \
-    netcat-openbsd  # Cài đặt netcat từ gói netcat-openbsd
+    netcat-openbsd
 
 # Thêm Cloud SQL Auth Proxy
 ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
@@ -25,6 +25,8 @@ RUN chmod +x /cloud_sql_proxy
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install zip
 
 # Create necessary directories
 RUN mkdir -p /run/nginx /app
@@ -37,7 +39,7 @@ COPY . /app
 
 # Install Composer
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
-RUN cd /app && /usr/local/bin/composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+RUN cd /app && /usr/local/bin/composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --verbose
 
 # Change ownership of /app to www-data
 RUN chown -R www-data: /app
