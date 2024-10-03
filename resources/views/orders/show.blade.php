@@ -109,10 +109,10 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="align-middle text-center">
-                                            <div style="max-height: 80px; max-width: 80px;">
+                                            <div >
                                                 <img class="img-fluid"
-                                                     src="{{ $item->thumbnail_url ? $item->thumbnail_url : asset('assets/img/products/default.webp') }}"
-                                                >
+                                                     src="{{ $item->product->thumbnail_url ? $item->product->thumbnail_url : asset('assets/img/products/default.webp') }}"
+                                                 alt="">
                                             </div>
                                         </td>
                                         <td class="align-middle text-center">

@@ -18,7 +18,8 @@
                 <div class="text-secondary">
                     Show
                     <div class="mx-2 d-inline-block">
-                        <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
+                        <select wire:model.live="perPage" class="form-select form-select-sm"
+                                aria-label="result per page">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
@@ -30,7 +31,8 @@
                 <div class="ms-auto text-secondary">
                     Search:
                     <div class="ms-2 d-inline-block">
-                        <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search invoice">
+                        <input type="text" wire:model.live="search" class="form-control form-control-sm"
+                               aria-label="Search invoice">
                     </div>
                 </div>
             </div>
@@ -38,35 +40,57 @@
 
         <x-spinner.loading-spinner/>
 
+
         <div class="table-responsive">
             <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
                 <thead class="thead-light">
                 <tr>
                     <th class="align-middle text-center w-1">
-                        {{ __('ID') }}
+                        {{ __('No.') }}
                     </th>
                     <th scope="col" class="align-middle text-center">
-                        {{ __('Image') }}
+                        {{ __(' Product Image') }}
                     </th>
-
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('name')" href="#" role="button">
-                            {{ __('Product Name') }}
+                            {{ __('Name') }}
                             @include('inclues._sort-icon', ['field' => 'name'])
                         </a>
                     </th>
-                    <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
-                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
-                            {{ __('Price') }}
-                            @include('inclues._sort-icon', ['field' => 'code'])
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
+                            {{ __('consignment date') }}
+                            @include('inclues._sort-icon', ['field' => 'created_at'])
                         </a>
                     </th>
-                    <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('category_id')" href="#" role="button">
+                            {{ __('Category') }}
+                            @include('inclues._sort-icon', ['field' => 'category_id'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('quantity')" href="#" role="button">
-                            {{ __('Product Quantity') }}
+                            {{ __('Quantity') }}
                             @include('inclues._sort-icon', ['field' => 'quantity'])
                         </a>
                     </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
+                            {{ __('Price') }}
+                            {{--                            số lượng đã bán--}}
+                            @include('inclues._sort-icon', ['field' => 'quantity'])
+                        </a>
+                    </th>
+
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('supplier_id')" href="#" role="button">
+                            {{ __('Owner Information') }}
+                            {{-- Owner Information --}}
+                            @include('inclues._sort-icon', ['field' => 'owner'])
+                        </a>
+                    </th>
+
                     <th scope="col" class="align-middle text-center">
                         {{ __('Action') }}
                     </th>
@@ -75,31 +99,64 @@
                 <tbody>
                 @forelse ($products as $product)
                     <tr>
-                        <td class="align-middle text-center" style="width: 10%">
-                            {{ $product->id }}
+                        <td class="align-middle text-center">
+                            {{ $product ->code}}
                         </td>
                         <td class="align-middle text-center">
-                            <img style="width: 90px; height: 90px; object-fit: cover;"
-                                 src="{{ $product->thumbnail_url ? asset('storage/' . $product->thumbnail_url) : asset('assets/img/products/default.png') }}"
+                            <img class="responsive-image"
+                                 src="{{ $product->thumbnail_url ? $product->thumbnail_url : asset('assets/img/products/default.png') }}"
                                  alt="{{ $product->name }}" loading="lazy">
                         </td>
 
+                        <style>
+                            .responsive-image {
+                                width: 90px;       /* Đặt chiều rộng */
+                                height: 90px;      /* Đặt chiều cao */
+                                object-fit: cover; /* Giữ nguyên tỷ lệ và cắt bớt hình ảnh nếu cần */
+                                border-radius: 5px; /* Thêm góc tròn nếu bạn muốn */
+                            }
+
+                            @media (max-width: 768px) {
+                                .responsive-image {
+                                    width: 90px;   /* Chiều rộng cụ thể khi ở chế độ mobile */
+                                    height: 90px;  /* Chiều cao cụ thể khi ở chế độ mobile */
+                                    object-fit: cover; /* Cắt bớt hình ảnh nếu cần */
+                                }
+                            }
+                        </style>
                         <td class="align-middle text-center">
                             {{ $product->name }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->selling_price }}
+                            {{ $product->created_at }}
+                        </td>
+                        <td class="align-middle text-center">
+                            <a href="{{ $product->category ? route('category_client.products.show', $product->category->slug) : '#' }}"
+                               class="badge bg-blue-lt">
+                                {{ $product->category ? $product->category->name : '--' }}
+                            </a>
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->quantity }}
                         </td>
-                        <td class="align-middle text-center" style="width: 15%">
-                            <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
+                        <td class="align-middle text-center">
+                            {{ $product->selling_price }}
+                        </td>
+                        <td>
+                            <a class="badge bg-green-lt" href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                                {{ optional($product->supplier)->name ?? '--' }}
+                            </a>
+                        </td>
+                        <!-- Các cột khác -->
+
+
+                        <td class="align-middle text-center" style="width: 10%">
+                            <x-button.show class="btn-icon" route="{{ route('product_client.show', $product->uuid) }}"/>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td class="align-middle text-center" colspan="8">
+                        <td class="align-middle text-center" colspan="7">
                             No results found
                         </td>
                     </tr>
@@ -107,9 +164,11 @@
                 </tbody>
             </table>
         </div>
+
         <div class="card-footer d-flex align-items-center">
             <p class="m-0 text-secondary">
-                Showing <span>{{ $products->firstItem() }}</span> to <span>{{ $products->lastItem() }}</span> of <span>{{ $products->total() }}</span> entries
+                Showing <span>{{ $products->firstItem() }}</span> to <span>{{ $products->lastItem() }}</span> of
+                <span>{{ $products->total() }}</span> entries
             </p>
 
             <ul class="pagination m-0 ms-auto">

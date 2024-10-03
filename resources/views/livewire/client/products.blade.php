@@ -43,7 +43,7 @@
                     {{ __('No.') }}
                 </th>
                 <th scope="col" class="align-middle text-center">
-                    {{ __('Image') }}
+                    {{ __(' Product Image') }}
                 </th>
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('name')" href="#" role="button">
@@ -94,13 +94,30 @@
             @forelse ($products as $product)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->iteration }}
+                        {{ $product ->code}}
                     </td>
                     <td class="align-middle text-center">
-                        <img style="width: 90px; height: 90px; object-fit: cover;"
+                        <img class="responsive-image"
                              src="{{ $product->thumbnail_url ? $product->thumbnail_url : asset('assets/img/products/default.png') }}"
                              alt="{{ $product->name }}" loading="lazy">
                     </td>
+
+                    <style>
+                        .responsive-image {
+                            width: 90px;       /* Đặt chiều rộng */
+                            height: 90px;      /* Đặt chiều cao */
+                            object-fit: cover; /* Giữ nguyên tỷ lệ và cắt bớt hình ảnh nếu cần */
+                            border-radius: 5px; /* Thêm góc tròn nếu bạn muốn */
+                        }
+
+                        @media (max-width: 768px) {
+                            .responsive-image {
+                                width: 90px;   /* Chiều rộng cụ thể khi ở chế độ mobile */
+                                height: 90px;  /* Chiều cao cụ thể khi ở chế độ mobile */
+                                object-fit: cover; /* Cắt bớt hình ảnh nếu cần */
+                            }
+                        }
+                    </style>
                     <td class="align-middle text-center">
                         {{ $product->name }}
                     </td>
@@ -108,7 +125,8 @@
                         {{ $product->created_at }}
                     </td>
                     <td class="align-middle text-center">
-                        <a href="{{ $product->category ? route('category_client.products.show', $product->category->slug) : '#' }}" class="badge bg-blue-lt">
+                        <a href="{{ $product->category ? route('category_client.products.show', $product->category->slug) : '#' }}"
+                           class="badge bg-blue-lt">
                             {{ $product->category ? $product->category->name : '--' }}
                         </a>
                     </td>
@@ -119,7 +137,7 @@
                         {{ $product->selling_price }}
                     </td>
                     <td>
-                        <a href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                        <a class="badge bg-green-lt" href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
                             {{ optional($product->supplier)->name ?? '--' }}
                         </a>
                     </td>
@@ -127,7 +145,7 @@
 
 
                     <td class="align-middle text-center" style="width: 10%">
-                        <x-button.show class="btn-icon" route="{{ route('product_client.show', $product->uuid) }}" />
+                        <x-button.show class="btn-icon" route="{{ route('product_client.show', $product->uuid) }}"/>
                     </td>
                 </tr>
             @empty

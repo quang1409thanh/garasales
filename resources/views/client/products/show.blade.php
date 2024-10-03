@@ -14,24 +14,6 @@
             @include('partials._breadcrumbs')
         </div>
     </div>
-    <style>
-        .image-container {
-            width: 300px; /* Kích thước cố định cho khung ảnh */
-            height: 300px; /* Kích thước cố định cho khung ảnh */
-            display: flex; /* Sử dụng flexbox để căn giữa */
-            justify-content: center; /* Căn giữa theo chiều ngang */
-            align-items: center; /* Căn giữa theo chiều dọc */
-            background-color: #f8f9fa; /* Màu nền cho khung, tùy chọn */
-            overflow: hidden; /* Ẩn phần ngoài khung nếu cần */
-        }
-
-        .image-container img {
-            max-width: 100%; /* Đảm bảo chiều rộng tối đa của ảnh là 100% chiều rộng khung */
-            max-height: 100%; /* Đảm bảo chiều cao tối đa của ảnh là 100% chiều cao khung */
-            object-fit: contain; /* Giúp ảnh được hiển thị đầy đủ mà không bị cắt bớt */
-        }
-
-    </style>
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
@@ -43,15 +25,14 @@
                                     {{ __('Product Image') }}
                                 </h3>
 
-                                <div class="image-container">
+                                <div>
                                     <picture>
                                         <source srcset="{{ $product->product_image ? $product->product_image : asset('assets/img/products/default.webp') }}" type="image/webp">
                                         <img id="image-preview"
                                              src="{{ $product->product_image ? $product->product_image : asset('assets/img/products/default.png') }}"
                                              alt="{{ $product->name }}"
                                              class="img-account-profile mb-2"
-                                             loading="lazy"
-                                             style="width: auto; height: 300px; object-fit: cover;">
+                                             loading="lazy">
                                     </picture>
                                 </div>
                             </div>
@@ -107,13 +88,12 @@
                                     <tr>
                                         <td>Owner Information</td>
                                         <td>
-                                            <a href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                                            <a class="badge bg-green-lt" href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
                                                 {{ optional($product->supplier)->name ?? '--' }}
                                             </a>
                                         </td>
 
-                                    </tr>
-                                    <tr>
+                                    </tr>                                    <tr>
                                         <td><span class="text-secondary">Code</span></td>
                                         <td>{{ $product->code }}</td>
                                     </tr>
