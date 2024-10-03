@@ -151,6 +151,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
 //    Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
+use App\Http\Controllers\ImageUploadController;
+
+Route::post('/upload-image', [ImageUploadController::class, 'upload']);
 
 require __DIR__.'/auth.php';
 
