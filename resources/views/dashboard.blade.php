@@ -16,12 +16,12 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <a href="{{ route('orders.create') }}" class="btn btn-primary d-none d-sm-inline-block">
-                            <x-icon.plus />
+                            <x-icon.plus/>
                             Create new order
                         </a>
                         <a href="{{ route('orders.create') }}" class="btn btn-primary d-sm-none btn-icon"
-                            aria-label="Create new report">
-                            <x-icon.plus />
+                           aria-label="Create new report">
+                            <x-icon.plus/>
                         </a>
                     </div>
                 </div>
@@ -35,11 +35,14 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
+                            <a href="{{ route('orders.complete') }}" class="text-decoration-none">
+
                             <div class="d-flex align-items-center">
-                                <div class="subheader">Sales</div>
+                                <div class="subheader">Total Products Sold</div>
                                 <div class="ms-auto lh-1">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <a class="dropdown-item " href="#">Last 7 days</a>
                                             <a class="dropdown-item" href="#">Last 30 days</a>
@@ -48,23 +51,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="h1 mb-3">{{ $salesPercentage }}%</div>
+                            <div class="h1 mb-3">{{ $totalProductSold }}</div>
                             <div class="d-flex mb-2">
                                 <div>Conversion rate</div>
                                 <div class="ms-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
                         {{ $conversionRateChange }}%
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M3 17l6 -6l4 4l8 -8" />
-                            <path d="M14 7l7 0l0 7" />
+                            <path d="M3 17l6 -6l4 4l8 -8"/>
+                            <path d="M14 7l7 0l0 7"/>
                         </svg>
                     </span>
                                 </div>
                             </div>
                             <div class="progress progress-sm">
-                                <div class="progress-bar bg-primary" style="width: {{ $salesPercentage }}%" role="progressbar" aria-valuenow="{{ $salesPercentage }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ $salesPercentage }}% Complete">
-                                    <span class="visually-hidden">{{ $salesPercentage }}% Complete</span>
+                                <div class="progress-bar bg-primary" style="width: {{ $totalProductSold }}%"
+                                     role="progressbar" aria-valuenow="{{ $totalProductSold }}" aria-valuemin="0"
+                                     aria-valuemax="100" aria-label="{{ $totalProductSold }}% Complete">
+                                    <span class="visually-hidden">{{ $totalProductSold }}% Complete</span>
                                 </div>
                             </div>
                         </div>
@@ -73,28 +80,35 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
+                            <a href="{{ route('orders.complete') }}" class="text-decoration-none">
+
                             <div class="d-flex align-items-center">
                                 <div class="subheader">Revenue</div>
                                 <div class="ms-auto lh-1">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <a class="dropdown-item " href="#">Last 7 days</a>
                                             <a class="dropdown-item" href="#">Last 30 days</a>
-                                            <a class="dropdown-item active" href="#">Last 3 months</a> <!-- Không cần thay đổi ở đây nếu vẫn muốn giữ tùy chọn -->
+                                            <a class="dropdown-item active" href="#">Last 3 months</a>
+                                            <!-- Không cần thay đổi ở đây nếu vẫn muốn giữ tùy chọn -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-0 me-2">{{ number_format($revenue) }} ₫</div> <!-- Đổi ký hiệu tiền tệ từ $ thành ₫ -->
+                                <div class="h1 mb-0 me-2">{{ number_format($revenue) }} ₫</div>
+                                <!-- Đổi ký hiệu tiền tệ từ $ thành ₫ -->
                                 <div class="me-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
                         {{ $revenueChange }}%
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M3 17l6 -6l4 4l8 -8" />
-                            <path d="M14 7l7 0l0 7" />
+                            <path d="M3 17l6 -6l4 4l8 -8"/>
+                            <path d="M14 7l7 0l0 7"/>
                         </svg>
                     </span>
                                 </div>
@@ -107,11 +121,13 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
+                            <a href="{{ route('orders.pending') }}" class="text-decoration-none">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">New clients</div>
+                                <div class="subheader">Pending order</div>
                                 <div class="ms-auto lh-1">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <a class="dropdown-item " href="#">Last 7 days</a>
                                             <a class="dropdown-item" href="#">Last 30 days</a>
@@ -121,13 +137,15 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-3 me-2">{{ number_format($newClients) }}</div>
+                                <div class="h1 mb-3 me-2">{{ number_format($orderPending) }}</div>
                                 <div class="me-auto">
                     <span class="text-yellow d-inline-flex align-items-center lh-1">
-                        {{ $newClientsChange }}%
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        {{ '0' }}%
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M5 12l14 0" />
+                            <path d="M5 12l14 0"/>
                         </svg>
                     </span>
                                 </div>
@@ -140,11 +158,14 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
+                            <a href="{{ route('orders.pending') }}" class="text-decoration-none">
+
                             <div class="d-flex align-items-center">
-                                <div class="subheader">Active users</div>
+                                <div class="subheader">Pending Order Count</div>
                                 <div class="ms-auto lh-1">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <a class="dropdown-item " href="#">Last 7 days</a>
                                             <a class="dropdown-item" href="#">Last 30 days</a>
@@ -154,14 +175,16 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-3 me-2">{{ number_format($activeUsers) }}</div>
+                                <div class="h1 mb-3 me-2">{{ number_format($pendingOrderCount) }}</div>
                                 <div class="me-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
-                        {{ $activeUsersChange }}%
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        {{ 7 }}%
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M3 17l6 -6l4 4l8 -8" />
-                            <path d="M14 7l7 0l0 7" />
+                            <path d="M3 17l6 -6l4 4l8 -8"/>
+                            <path d="M14 7l7 0l0 7"/>
                         </svg>
                     </span>
                                 </div>
@@ -181,27 +204,29 @@
                                             <span
                                                 class="bg-primary text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="icon icon-tabler icon-tabler-packages" width="24"
-                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M7 16.5l-5 -3l5 -3l5 3v5.5l-5 3z" />
-                                                    <path d="M2 13.5v5.5l5 3" />
-                                                    <path d="M7 16.545l5 -3.03" />
-                                                    <path d="M17 16.5l-5 -3l5 -3l5 3v5.5l-5 3z" />
-                                                    <path d="M12 19l5 3" />
-                                                    <path d="M17 16.5l5 -3" />
-                                                    <path d="M12 13.5v-5.5l-5 -3l5 -3l5 3v5.5" />
-                                                    <path d="M7 5.03v5.455" />
-                                                    <path d="M12 8l5 -3" />
+                                                     class="icon icon-tabler icon-tabler-packages" width="24"
+                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                     stroke="currentColor" fill="none" stroke-linecap="round"
+                                                     stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M7 16.5l-5 -3l5 -3l5 3v5.5l-5 3z"/>
+                                                    <path d="M2 13.5v5.5l5 3"/>
+                                                    <path d="M7 16.545l5 -3.03"/>
+                                                    <path d="M17 16.5l-5 -3l5 -3l5 3v5.5l-5 3z"/>
+                                                    <path d="M12 19l5 3"/>
+                                                    <path d="M17 16.5l5 -3"/>
+                                                    <path d="M12 13.5v-5.5l-5 -3l5 -3l5 3v5.5"/>
+                                                    <path d="M7 5.03v5.455"/>
+                                                    <path d="M12 8l5 -3"/>
                                                 </svg>
                                             </span>
                                         </div>
                                         <div class="col">
-                                            <div class="font-weight-medium">
-                                                {{ $products }} Products
-                                            </div>
+                                            <a href="{{ route('products.index') }}" class="text-decoration-none">
+                                                <div class="font-weight-medium">
+                                                    {{ $products }} Products
+                                                </div>
+                                            </a>
                                             <div class="text-muted">
                                                 {{ $categories }} categories
                                             </div>
@@ -218,21 +243,23 @@
                                             <span
                                                 class="bg-green text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/shopping-cart -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                    <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                    <path d="M17 17h-11v-14h-2" />
-                                                    <path d="M6 5l14 1l-1 7h-13" />
+                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                     stroke="currentColor" fill="none" stroke-linecap="round"
+                                                     stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                                    <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                                    <path d="M17 17h-11v-14h-2"/>
+                                                    <path d="M6 5l14 1l-1 7h-13"/>
                                                 </svg>
                                             </span>
                                         </div>
                                         <div class="col">
-                                            <div class="font-weight-medium">
-                                                {{ $orders }} Orders
-                                            </div>
+                                            <a href="{{ route('orders.index') }}" class="text-decoration-none">
+                                                <div class="font-weight-medium">
+                                                    {{ $products }} Products
+                                                </div>
+                                            </a>
                                             <div class="text-muted">
                                                 {{ $todayOrders }} shipped
                                             </div>
@@ -249,15 +276,15 @@
                                             <span
                                                 class="bg-twitter text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="icon icon-tabler icon-tabler-truck-delivery" width="24"
-                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                    <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                    <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
-                                                    <path d="M3 9l4 0" />
+                                                     class="icon icon-tabler icon-tabler-truck-delivery" width="24"
+                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                     stroke="currentColor" fill="none" stroke-linecap="round"
+                                                     stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                                    <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                                    <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"/>
+                                                    <path d="M3 9l4 0"/>
                                                 </svg>
                                             </span>
                                         </div>
@@ -281,15 +308,15 @@
                                             <span
                                                 class="bg-facebook text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/brand-facebook -->
                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="icon icon-tabler icon-tabler-files" width="24" height="24"
-                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M15 3v4a1 1 0 0 0 1 1h4" />
+                                                     class="icon icon-tabler icon-tabler-files" width="24" height="24"
+                                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M15 3v4a1 1 0 0 0 1 1h4"/>
                                                     <path
-                                                        d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z" />
+                                                        d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"/>
                                                     <path
-                                                        d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2" />
+                                                        d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"/>
                                                 </svg>
                                             </span>
                                         </div>

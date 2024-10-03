@@ -29,19 +29,16 @@ class DashboardController extends Controller
         $quotations = Quotation::where("user_id", auth()->id())->count();
 
         // Tính toán dữ liệu động
-        $totalSales = Order::sum('total_products'); // Tổng số lượng sản phẩm đã bán
-        $totalRevenue = Order::sum('total'); // Tổng doanh thu
-        $newClients = User::where('created_at', '>=', Carbon::now()->subDays(7))->count(); // Khách hàng mới trong 7 ngày qua
-        $activeUsers = User::where('created_at', '>=', Carbon::now()->subDays(7))->count(); // Người dùng hoạt động trong 7 ngày qua
+        $totalProductSold = Order::where('order_status', '1')->sum('total_products'); // Tổng số lượng sản phẩm đã bán
+        $totalRevenue = Order::where('order_status', '1')->sum('total'); // Tổng doanh thu
+        $orderPending = Order::where('order_status', '0')->sum('total'); // Tổng doanh thu // Khách hàng mới trong 7 ngày qua
+        $pendingOrderCount = Order::where('order_status', '0')->sum('total_products'); // Tổng doanh thu // Khách hàng mới trong 7 ngày qua
         // Tính toán tỷ lệ phần trăm thay đổi
         $conversionRateChange = 7; // Tăng 7%
         $revenueChange = 8; // Tăng 8%
         $newClientsChange = 0; // Không thay đổi
         $activeUsersChange = 4; // Tăng 4%
 
-        // Lấy dữ liệu từ cơ sở dữ liệu hoặc tính toán
-        $salesPercentage = 75; // Tỷ lệ chuyển đổi
-        $revenue = $totalRevenue; // Doanh thu
 
         return view('dashboard', [
             'products' => $products,
@@ -53,16 +50,14 @@ class DashboardController extends Controller
             'todayOrders' => $todayOrders,
             'categories' => $categories,
             'quotations' => $quotations,
-            'totalSales' => $totalSales,
-            'totalRevenue' => $totalRevenue,
-            'newClients' => $newClients,
-            'activeUsers' => $activeUsers,
+            'orderPending' => $orderPending,
+            'pendingOrderCount' => $pendingOrderCount,
             'conversionRateChange' => $conversionRateChange,
             'revenueChange' => $revenueChange,
             'newClientsChange' => $newClientsChange,
             'activeUsersChange' => $activeUsersChange,
-            'salesPercentage' => $salesPercentage,
-            'revenue' =>$revenue,
+            'totalProductSold' => $totalProductSold,
+            'revenue' =>$totalRevenue,
         ]);
     }
 }

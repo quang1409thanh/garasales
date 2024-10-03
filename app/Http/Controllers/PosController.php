@@ -27,15 +27,22 @@ class PosController extends Controller
     public function addCartItem (Request $request)
     {
         $request->all();
-        //dd($request);
 
+        // Định nghĩa các quy tắc xác thực
         $rules = [
             'id' => 'required|numeric',
             'name' => 'required|string',
             'selling_price' => 'required|numeric',
         ];
 
+
         $validatedData = $request->validate($rules);
+        // Kiểm tra số lượng có lớn hơn 0 không
+        if ($request['quantity'] <= 0) {
+            return redirect()
+                ->back()
+                ->with('error', 'Quantity must be greater than zero!'); // Thông báo lỗi nếu số lượng không hợp lệ
+        }
 
         Cart::add(
             $validatedData['id'],
@@ -57,14 +64,14 @@ class PosController extends Controller
             'qty' => 'required|numeric',
             'product_id' => 'numeric'
         ];
-        
+
         $validatedData = $request->validate($rules);
         if ($validatedData['qty'] > Product::where('id', intval($validatedData['product_id']))->value('quantity')) {
             return redirect()
             ->back()
             ->with('error', 'The requested quantity is not available in stock.');
         }
-        
+
 
         Cart::update($rowId, $validatedData['qty']);
 
