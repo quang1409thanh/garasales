@@ -67,7 +67,8 @@ return [
             'visibility_handler' => null,
             'metadata' => ['cacheControl'=> 'public,max-age=86400'],
             'throw' => true,
-        ],    ],
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
