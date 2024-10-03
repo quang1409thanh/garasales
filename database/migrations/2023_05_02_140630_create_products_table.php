@@ -27,7 +27,8 @@ return new class extends Migration
             $table->tinyInteger('tax_type')->nullable();
             $table->text('notes')->nullable();
 
-            $table->string('product_image')->nullable();
+            $table->string('product_image')->nullable(); // Hình ảnh gốc
+            $table->string('thumbnail_url')->nullable(); // Thêm trường thumbnail_url
 
             // Liên kết với bảng Category
             $table->foreignIdFor(\App\Models\Category::class)

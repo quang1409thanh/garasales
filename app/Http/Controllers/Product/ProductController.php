@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Models\Unit;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Str;
 
@@ -56,11 +57,39 @@ class ProductController extends Controller
         /**
          * Handle upload image
          */
-        $image = "";
+        $imagePath = "";
+        $thumbnailPath = "";
+
         if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image')->store('products', 'public');
+            $image = $request->file('product_image');
+
+            // Lưu hình ảnh gốc
+            $imagePath = $image->store('products', 'public');
+
+            // Tạo đường dẫn cho thumbnail
+            $thumbnailPath = 'thumbnails/' . pathinfo($imagePath, PATHINFO_BASENAME);
+            $thumbnailFullPath = storage_path('app/public/' . $thumbnailPath);
+
+            // Nén hình ảnh và lưu vào vị trí gốc
+            $img = Image::make($image->getRealPath());
+            $img->save(storage_path('app/public/' . $imagePath), 50); // Lưu hình ảnh gốc với chất lượng 75
+
+            // Kiểm tra và tạo thư mục thumbnails nếu chưa tồn tại
+            if (!file_exists(dirname($thumbnailFullPath))) {
+                mkdir(dirname($thumbnailFullPath), 0755, true); // Tạo thư mục nếu chưa tồn tại
+            }
+
+            // Resize hình ảnh cho thumbnail
+            $img->resize(90, 90, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            // Lưu thumbnail vào thư mục
+            $img->save($thumbnailFullPath);
         }
 
+        // Tạo sản phẩm và lưu vào cơ sở dữ liệu
         Product::create([
             "code" => IdGenerator::generate([
                 'table' => 'products',
@@ -69,23 +98,23 @@ class ProductController extends Controller
                 'prefix' => 'PC'
             ]),
 
-            'product_image'     => $image,
-            'name'              => $request->name,
-            'category_id'       => $request->category_id,
-            'unit_id'           => $request->unit_id,
-            'quantity'          => $request->quantity,
-            'buying_price'      => $request->buying_price,
-            'selling_price'     => $request->selling_price,
-            'quantity_alert'    => $request->quantity_alert,
-            'tax'               => $request->tax,
-            'tax_type'          => $request->tax_type,
-            'notes'             => $request->notes,
+            'product_image' => $imagePath, // Đường dẫn hình ảnh gốc
+            'thumbnail_url' => $thumbnailPath, // Lưu đường dẫn thumbnail vào cơ sở dữ liệu
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'unit_id' => $request->unit_id,
+            'quantity' => $request->quantity,
+            'buying_price' => $request->buying_price,
+            'selling_price' => $request->selling_price,
+            'quantity_alert' => $request->quantity_alert,
+            'tax' => $request->tax,
+            'tax_type' => $request->tax_type,
+            'notes' => $request->notes,
             "user_id" => auth()->id(),
             "slug" => Str::slug($request->name, '-'),
             "uuid" => Str::uuid(),
-            'supplier_id'       => $request->supplier_id,  // Thêm dòng này để lưu supplier_id
+            'supplier_id' => $request->supplier_id,
         ]);
-
 
         return to_route('products.index')->with('success', 'Product has been created!');
     }
@@ -120,22 +149,59 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $uuid)
     {
         $product = Product::where("uuid", $uuid)->firstOrFail();
+
+        // Cập nhật thông tin sản phẩm mà không bao gồm hình ảnh
         $product->update($request->except('product_image'));
 
+        // Biến để lưu đường dẫn hình ảnh gốc
         $image = $product->product_image;
+        $thumbnailPath = "";
+
         if ($request->hasFile('product_image')) {
 
+            // Xóa hình ảnh cũ nếu có
             if ($product->product_image) {
                 $oldImagePath = public_path('storage/') . $product->product_image;
+                $oldThumbnailPath = public_path('storage/thumbnails/') . pathinfo($product->product_image, PATHINFO_BASENAME);
 
                 // Kiểm tra xem tệp có tồn tại không trước khi xóa
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
+
+                // Xóa thumbnail cũ nếu có
+                if (file_exists($oldThumbnailPath)) {
+                    unlink($oldThumbnailPath);
+                }
             }
+
+            // Lưu hình ảnh gốc mới
             $image = $request->file('product_image')->store('products', 'public');
+
+            // Tạo đường dẫn cho thumbnail
+            $thumbnailPath = 'thumbnails/' . pathinfo($image, PATHINFO_BASENAME);
+            $thumbnailFullPath = storage_path('app/public/' . $thumbnailPath);
+
+            // Nén hình ảnh và lưu vào vị trí gốc
+            $img = Image::make($request->file('product_image')->getRealPath());
+            $img->save(storage_path('app/public/' . $image), 50); // Lưu hình ảnh gốc với chất lượng 75
+
+            // Kiểm tra và tạo thư mục thumbnails nếu chưa tồn tại
+            if (!file_exists(dirname($thumbnailFullPath))) {
+                mkdir(dirname($thumbnailFullPath), 0755, true); // Tạo thư mục nếu chưa tồn tại
+            }
+
+            // Resize hình ảnh cho thumbnail
+            $img->resize(90, 90, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            // Lưu thumbnail vào thư mục
+            $img->save($thumbnailFullPath);
         }
 
+        // Cập nhật thông tin sản phẩm
         $product->name = $request->name;
         $product->slug = Str::slug($request->name, '-');
         $product->category_id = $request->category_id;
@@ -147,9 +213,14 @@ class ProductController extends Controller
         $product->tax = $request->tax;
         $product->tax_type = $request->tax_type;
         $product->notes = $request->notes;
-        $product->product_image = $image;
-        $product->save();
 
+        // Chỉ cập nhật đường dẫn hình ảnh và thumbnail nếu có ảnh mới
+        if ($request->hasFile('product_image')) {
+            $product->product_image = $image;
+            $product->thumbnail_url = $thumbnailPath; // Cập nhật đường dẫn thumbnail
+        }
+
+        $product->save();
 
         return redirect()
             ->route('products.index')

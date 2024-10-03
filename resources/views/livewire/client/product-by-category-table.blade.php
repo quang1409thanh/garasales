@@ -46,14 +46,18 @@
                         {{ __('ID') }}
                     </th>
                     <th scope="col" class="align-middle text-center">
+                        {{ __('Image') }}
+                    </th>
+
+                    <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('name')" href="#" role="button">
                             {{ __('Product Name') }}
                             @include('inclues._sort-icon', ['field' => 'name'])
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
-                        <a wire:click.prevent="sortBy('code')" href="#" role="button">
-                            {{ __('Product Code') }}
+                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
+                            {{ __('Price') }}
                             @include('inclues._sort-icon', ['field' => 'code'])
                         </a>
                     </th>
@@ -75,10 +79,16 @@
                             {{ $product->id }}
                         </td>
                         <td class="align-middle text-center">
+                            <img style="width: 90px;"
+                                 src="{{ $product->thumbnail_url ? asset('storage/' . $product->thumbnail_url) : asset('assets/img/products/default.webp') }}"
+                                 alt="">
+                        </td>
+
+                        <td class="align-middle text-center">
                             {{ $product->name }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->code }}
+                            {{ $product->selling_price }}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->quantity }}
