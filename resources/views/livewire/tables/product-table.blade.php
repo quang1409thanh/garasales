@@ -120,7 +120,7 @@
                         </td>
                         <td class="align-middle text-center">
                             <img style="width: 90px; height: 90px; object-fit: cover;"
-                                 src="{{ $product->thumbnail_url ? asset('storage/' . $product->thumbnail_url) : asset('assets/img/products/default.png') }}"
+                                 src="{{ $product->thumbnail_url ? $product->thumbnail_url : asset('assets/img/products/default.png') }}"
                                  alt="{{ $product->name }}" loading="lazy">
                         </td>
                         <td class="align-middle text-center">

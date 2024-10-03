@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Models\Unit;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Str;
@@ -63,33 +64,33 @@ class ProductController extends Controller
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');
 
-            // Lưu hình ảnh gốc
-            $imagePath = $image->store('products', 'public');
+            // Tạo tên file duy nhất
+            $fileName = time() . '_' . $image->getClientOriginalName();
 
-            // Tạo đường dẫn cho thumbnail
-            $thumbnailPath = 'thumbnails/' . pathinfo($imagePath, PATHINFO_BASENAME);
-            $thumbnailFullPath = storage_path('app/public/' . $thumbnailPath);
+            // Tạo thumbnail và lưu vào một file tạm
+            $thumbnailTmpPath = sys_get_temp_dir() . '/' . 'thumbnail_' . $fileName;
 
-            // Nén hình ảnh và lưu vào vị trí gốc
+            // Resize và lưu thumbnail tạm thời
             $img = Image::make($image->getRealPath());
-            $img->save(storage_path('app/public/' . $imagePath), 50); // Lưu hình ảnh gốc với chất lượng 75
-
-            // Kiểm tra và tạo thư mục thumbnails nếu chưa tồn tại
-            if (!file_exists(dirname($thumbnailFullPath))) {
-                mkdir(dirname($thumbnailFullPath), 0755, true); // Tạo thư mục nếu chưa tồn tại
-            }
-
-            // Resize hình ảnh cho thumbnail
             $img->resize(90, 90, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            });
+            })->save($thumbnailTmpPath);
 
-            // Lưu thumbnail vào thư mục
-            $img->save($thumbnailFullPath);
+            // Upload ảnh gốc lên Google Cloud Storage
+            $imagePath = $image->storeAs('products', $fileName, 'gcs');
+            $imageUrl = Storage::disk('gcs')->url($imagePath);
+
+            // Upload thumbnail lên Google Cloud Storage
+            $thumbnailPath = 'thumbnails/' . $fileName;
+            Storage::disk('gcs')->put($thumbnailPath, file_get_contents($thumbnailTmpPath));
+            $thumbnailUrl = Storage::disk('gcs')->url($thumbnailPath);
+
+            // Xóa file thumbnail tạm sau khi upload
+            unlink($thumbnailTmpPath);
         }
 
-        // Tạo sản phẩm và lưu vào cơ sở dữ liệu
+        // Tạo sản phẩm và lưu vào cơ sở dữ liệu với URL hình ảnh từ Cloud Storage
         Product::create([
             "code" => IdGenerator::generate([
                 'table' => 'products',
@@ -98,8 +99,8 @@ class ProductController extends Controller
                 'prefix' => 'PC'
             ]),
 
-            'product_image' => $imagePath, // Đường dẫn hình ảnh gốc
-            'thumbnail_url' => $thumbnailPath, // Lưu đường dẫn thumbnail vào cơ sở dữ liệu
+            'product_image' => $imageUrl, // Lưu URL ảnh gốc vào cơ sở dữ liệu
+            'thumbnail_url' => $thumbnailUrl, // Lưu URL thumbnail vào cơ sở dữ liệu
             'name' => $request->name,
             'category_id' => $request->category_id,
             'unit_id' => $request->unit_id,
@@ -118,7 +119,6 @@ class ProductController extends Controller
 
         return to_route('products.index')->with('success', 'Product has been created!');
     }
-
     public function show($uuid)
     {
         $product = Product::where("uuid", $uuid)->firstOrFail();
@@ -148,6 +148,7 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, $uuid)
     {
+        // Tìm sản phẩm dựa trên uuid
         $product = Product::where("uuid", $uuid)->firstOrFail();
 
         // Cập nhật thông tin sản phẩm mà không bao gồm hình ảnh
@@ -155,53 +156,54 @@ class ProductController extends Controller
 
         // Biến để lưu đường dẫn hình ảnh gốc
         $image = $product->product_image;
-        $thumbnailPath = "";
+        $thumbnailUrl = "";
 
+        // Kiểm tra xem có hình ảnh mới được tải lên không
         if ($request->hasFile('product_image')) {
-
             // Xóa hình ảnh cũ nếu có
             if ($product->product_image) {
-                $oldImagePath = public_path('storage/') . $product->product_image;
-                $oldThumbnailPath = public_path('storage/thumbnails/') . pathinfo($product->product_image, PATHINFO_BASENAME);
+                $oldImagePath = str_replace('https://storage.googleapis.com/your-bucket-name/', '', $product->product_image);
+                $oldThumbnailPath = 'thumbnails/' . pathinfo($oldImagePath, PATHINFO_BASENAME);
 
-                // Kiểm tra xem tệp có tồn tại không trước khi xóa
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-
-                // Xóa thumbnail cũ nếu có
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
-                }
+                // Xóa hình ảnh cũ khỏi GCS
+                Storage::disk('gcs')->delete($oldImagePath);
+                Storage::disk('gcs')->delete($oldThumbnailPath);
             }
 
-            // Lưu hình ảnh gốc mới
-            $image = $request->file('product_image')->store('products', 'public');
+            // Tạo tên file duy nhất cho hình ảnh mới
+            $imageFile = $request->file('product_image');
+            $fileName = time() . '_' . $imageFile->getClientOriginalName();
 
-            // Tạo đường dẫn cho thumbnail
-            $thumbnailPath = 'thumbnails/' . pathinfo($image, PATHINFO_BASENAME);
-            $thumbnailFullPath = storage_path('app/public/' . $thumbnailPath);
+            // Upload ảnh gốc lên Google Cloud Storage
+            $imagePath = $imageFile->storeAs('products', $fileName, 'gcs');
+            $imageUrl = Storage::disk('gcs')->url($imagePath);
 
-            // Nén hình ảnh và lưu vào vị trí gốc
-            $img = Image::make($request->file('product_image')->getRealPath());
-            $img->save(storage_path('app/public/' . $image), 50); // Lưu hình ảnh gốc với chất lượng 75
+            // Tạo thumbnail và lưu vào một file tạm
+            $thumbnailTmpPath = sys_get_temp_dir() . '/' . 'thumbnail_' . $fileName;
 
-            // Kiểm tra và tạo thư mục thumbnails nếu chưa tồn tại
-            if (!file_exists(dirname($thumbnailFullPath))) {
-                mkdir(dirname($thumbnailFullPath), 0755, true); // Tạo thư mục nếu chưa tồn tại
-            }
-
-            // Resize hình ảnh cho thumbnail
+            // Resize và lưu thumbnail tạm thời
+            $img = Image::make($imageFile->getRealPath());
             $img->resize(90, 90, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            });
+            })->save($thumbnailTmpPath);
 
-            // Lưu thumbnail vào thư mục
-            $img->save($thumbnailFullPath);
+            // Upload thumbnail lên Google Cloud Storage
+            $thumbnailPath = 'thumbnails/' . $fileName;
+            Storage::disk('gcs')->put($thumbnailPath, file_get_contents($thumbnailTmpPath));
+            $thumbnailUrl = Storage::disk('gcs')->url($thumbnailPath);
+
+            // Xóa file thumbnail tạm sau khi upload
+            unlink($thumbnailTmpPath);
         }
 
-        // Cập nhật thông tin sản phẩm
+        // Cập nhật đường dẫn hình ảnh và thumbnail nếu có ảnh mới
+        if ($request->hasFile('product_image')) {
+            $product->product_image = $imageUrl; // Cập nhật đường dẫn ảnh gốc
+            $product->thumbnail_url = $thumbnailUrl; // Cập nhật đường dẫn thumbnail
+        }
+
+        // Cập nhật thông tin sản phẩm còn lại
         $product->name = $request->name;
         $product->slug = Str::slug($request->name, '-');
         $product->category_id = $request->category_id;
@@ -214,12 +216,7 @@ class ProductController extends Controller
         $product->tax_type = $request->tax_type;
         $product->notes = $request->notes;
 
-        // Chỉ cập nhật đường dẫn hình ảnh và thumbnail nếu có ảnh mới
-        if ($request->hasFile('product_image')) {
-            $product->product_image = $image;
-            $product->thumbnail_url = $thumbnailPath; // Cập nhật đường dẫn thumbnail
-        }
-
+        // Lưu thông tin sản phẩm
         $product->save();
 
         return redirect()
