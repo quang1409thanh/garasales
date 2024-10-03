@@ -8,7 +8,10 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     locales \
     zip \
-    jpegoptim optipng pngquant gifsicle \
+    jpegoptim \
+    optipng \
+    pngquant \
+    gifsicle \
     vim \
     libzip-dev \
     unzip \
@@ -18,20 +21,18 @@ RUN apt-get update && apt-get install -y \
     curl \
     nginx \
     netcat-openbsd \
-    # Install Node.js and npm
-    curl \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*
+    libicu-dev && \
+    curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 # Thêm Cloud SQL Auth Proxy
 ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
 RUN chmod +x /cloud_sql_proxy
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
-RUN docker-php-ext-install gd
-RUN docker-php-ext-install zip
+RUN docker-php-ext-install pdo pdo_mysql gd zip intl  # Cài đặt PHP intl extension
+
 
 # Create necessary directories
 RUN mkdir -p /run/nginx /app

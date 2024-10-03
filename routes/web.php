@@ -42,7 +42,7 @@ Route::get('/', function () {
         return redirect('/dashboard');
     }
     // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm
-    return redirect('/test');
+    return redirect('/products');
 });
 
 Route::get('test/', function (){
@@ -51,8 +51,7 @@ Route::get('test/', function (){
 
 // Các route cho khách (chưa đăng nhập)
 Route::middleware('guest')->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index'); // Route để hiển thị sản phẩm cho khách
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show'); // Route để xem chi tiết sản phẩm
+    Route::resource('/products', ProductController::class);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
