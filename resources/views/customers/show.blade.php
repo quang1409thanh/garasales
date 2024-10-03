@@ -28,7 +28,7 @@
 
                                 <img id="image-preview"
                                      class="img-account-profile mb-2"
-                                     src="{{ $customer->photo ? asset('storage/' . $customer->photo) : asset('assets/img/demo/user-placeholder.svg') }}"
+                                     src="{{ $customer->photo ? $customer->photo : asset('assets/img/demo/user-placeholder.svg') }}"
                                      alt=""
                                 >
                             </div>
@@ -80,7 +80,10 @@
                             <div class="card-footer d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary" href="{{ route('customers.orders', $customer->uuid) }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye"
+                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                             stroke="currentColor" fill="none" stroke-linecap="round"
+                                             stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                             <path d="M12 12l0 .01"/>
                                             <path d="M12 4c-6 0 -10 6 -10 8s4 8 10 8 10 -6 10 -8 -4 -8 -10 -8"/>
@@ -92,20 +95,26 @@
 
                                 <div class="text-end">
                                     <a class="btn btn-info" href="{{ route('customers.index') }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24"
+                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                             stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                            <path d="M5 12l14 0" />
-                                            <path d="M5 12l6 6" />
-                                            <path d="M5 12l6 -6" />
+                                            <path d="M5 12l14 0"/>
+                                            <path d="M5 12l6 6"/>
+                                            <path d="M5 12l6 -6"/>
                                         </svg>
                                         {{ __('Back') }}
                                     </a>
 
                                     <a class="btn btn-warning" href="{{ route('customers.edit', $customer->uuid) }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="icon icon-tabler icon-tabler-pencil" width="24" height="24"
+                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                             stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                                            <path d="M13.5 6.5l4 4" />
+                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>
+                                            <path d="M13.5 6.5l4 4"/>
                                         </svg>
                                         {{ __('Edit') }}
                                     </a>

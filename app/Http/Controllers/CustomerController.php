@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
+use Illuminate\Support\Facades\Storage;
 use Str;
 
 class CustomerController extends Controller
@@ -26,16 +27,30 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         /**
-         * Handle upload an image
+         * Xử lý việc upload ảnh với Google Cloud Storage.
          */
-        $image = '';
+        $imageUrl = ''; // Biến lưu URL của ảnh
+
         if ($request->hasFile('photo')) {
-            $image = $request->file('photo')->store('customers', 'public');
+            $file = $request->file('photo');
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên file duy nhất
+            $path = 'customers/'; // Thư mục lưu ảnh trên GCS
+
+            // Lưu ảnh lên Google Cloud Storage
+            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
+
+            // Lấy URL của ảnh đã lưu
+            $imageUrl = Storage::disk('gcs')->url($filePath);
+
+            // Sử dụng rtrim() để đảm bảo không có dấu '/' thừa ở cuối URL
+            $imageUrl = rtrim($imageUrl, '/');
         }
+
+        // Tạo mới khách hàng và lưu URL ảnh vào cơ sở dữ liệu
         Customer::create([
             'user_id' => auth()->id(),
             'uuid' => Str::uuid(),
-            'photo' => $image,
+            'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -46,8 +61,6 @@ class CustomerController extends Controller
             'bank_name' => $request->bank_name,
             'address' => $request->address,
         ]);
-
-
 
         return redirect()
             ->route('customers.index')
@@ -77,18 +90,37 @@ class CustomerController extends Controller
         $customer = Customer::where('uuid', $uuid)->firstOrFail();
 
         /**
-         * Handle upload image with Storage.
+         * Xử lý việc upload ảnh với Google Cloud Storage.
          */
-        $image = $customer->photo;
+        $imageUrl = $customer->photo; // Lấy URL ảnh hiện tại nếu không có ảnh mới
         if ($request->hasFile('photo')) {
+            // Xóa ảnh cũ trên GCS nếu tồn tại
+
             if ($customer->photo) {
-                unlink(public_path('storage/') . $customer->photo);
+                $oldImagePath = $customer->photo; // Lấy đường dẫn ảnh cũ trên GCS
+                if (Storage::disk('gcs')->exists($oldImagePath)) {
+                    Storage::disk('gcs')->delete($oldImagePath); // Xóa ảnh cũ
+                }
             }
-            $image = $request->file('photo')->store('customers', 'public');
+
+            // Lưu ảnh mới lên GCS
+            $file = $request->file('photo');
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên file duy nhất
+            $path = 'customers/'; // Thư mục lưu ảnh trên GCS
+
+            // Lưu file vào GCS
+            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
+
+            // Lấy URL của ảnh mới
+            $imageUrl = Storage::disk('gcs')->url($filePath);
+
+            // Sử dụng rtrim() để loại bỏ dấu '/' cuối cùng nếu có
+            $imageUrl = rtrim($imageUrl, '/');
         }
 
+        // Cập nhật thông tin khách hàng
         $customer->update([
-            'photo' => $image,
+            'photo' => $imageUrl, // Cập nhật URL ảnh
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,

@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'created_at' => now(),
                 'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg'
+                'photo' => 'https://storage.googleapis.com/garasales/default.jpg'
             ],
             [
                 'name' => 'quest',
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'created_at' => now(),
                 'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg'
+                'photo' => 'https://storage.googleapis.com/garasales/default.jpg'
             ],
             [
                 'name' => 'user',
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'created_at' => now(),
                 'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg'
+                'photo' => 'https://storage.googleapis.com/garasales/default.jpg'
             ]
         ]);
 

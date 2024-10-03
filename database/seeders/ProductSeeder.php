@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Áo thun nam',
                 'slug' => 'ao-thun-nam',
-                'code' => 001,
+                'code' => 'PC0000001',
                 'quantity' => 1,
                 'buying_price' => 100000,
                 'selling_price' => 150000,
@@ -28,14 +28,15 @@ class ProductSeeder extends Seeder
                 'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
-                'product_image' => 'assets/img/products/ao-thun-nam.png',
-                'supplier_id' => 1
+                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
+                'supplier_id' => 1,
+                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
 
             ],
             [
                 'name' => 'Sách giáo khoa toán',
                 'slug' => 'sach-giao-khoa-toan',
-                'code' => 002,
+                'code' => 'PC0000002',
                 'quantity' => 3,
                 'buying_price' => 50000,
                 'selling_price' => 80000,
@@ -47,14 +48,15 @@ class ProductSeeder extends Seeder
                 'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
-                'product_image' => 'assets/img/products/sach-giao-khoa-toan.png',
-                'supplier_id' => 2
+                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
+                'supplier_id' => 2,
+                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
 
             ],
             [
                 'name' => 'Ba lô học sinh',
                 'slug' => 'ba-lo-hoc-sinh',
-                'code' => 003,
+                'code' => 'PC0000003',
                 'quantity' => 4,
                 'buying_price' => 200000,
                 'selling_price' => 300000,
@@ -66,13 +68,14 @@ class ProductSeeder extends Seeder
                 'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
-                'product_image' => 'assets/img/products/ba-lo-hoc-sinh.png',
-                'supplier_id' => 3
+                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
+                'supplier_id' => 3,
+                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
             ],
             [
                 'name' => 'Tai nghe Bluetooth',
                 'slug' => 'tai-nghe-bluetooth',
-                'code' => 004,
+                'code' => 'PC0000004',
                 'quantity' => 3,
                 'buying_price' => 300000,
                 'selling_price' => 450000,
@@ -84,14 +87,14 @@ class ProductSeeder extends Seeder
                 'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
-                'product_image' => 'assets/img/products/tai-nghe-bluetooth.png',
-                'supplier_id' => 4
-
+                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
+                'supplier_id' => 4,
+                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
             ],
             [
                 'name' => 'Son môi Lì',
                 'slug' => 'son-moi-li',
-                'code' => 005,
+                'code' => 'PC0000005',
                 'quantity' => 2,
                 'buying_price' => 100000,
                 'selling_price' => 150000,
@@ -103,8 +106,9 @@ class ProductSeeder extends Seeder
                 'unit_id' => 3,
                 'user_id' => 1,
                 'uuid' => Str::uuid(),
-                'product_image' => 'assets/img/products/son-moi-li.png',
-                'supplier_id' => 1
+                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
+                'supplier_id' => 1,
+                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
 
             ]
         ]);

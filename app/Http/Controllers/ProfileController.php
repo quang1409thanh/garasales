@@ -41,20 +41,27 @@ class ProfileController extends Controller
          */
         if ($file = $request->file('photo')) {
             $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-            $path = 'public/profile/';
+            $path = 'profile/'; // Thư mục lưu ảnh trên GCS
+
 
             /**
              * Delete an image if exists.
              */
             if ($user->photo) {
-                Storage::delete($path . $user->photo);
+                // Xóa ảnh cũ trên GCS
+                $oldImagePath = $user->photo;
+                // Kiểm tra xem tệp có tồn tại trên GCS không trước khi xóa
+                if (Storage::disk('gcs')->exists($oldImagePath)) {
+                    Storage::disk('gcs')->delete($oldImagePath);
+                }
             }
 
             /**
-             * Store an image to Storage.
+             * Store an image to GCS.
              */
-            $file->storeAs($path, $fileName);
-            $validatedData['photo'] = $fileName;
+            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
+
+            $validatedData['photo'] = Storage::disk('gcs')->url($filePath); // Lấy URL của ảnh vừa lưu
         }
 
         User::where('id', $user->id)->update($validatedData);

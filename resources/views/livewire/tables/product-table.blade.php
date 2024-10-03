@@ -116,7 +116,7 @@
                 @forelse ($products as $product)
                     <tr>
                         <td class="align-middle text-center">
-                            {{ $loop->iteration }}
+                            {{ $product->code }}
                         </td>
                         <td class="align-middle text-center">
                             <img style="width: 90px; height: 90px; object-fit: cover;"
@@ -135,13 +135,13 @@
                             </a>
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->quantity }}
+                            {{ $product->quantity .' - '. $product->unit->name}}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->selling_price }}
                         </td>
                         <td>
-                            <a href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                            <a href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '' : '#' }}">
                                 {{ optional($product->supplier)->name ?? '--' }}
                             </a>
 

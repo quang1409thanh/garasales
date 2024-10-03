@@ -62,6 +62,7 @@ class SupplierFactory extends Factory
                 'NAB Bank',
                 'TPBank'
             ]),
+            'photo' => 'https://storage.googleapis.com/garasales/default.jpg'
         ];
     }
 }

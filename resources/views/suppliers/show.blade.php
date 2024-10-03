@@ -26,7 +26,7 @@
 
                         <img id="image-preview"
                              class="img-account-profile mb-2"
-                             src="{{ $supplier->photo ? asset('storage/' . $supplier->photo) : asset('assets/img/demo/user-placeholder.svg') }}"
+                             src="{{ $supplier->photo ? $supplier->photo : asset('assets/img/demo/user-placeholder.svg') }}"
                              alt=""
                         >
                     </div>
