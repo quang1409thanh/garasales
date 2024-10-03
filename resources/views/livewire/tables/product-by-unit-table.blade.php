@@ -65,8 +65,8 @@
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
-                        <a wire:click.prevent="sortBy('code')" href="#" role="button">
-                            {{ __('Product Code') }}
+                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
+                            {{ __('Price') }}
                             @include('inclues._sort-icon', ['field' => 'code'])
                         </a>
                     </th>
@@ -91,7 +91,7 @@
                             {{ $product->name }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->code }}
+                            {{ $product->selling_price }}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->quantity }}

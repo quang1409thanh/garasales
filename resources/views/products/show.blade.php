@@ -44,9 +44,15 @@
                                 </h3>
 
                                 <div class="image-container">
-                                    <img id="image-preview"
-                                         src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.webp') }}"
-                                         alt="" class="img-account-profile mb-2">
+                                    <picture>
+                                        <source srcset="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.webp') }}" type="image/webp">
+                                        <img id="image-preview"
+                                             src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.png') }}"
+                                             alt="{{ $product->name }}"
+                                             class="img-account-profile mb-2"
+                                             loading="lazy"
+                                             style="width: auto; height: 300px; object-fit: cover;">
+                                    </picture>
                                 </div>
                             </div>
                         </div>
