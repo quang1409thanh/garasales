@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboards\DashboardController;
 use App\Http\Controllers\InvoiceController;
@@ -36,34 +35,24 @@ Route::get('php/', function () {
     return phpinfo();
 });
 
-Route::middleware('guest')->group(function () {
-    // Route cho sản phẩm
-    Route::get('/client/products', [ClientController::class, 'productsIndex'])->name('product_client.index');
-    Route::get('/client/products/{uuid}', [ClientController::class, 'productsShow'])->name('product_client.show');
-
-    // Route cho nhà cung cấp
-    Route::get('/client/suppliers', [ClientController::class, 'suppliersIndex'])->name('supplier_client.index');
-    Route::get('/client/suppliers/{uuid}', [ClientController::class, 'suppliersShow'])->name('supplier_client.show');
-    Route::get('/client/suppliers/{uuid}/products', [ClientController::class, 'supplierProductsIndex'])->name('supplier_client.products.index');
-    Route::get('/client/category/{slug}/products', [ClientController::class, 'categoryProductsIndex'])->name('category_client.products.show');
-
-});
-
-// Route gốc
 Route::get('/', function () {
     // Kiểm tra nếu người dùng đã đăng nhập
     if (Auth::check()) {
         // Nếu đã đăng nhập, điều hướng đến trang dashboard
         return redirect('/dashboard');
     }
-    // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm (product_client)
-    return redirect()->route('product_client.index'); // Sử dụng tên route
+    // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm
+    return redirect('/products');
 });
 
-// Route kiểm tra
-Route::get('test/', function () {
+Route::get('test/', function (){
     return view('test');
 })->withoutMiddleware('auth');
+
+// Các route cho khách (chưa đăng nhập)
+Route::middleware('guest')->group(function () {
+    Route::resource('/products', ProductController::class);
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
