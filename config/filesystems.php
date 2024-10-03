@@ -57,15 +57,14 @@ return [
         ],
         'gcs' => [
             'driver' => 'gcs',
-            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', base_path('laravel-gcs.json')),
             'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
             'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'visibility' => 'public', // Để cho phép truy cập công khai
             'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
             'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
             'apiEndpoint' => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null),
-            'visibility' => 'private',
             'visibility_handler' => null,
-            'metadata' => ['cacheControl'=> 'public,max-age=86400'],
+            'metadata' => ['cacheControl' => 'public,max-age=86400'],
             'throw' => true,
         ],
     ],
