@@ -146,7 +146,8 @@
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <span class="avatar avatar-sm shadow-none"
-                                style="background-image: url({{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }})">
+                                  style="background-image: url('{{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('avata.png') }}')"
+>
                             </span>
 
                             <div class="d-none d-xl-block ps-2">

@@ -146,7 +146,7 @@
                     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                        aria-label="Open user menu">
                             <span class="avatar avatar-sm shadow-none"
-                                  style="background-image: url({{ asset('assets/img/illustrations/profiles/admin.jpg') }})">
+                                  style="background-image: url({{ asset('avata.png') }})">
                             </span>
 
                         <div class="d-none d-xl-block ps-2">
@@ -155,7 +155,7 @@
                         </div>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">
+                        <a href="/login" class="dropdown-item">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24"
                                  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -166,7 +166,7 @@
                                 </path>
                                 <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                             </svg>
-                            Account
+                            Login
                         </a>
                     </div>
                 </div>
