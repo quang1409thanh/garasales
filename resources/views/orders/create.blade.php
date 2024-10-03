@@ -46,17 +46,16 @@
                                         <span class="text-danger">*</span>
                                     </label>
 
-                                    <select class="form-select form-control-solid @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
-                                        <option selected="" disabled="">
-                                            Select a customer:
-                                        </option>
-
-                                        @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}" @selected( old('customer_id') == $customer->id)>
-                                                {{ $customer->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    @if ($customer) <!-- Kiểm tra xem có khách hàng không -->
+                                    <input type="hidden" name="customer_id" value="{{ $customer->id }}"> <!-- Gán giá trị vào input ẩn -->
+                                    <div class="form-control" style="background-color: #f5f5f5; color: #6c757d; cursor: not-allowed;" disabled>
+                                        {{ $customer->name }}
+                                    </div>
+                                    @else
+                                        <div class="form-control" style="background-color: #f5f5f5; color: #6c757d; cursor: not-allowed;" disabled>
+                                            No customer found.
+                                        </div>
+                                    @endif
 
                                     @error('customer_id')
                                     <div class="invalid-feedback">

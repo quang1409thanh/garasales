@@ -66,7 +66,7 @@
                                     <td>{{ $supplier->address }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Shop name</td>
+                                    <td>Dorm room</td>
                                     <td>{{ $supplier->shopname }}</td>
                                 </tr>
                                 <tr>

@@ -19,9 +19,7 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         $specificNames = [
-            'Phạm Thị Phú Xuân',
-            'Cấn Ngọc Anh ',
-            'Bùi Minh Anh',
+            'admin_garasale',
         ];
 
         // Lấy tên theo thứ tự, và quay lại đầu danh sách nếu vượt quá số lượng

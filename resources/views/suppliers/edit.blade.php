@@ -48,7 +48,7 @@
                                     <div class="col-md-12">
                                         <x-input name="name" :value="old('name', $supplier->name)" :required="true"/>
                                         <x-input name="email" label="Email address" :value="old('email', $supplier->email)" :required="true"/>
-                                        <x-input name="shopname" label="Shop name" :value="old('shopname', $supplier->shopname)" :required="true"/>
+                                        <x-input name="shopname" label="Dorm room" :value="old('shopname', $supplier->shopname)" :required="true"/>
                                         <x-input name="phone" label="Phone number" :value="old('phone', $supplier->phone)" :required="true"/>
                                     </div>
 

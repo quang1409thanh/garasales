@@ -36,10 +36,22 @@ Route::get('php/', function () {
 });
 
 Route::get('/', function () {
+    // Kiểm tra nếu người dùng đã đăng nhập
     if (Auth::check()) {
+        // Nếu đã đăng nhập, điều hướng đến trang dashboard
         return redirect('/dashboard');
     }
-    return redirect('/login');
+    // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm
+    return redirect('/products');
+});
+
+Route::get('test/', function (){
+    return view('test');
+})->withoutMiddleware('auth');
+
+// Các route cho khách (chưa đăng nhập)
+Route::middleware('guest')->group(function () {
+    Route::resource('/products', ProductController::class);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -85,6 +97,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
     Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+    Route::get('/customers/{uuid}/orders', [OrderController::class, 'detail'])->name('customers.orders');
 
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
@@ -124,12 +137,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route Quotations
     // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');
-    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
-    Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
+//    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
+//    Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
 
 require __DIR__.'/auth.php';
 
-Route::get('test/', function (){
-    return view('test');
-});

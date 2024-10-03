@@ -15,7 +15,7 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" style="">
-                        <a href="{{ route('products.create', ['$supplier' => $supplier]) }}" class="dropdown-item">
+                        <a href="{{ route('products.create', ['supplier' => $supplier]) }}" class="dropdown-item">
                             <x-icon.plus/>
                             {{ __('Add Product') }}
                         </a>

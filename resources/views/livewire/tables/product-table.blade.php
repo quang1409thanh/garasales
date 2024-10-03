@@ -1,3 +1,4 @@
+@php use App\Models\Product; @endphp
 <div class="card">
     <div class="card-header">
         <div>
@@ -73,9 +74,9 @@
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
-                        <a wire:click.prevent="sortBy('code')" href="#" role="button">
-                            {{ __('Code') }}
-                            @include('inclues._sort-icon', ['field' => 'code'])
+                        <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
+                            {{ __('consignment date') }}
+                            @include('inclues._sort-icon', ['field' => 'created_at'])
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
@@ -90,6 +91,22 @@
                             @include('inclues._sort-icon', ['field' => 'quantity'])
                         </a>
                     </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
+                            {{ __('Price') }}
+{{--                            số lượng đã bán--}}
+                            @include('inclues._sort-icon', ['field' => 'quantity'])
+                        </a>
+                    </th>
+
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('supplier_id')" href="#" role="button">
+                            {{ __('Owner Information') }}
+                            {{-- Owner Information --}}
+                            @include('inclues._sort-icon', ['field' => 'owner'])
+                        </a>
+                    </th>
+
                     <th scope="col" class="align-middle text-center">
                         {{ __('Action') }}
                     </th>
@@ -110,14 +127,28 @@
                             {{ $product->name }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->code }}
+                            {{ $product->created_at }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->category ? $product->category->name : '--' }}
+                            <a href="{{ $product->category ? route('categories.show', $product->category) : '#' }}" class="badge bg-blue-lt">
+                                {{ $product->category ? $product->category->name : '--' }}
+                            </a>
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->quantity }}
                         </td>
+                        <td class="align-middle text-center">
+                            {{ $product->selling_price }}
+                        </td>
+                        <td>
+                            <a href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                                {{ optional($product->supplier)->name ?? '--' }}
+                            </a>
+
+                        </td>
+                        <!-- Các cột khác -->
+
+
                         <td class="align-middle text-center" style="width: 10%">
                             <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}" />
                             <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />

@@ -57,7 +57,7 @@
 
                                         <x-input name="email" label="Email address" :required="true" />
 
-                                        <x-input name="shopname" label="Shop name" :required="true" />
+                                        <x-input name="shopname" label="Dorm room" :required="true" />
 
                                         <x-input name="phone" label="Phone number" :required="true" />
                                     </div>

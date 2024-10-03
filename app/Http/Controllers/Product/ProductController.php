@@ -18,22 +18,26 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where("user_id", auth()->id())->count();
+        // Chỉ lấy tên và ID của nhà cung cấp
+        $products = Product::where("user_id", auth()->id())
+            ->with(['supplier:id,name']) // Eager load chỉ các trường cần thiết
+            ->get();
 
         return view('products.index', [
             'products' => $products,
         ]);
     }
-
     public function create(Request $request)
     {
         $categories = Category::where("user_id", auth()->id())->get(['id', 'name']);
         $units = Unit::where("user_id", auth()->id())->get(['id', 'name']);
         $suppliers = Supplier::all(); // Lấy danh sách tất cả nhà cung cấp từ DB
-
         if ($request->has('category')) {
             $categories = Category::where("user_id", auth()->id())->whereSlug($request->get('category'))->get();
         }
+        // Lấy giá trị supplier từ request
+        $supplier_id = $request->query('supplier'); // hoặc $request->supplier
+
 
         if ($request->has('unit')) {
             $units = Unit::where("user_id", auth()->id())->whereSlug($request->get('unit'))->get();
@@ -43,6 +47,7 @@ class ProductController extends Controller
             'categories' => $categories,
             'units' => $units,
             'suppliers' => $suppliers,
+            'supplier_id' => $supplier_id,
         ]);
     }
 
