@@ -12,10 +12,8 @@ RUN apt-get update && apt-get install -y \
     optipng \
     pngquant \
     gifsicle \
-    vim \
     libzip-dev \
     unzip \
-    git \
     libonig-dev \
     wget \
     curl \
@@ -24,16 +22,18 @@ RUN apt-get update && apt-get install -y \
     libicu-dev && \
     curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install -j$(nproc) gd && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 
 # Thêm Cloud SQL Auth Proxy
 ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
 RUN chmod +x /cloud_sql_proxy
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql gd zip intl  # Cài đặt PHP intl extension
-
-
+RUN docker-php-ext-install pdo pdo_mysql zip intl  # Cài đặt PHP intl extension
 # Create necessary directories
 RUN mkdir -p /run/nginx /app
 
