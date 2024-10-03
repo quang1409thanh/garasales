@@ -12,7 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        'upload-image', // Thêm route upload-image vào đây
+        'upload-file', // Thêm route upload-image vào đây
     ];
 
 }

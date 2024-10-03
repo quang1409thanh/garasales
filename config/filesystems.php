@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -57,12 +57,17 @@ return [
         ],
         'gcs' => [
             'driver' => 'gcs',
-            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
-            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
-            'key_file' => null, // Bỏ qua file key vì Cloud Run tự động dùng Workload Identity
-            'visibility' => 'public', // Hoặc 'private'
+            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', base_path('laravel-gcs.json')),
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
+            'apiEndpoint' => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null),
+            'visibility' => 'private',
+            'visibility_handler' => null,
+            'metadata' => ['cacheControl'=> 'public,max-age=86400'],
+            'throw' => true,
         ],
-
     ],
 
     /*

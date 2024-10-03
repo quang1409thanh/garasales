@@ -168,6 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        \Illuminate\Filesystem\FilesystemServiceProvider::class,
 
         /*
         * Third Party Service Providers...
