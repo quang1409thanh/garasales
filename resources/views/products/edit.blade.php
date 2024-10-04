@@ -1,8 +1,22 @@
 @extends('layouts.tabler')
 
 @section('content')
+
     <div class="page-header d-print-none">
         <div class="container-xl">
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <h3 class="mb-1">Oops...</h3>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+
+                    <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                </div>
+            @endif
+
             <div class="row g-2 align-items-center mb-3">
                 <div class="col">
                     <h2 class="page-title">
@@ -149,79 +163,66 @@
                                         </div>
 
                                         <div class="col-sm-6 col-md-6">
+                                            <x-input type="number"
+                                                     label="Selling Price"
+                                                     name="selling_price"
+                                                     id="selling_price"
+                                                     placeholder="0"
+                                                     value="{{ old('selling_price', $product->selling_price) }}"/>
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label" for="buying_price">
-                                                    Buying price
+                                                <label class="form-label" for="fee">
+                                                    {{ __('Phí (%)') }}
                                                     <span class="text-danger">*</span>
                                                 </label>
 
-                                                <input type="text" id="buying_price" name="buying_price"
-                                                    class="form-control @error('buying_price') is-invalid @enderror"
-                                                    placeholder="0"
-                                                    value="{{ old('buying_price', $product->buying_price) }}">
+                                                <select name="fee" id="fee" class="form-select @error('fee') is-invalid @enderror">
+                                                    <option value="0" {{ old('fee', $product->fee) == 0 ? 'selected' : '' }}>0%</option>
+                                                    <option value="5" {{ old('fee', $product->fee) == 5 ? 'selected' : '' }}>5%</option>
+                                                    <option value="10" {{ old('fee', $product->fee) == 10 ? 'selected' : '' }}>10%</option>
+                                                    <option value="15" {{ old('fee', $product->fee) == 15 ? 'selected' : '' }}>15%</option>
+                                                    <option value="20" {{ old('fee', $product->fee) == 20 ? 'selected' : '' }}>20%</option>
+                                                </select>
 
-                                                @error('buying_price')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
+                                                @error('fee')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
                                                 @enderror
                                             </div>
                                         </div>
 
                                         <div class="col-sm-6 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="selling_price" class="form-label">
-                                                    Selling price
-                                                    <span class="text-danger">*</span>
-                                                </label>
-
-                                                <input type="text" id="selling_price" name="selling_price"
-                                                    class="form-control @error('selling_price') is-invalid @enderror"
-                                                    placeholder="0"
-                                                    value="{{ old('selling_price', $product->selling_price) }}">
-
-                                                @error('selling_price')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
+                                            <x-input type="number"
+                                                     label="Giá Trả Lại Sản Phẩm"
+                                                     name="buying_price"
+                                                     id="buying_price"
+                                                     placeholder="0"
+                                                     value="{{ old('buying_price', $product->buying_price) }}"
+                                            readonly
+                                            />
                                         </div>
 
                                         <div class="col-sm-6 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="quantity" class="form-label">
-                                                    {{ __('Quantity') }}
-                                                </label>
-
-                                                <input class="form-control" name="quantity" type="text" readonly value="{{ old('quantity', $product->quantity) }}"  required="true" aria-required="true" style="color: var(--tblr-secondary);background-color: var(--tblr-bg-surface-secondary); opacity: 1;"/>
-
-
-                                                {{-- <input type="text" id="quantity" name="quantity"
-                                                    class="form-control"
-                                                    min="0" value="{{ old('quantity', $product->quantity) }}"
-                                                    placeholder="0" disabled > --}}
-                                            </div>
+                                            <x-input type="number"
+                                                     label="Quantity"
+                                                     name="quantity"
+                                                     id="quantity"
+                                                     placeholder="0"
+                                                     value="{{ old('quantity', $product->quantity) }}" />
                                         </div>
 
-                                        <div class="col-sm-6 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="quantity_alert" class="form-label">
-                                                    {{ __('Quantity Alert') }}
-                                                    <span class="text-danger">*</span>
-                                                </label>
-
-                                                <input type="number" id="quantity_alert" name="quantity_alert"
-                                                    class="form-control @error('quantity_alert') is-invalid @enderror"
-                                                    min="0" placeholder="0"
-                                                    value="{{ old('quantity_alert', $product->quantity_alert) }}">
-
-                                                @error('quantity_alert')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
+                                        <div class="col-sm-6 col-md-6" style="display: none;">
+                                            <x-input type="number"
+                                                     label="Quantity Alert"
+                                                     name="quantity_alert"
+                                                     id="quantity_alert"
+                                                     placeholder="0"
+                                                     value="{{ old('quantity_alert', $product->quantity_alert) }}" <!-- Lấy giá trị từ cơ sở dữ liệu -->
+                                            readonly
+                                            />
                                         </div>
 
 
@@ -264,4 +265,58 @@
 
 @pushonce('page-scripts')
     <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log('Script is running');
+
+            function previewImage() {
+                const fileInput = document.getElementById('image');
+                const file = fileInput.files[0];
+
+                if (!file) {
+                    console.log('No file selected');
+                    return;
+                }
+
+                const fileType = file.type;
+
+                console.log('File type selected:', fileType);
+
+                if (fileType === 'image/webp') {
+                    alert('WebP images are not allowed. Please upload a JPG or PNG file.');
+                    fileInput.value = '';
+                    document.getElementById('image-preview').src = '{{ asset('assets/img/products/default.webp') }}';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            document.getElementById('image').addEventListener('change', previewImage);
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const sellingPriceInput = document.getElementById('selling_price');
+            const feeSelect = document.getElementById('fee');
+            const buyingPriceInput = document.getElementById('buying_price');
+
+            function calculateBuyingPrice() {
+                const sellingPrice = parseFloat(sellingPriceInput.value) || 0;
+                const fee = parseFloat(feeSelect.value) || 0;
+                const remainingPercentage = (100 - fee) / 100;
+
+                const buyingPrice = sellingPrice * remainingPercentage;
+                buyingPriceInput.value = buyingPrice.toFixed(2); // Hiển thị 2 chữ số sau dấu thập phân
+            }
+
+            // Lắng nghe sự kiện thay đổi giá trị
+            sellingPriceInput.addEventListener('input', calculateBuyingPrice);
+            feeSelect.addEventListener('change', calculateBuyingPrice);
+        });
+
+    </script>
+
 @endpushonce

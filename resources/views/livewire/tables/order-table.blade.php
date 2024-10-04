@@ -143,4 +143,16 @@
             {{ $orders->links() }}
         </ul>
     </div>
+    <div class="mt-3 bg-light p-3 rounded shadow-sm">
+        <h4 class="text-primary">Total Selling Price:
+            <span class="fw-bold">{{ number_format($totalOrdersAmount, 2) }}</span>
+        </h4>
+{{--        <h4 class="text-success">Total Return Price:--}}
+{{--            <span class="fw-bold">{{ number_format($totalBuyingPrice, 2) }}</span>--}}
+{{--        </h4>--}}
+{{--        <h4 class="text-danger">Profit:--}}
+{{--            <span class="fw-bold">{{ number_format($totalSellingPrice - $totalBuyingPrice, 2) }}</span>--}}
+{{--        </h4>--}}
+    </div>
+
 </div>

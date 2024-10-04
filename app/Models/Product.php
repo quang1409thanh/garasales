@@ -33,8 +33,9 @@ class Product extends Model
         'updated_at',
         "user_id",
         "uuid",
-        'supplier_id' // Thêm dòng này
-
+        'supplier_id', // Thêm dòng này
+        'product_sold',
+        'fee',
     ];
 
     protected $casts = [

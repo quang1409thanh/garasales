@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Quotation\QuotationController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SupplierExportController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +84,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
     Route::resource('/suppliers', SupplierController::class);
+    Route::get('/export-supplier', [SupplierExportController::class, 'create'])->name('export_supplier');
+
 // Route để hiển thị sản phẩm của nhà cung cấp
     Route::get('suppliers/{uuid}/products', [ProductController::class, 'indexBySupplier'])->name('suppliers.products');
 
@@ -158,5 +161,5 @@ Route::post(
 );
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 

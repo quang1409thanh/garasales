@@ -119,7 +119,7 @@
                         {{ $product->code }}
                     </td>
                     <td class="align-middle text-center">
-                        <img style="width: 90px; height: 90px; object-fit: cover;"
+                        <img class="responsive-image"
                              src="{{ $product->thumbnail_url ? $product->thumbnail_url : 'https://storage.googleapis.com/garasales/thumbnails/default.png' }}"
                              alt="{{ $product->name }}" loading="lazy">
                     </td>
@@ -170,10 +170,22 @@
 
                     <td class="align-middle text-center" style="width: 10%">
                         <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
-                        <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}"/>
-                        <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
+
+                        <x-button.edit class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                       route="{{ route('products.edit', $product->uuid) }}"
+                                       onclick="return confirm('Are you sure to update product {{ $product->name }} ?')"/>
+
+                        <x-button.delete class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                         route="{{ route('products.destroy', $product->uuid) }}"
                                          onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')"/>
                     </td>
+
+                    <style>
+                        .btn-disabled {
+                            pointer-events: none; /* Vô hiệu hóa việc click */
+                            opacity: 0.5; /* Làm mờ nút */
+                        }
+                    </style>
                 </tr>
             @empty
                 <tr>
@@ -184,6 +196,7 @@
             @endforelse
             </tbody>
         </table>
+
     </div>
 
     <div class="card-footer d-flex align-items-center">

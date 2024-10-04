@@ -54,16 +54,8 @@
                                     <td>{{ $supplier->name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Email address</td>
-                                    <td>{{ $supplier->email }}</td>
-                                </tr>
-                                <tr>
                                     <td>Phone number</td>
                                     <td>{{ $supplier->phone }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Address</td>
-                                    <td>{{ $supplier->address }}</td>
                                 </tr>
                                 <tr>
                                     <td>Dorm room</td>

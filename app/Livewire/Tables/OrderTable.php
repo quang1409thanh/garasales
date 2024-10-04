@@ -17,6 +17,12 @@ class OrderTable extends Component
     public $sortField = 'invoice_no';
 
     public $sortAsc = false;
+    public $totalOrdersAmount ;
+    public function mount($totalOrdersAmount)
+    {
+        $this->totalOrdersAmount = $totalOrdersAmount;
+    }
+
 
     public function sortBy($field): void
     {

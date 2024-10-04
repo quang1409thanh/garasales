@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Supplier extends Model
 {
@@ -50,12 +51,13 @@ class Supplier extends Model
             ->orWhere('shopname', 'like', "%{$value}%")
             ->orWhere('type', 'like', "%{$value}%");
     }
+
     public function products()
     {
         return $this->hasMany(Product::class); // Quan hệ 1-n với sản phẩm
     }
 
-     /**
+    /**
      * Get the user that owns the Category
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -64,4 +66,32 @@ class Supplier extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getTotalSellingPriceAttribute()
+    {
+        // Lấy tất cả sản phẩm có product_sold > 0
+        $products = $this->products()->where('product_sold', '>', 0)->get();
+
+        // Tính tổng giá bán
+        return $products->sum(function ($product) {
+            return $product->selling_price * $product->product_sold;
+        });
+    }
+
+    public function getTotalReturnPriceAttribute()
+    {
+        // Lấy tất cả sản phẩm có product_sold > 0
+        $products = $this->products()->where('product_sold', '>', 0)->get();
+
+        // Tính tổng giá trả lại
+        return $products->sum(function ($product) {
+            return $product->buying_price * $product->product_sold; // Đảm bảo rằng trường buying_price tồn tại
+        });
+    }
+
+    public function getProfitAttribute()
+    {
+        return $this->total_selling_price - $this->total_return_price; // Lợi nhuận
+    }
+
 }

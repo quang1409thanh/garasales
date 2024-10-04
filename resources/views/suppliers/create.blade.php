@@ -18,6 +18,18 @@
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <h3 class="mb-1">Oops...</h3>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+
+                    <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                </div>
+            @endif
 
             <form action="{{ route('suppliers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -55,8 +67,6 @@
                                     <div class="col-md-12">
                                         <x-input name="name" :required="true" />
 
-                                        <x-input name="email" label="Email address" :required="true" />
-
                                         <x-input name="shopname" label="Dorm room" :required="true" />
 
                                         <x-input name="phone" label="Phone number" :required="true" />
@@ -72,7 +82,8 @@
                                             <option selected="" disabled="">Select a type:</option>
 
                                             @foreach(\App\Enums\SupplierType::cases() as $supplierType)
-                                                <option value="{{ $supplierType->value }}" @selected(old('type') == $supplierType->value)>
+                                                <option value="{{ $supplierType->value }}"
+                                                    @selected(old('type') == $supplierType->value || (old('type') === null && $loop->first))>
                                                     {{ $supplierType->label() }}
                                                 </option>
                                             @endforeach
@@ -125,23 +136,7 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="address" class="form-label required">
-                                                {{ __('Address') }}
-                                            </label>
-
-                                            <textarea id="address"
-                                                      name="address"
-                                                      rows="3"
-                                                      class="form-control @error('address') is-invalid @enderror"
-                                            >{{ old('address') }}</textarea>
-
-                                            @error('address')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
-                                        </div>
+                                        <input type="hidden" name="address" value="ktxnn">
                                     </div>
                                 </div>
                             </div>

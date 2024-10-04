@@ -34,7 +34,6 @@ class UpdateSupplierRequest extends FormRequest
                 'max:50'
             ],
             'email' => [
-                'required',
                 'email',
                 'max:50'
             ],
@@ -63,7 +62,6 @@ class UpdateSupplierRequest extends FormRequest
                 'max:25'
             ],
             'address' => [
-                'required',
                 'string',
                 'max:100'
             ]

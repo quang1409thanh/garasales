@@ -19,7 +19,11 @@
                     <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                 </div>
             @endif
-            @livewire('tables.supplier-table')
+                @livewire('tables.supplier-table', [
+                'suppliers' => $suppliers,
+                'totalSellingPrice' => $totalSellingPrice,
+                'totalBuyingPrice' => $totalBuyingPrice
+                ])
         </div>
     @endif
 </div>

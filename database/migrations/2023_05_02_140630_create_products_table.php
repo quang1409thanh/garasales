@@ -20,12 +20,15 @@ return new class extends Migration
             $table->string('code');
             //$table->string('product_barcode_symbology')->nullable();
             $table->integer('quantity');
-            $table->integer('buying_price')->comment('Buying Price');
+            $table->integer('buying_price')->comment('Return Price (Price at which the product will be bought back)');
             $table->integer('selling_price')->comment('Selling Price');
             $table->integer('quantity_alert');
             $table->integer('tax')->nullable();
             $table->tinyInteger('tax_type')->nullable();
             $table->text('notes')->nullable();
+            // Thêm trường product_sold và fee
+            $table->integer('product_sold')->default(0)->comment('Number of products sold');
+            $table->integer('fee')->nullable()->comment('Fee associated with the product');
 
             $table->string('product_image')->nullable(); // Hình ảnh gốc
             $table->string('thumbnail_url')->nullable(); // Thêm trường thumbnail_url

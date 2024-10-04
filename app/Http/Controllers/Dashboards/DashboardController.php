@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Quotation;
+use App\Models\Supplier;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,17 +29,23 @@ class DashboardController extends Controller
         $categories = Category::where("user_id", auth()->id())->count();
         $quotations = Quotation::where("user_id", auth()->id())->count();
 
-        // Tính toán dữ liệu động
-        $totalProductSold = Order::where('order_status', '1')->sum('total_products'); // Tổng số lượng sản phẩm đã bán
-        $totalRevenue = Order::where('order_status', '1')->sum('total'); // Tổng doanh thu
-        $orderPending = Order::where('order_status', '0')->sum('total'); // Tổng doanh thu // Khách hàng mới trong 7 ngày qua
-        $pendingOrderCount = Order::where('order_status', '0')->sum('total_products'); // Tổng doanh thu // Khách hàng mới trong 7 ngày qua
-        // Tính toán tỷ lệ phần trăm thay đổi
-        $conversionRateChange = 7; // Tăng 7%
-        $revenueChange = 8; // Tăng 8%
-        $newClientsChange = 0; // Không thay đổi
-        $activeUsersChange = 4; // Tăng 4%
+        $suppliers = Supplier::where("user_id", auth()->id())->get();
 
+        // Khởi tạo giá trị
+        $totalSellingPrice = 0;
+        $totalBuyingPrice = 0;
+
+        // Lặp qua từng nhà cung cấp để tính tổng giá bán và tổng giá trả lại
+        foreach ($suppliers as $supplier) {
+            $products_ = $supplier->products()->where('product_sold', '>', 0)->get();
+
+            foreach ($products_ as $product_i) {
+                $totalSellingPrice += $product_i->product_sold * $product_i->selling_price; // Tính tổng giá bán
+                $totalBuyingPrice += $product_i->product_sold * $product_i->buying_price; // Tính tổng giá trả lại
+            }
+        }
+
+        $totalProductSold = Order::where('order_status', '1')->sum('total_products'); // Tổng số lượng sản phẩm đã bán
 
         return view('dashboard', [
             'products' => $products,
@@ -50,14 +57,14 @@ class DashboardController extends Controller
             'todayOrders' => $todayOrders,
             'categories' => $categories,
             'quotations' => $quotations,
-            'orderPending' => $orderPending,
-            'pendingOrderCount' => $pendingOrderCount,
-            'conversionRateChange' => $conversionRateChange,
-            'revenueChange' => $revenueChange,
-            'newClientsChange' => $newClientsChange,
-            'activeUsersChange' => $activeUsersChange,
+            'totalSellingPrice' =>$totalSellingPrice,
+            'totalBuyingPrice' => $totalBuyingPrice,
+            'profit' => $totalSellingPrice -$totalBuyingPrice,
+            'totalSellingPriceChange' => 8,
+            'conversionRateChange' => 4,
+            'newClientsChange' => 0,
+            'activeUsersChange' => 5,
             'totalProductSold' => $totalProductSold,
-            'revenue' =>$totalRevenue,
         ]);
     }
 }

@@ -96,11 +96,24 @@
                         <td class="align-middle text-center">
                             {{ $product->quantity }}
                         </td>
-                        <td class="align-middle text-center" style="width: 15%">
+                        <td class="align-middle text-center" style="width: 10%">
                             <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
-                            <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}"/>
-                            <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"/>
+
+                            <x-button.edit class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                           route="{{ $product->product_sold <= 0 ? '#' : route('products.edit', $product->uuid) }}"
+                                           onclick="{{ $product->product_sold <= 0 ? 'return false;' : 'return confirm(\'Are you sure to update product ' . $product->name . ' ?\')' }}"/>
+
+                            <x-button.delete class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                             route="{{ $product->product_sold <= 0 ? '#' : route('products.destroy', $product->uuid) }}"
+                                             onclick="{{ $product->product_sold <= 0 ? 'return false;' : 'return confirm(\'Are you sure to delete product ' . $product->name . ' ?\')' }}"/>
                         </td>
+
+                        <style>
+                            .btn-disabled {
+                                pointer-events: none; /* Vô hiệu hóa việc click */
+                                opacity: 0.5; /* Làm mờ nút */
+                            }
+                        </style>
                     </tr>
                 @empty
                     <tr>

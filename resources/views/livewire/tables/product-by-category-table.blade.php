@@ -90,7 +90,7 @@
                     </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('quantity')" href="#" role="button">
-                            {{ __('Quantity') }}
+                            {{ __('Qty') }}
                             @include('inclues._sort-icon', ['field' => 'quantity'])
                         </a>
                     </th>
@@ -156,7 +156,7 @@
                             </a>
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->quantity .' - '. $product->unit->name}}
+                            {{ $product->quantity }}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->selling_price }}
@@ -173,10 +173,22 @@
 
                         <td class="align-middle text-center" style="width: 10%">
                             <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
-                            <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}"/>
-                            <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
-                                             onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')"/>
+
+                            <x-button.edit class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                           route="{{ $product->product_sold <= 0 ? '#' : route('products.edit', $product->uuid) }}"
+                                           onclick="{{ $product->product_sold <= 0 ? 'return false;' : 'return confirm(\'Are you sure to update product ' . $product->name . ' ?\')' }}"/>
+
+                            <x-button.delete class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                             route="{{ $product->product_sold <= 0 ? '#' : route('products.destroy', $product->uuid) }}"
+                                             onclick="{{ $product->product_sold <= 0 ? 'return false;' : 'return confirm(\'Are you sure to delete product ' . $product->name . ' ?\')' }}"/>
                         </td>
+
+                        <style>
+                            .btn-disabled {
+                                pointer-events: none; /* Vô hiệu hóa việc click */
+                                opacity: 0.5; /* Làm mờ nút */
+                            }
+                        </style>
                     </tr>
                 @empty
                     <tr>

@@ -9,9 +9,17 @@
 
             <div class="card-actions btn-actions">
                 <div class="dropdown">
-                    <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
                         <!-- Download SVG icon from http://tabler-icons.io/i/dots-vertical -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                            <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                            <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                        </svg>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" style="">
@@ -31,7 +39,8 @@
                 <div class="text-secondary">
                     <p class=" bg-blue-lt" style="padding-left: 8px">Show</p>
                     <div class=" bg-blue-lt" class="mx-2 d-inline-block" style=" border: solid 1px">
-                        <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
+                        <select wire:model.live="perPage" class="form-select form-select-sm"
+                                aria-label="result per page">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
@@ -82,8 +91,14 @@
                     </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('quantity')" href="#" role="button">
-                            {{ __('Quantity') }}
+                            {{ __('Qty') }}
                             @include('inclues._sort-icon', ['field' => 'quantity'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('product_sold')" href="#" role="button">
+                            {{ __(' sold') }}
+                            @include('inclues._sort-icon', ['field' => 'product_sold'])
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
@@ -95,10 +110,17 @@
                     </th>
 
                     <th scope="col" class="align-middle text-center">
-                        <a wire:click.prevent="sortBy('supplier_id')" href="#" role="button">
-                            {{ __('Owner Information') }}
+                        <a wire:click.prevent="sortBy('buying_price')" href="#" role="button">
+                            {{ __('Return price') }}
                             {{-- Owner Information --}}
-                            @include('inclues._sort-icon', ['field' => 'owner'])
+                            @include('inclues._sort-icon', ['field' => 'buying_price'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('fee')" href="#" role="button">
+                            {{ __('Fee') }}
+                            {{-- Owner Information --}}
+                            @include('inclues._sort-icon', ['field' => 'fee'])
                         </a>
                     </th>
 
@@ -148,27 +170,42 @@
                             </a>
                         </td>
                         <td class="align-middle text-center">
-                            {{ $product->quantity .' - '. $product->unit->name}}
+                            {{ $product->quantity}}
+                        </td>
+                        <td class="align-middle text-center">
+                            {{ $product->product_sold}}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->selling_price }}
                         </td>
-                        <td>
-                            <a class="badge bg-green-lt"
-                               href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '' : '#' }}">
-                                {{ optional($product->supplier)->name ?? '--' }}
-                            </a>
-
+                        <td class="align-middle text-center">
+                            {{ $product->buying_price }}
                         </td>
+                        <td class="align-middle text-center">
+
+                            <p class="badge bg-green-lt">{{ $product->fee }}</p>
+                        </td>
+
                         <!-- Các cột khác -->
 
 
                         <td class="align-middle text-center" style="width: 10%">
                             <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
-                            <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}"/>
-                            <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
+
+                            <x-button.edit class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                           route="{{ route('products.edit', $product->uuid) }}"
+                                           onclick="return confirm('Are you sure to update product {{ $product->name }} ?')"/>
+
+                            <x-button.delete class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
+                                             route="{{ route('products.destroy', $product->uuid) }}"
                                              onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')"/>
                         </td>
+                        <style>
+                            .btn-disabled {
+                                pointer-events: none; /* Vô hiệu hóa việc click */
+                                opacity: 0.5; /* Làm mờ nút */
+                            }
+                        </style>
                     </tr>
                 @empty
                     <tr>
@@ -183,12 +220,25 @@
 
         <div class="card-footer d-flex align-items-center">
             <p class="m-0 text-secondary">
-                Showing <span>{{ $products->firstItem() }}</span> to <span>{{ $products->lastItem() }}</span> of <span>{{ $products->total() }}</span> entries
+                Showing <span>{{ $products->firstItem() }}</span> to <span>{{ $products->lastItem() }}</span> of
+                <span>{{ $products->total() }}</span> entries
             </p>
 
             <ul class="pagination m-0 ms-auto">
                 {{ $products->links() }}
             </ul>
         </div>
+        <div class="mt-3 bg-light p-3 rounded shadow-sm">
+            <h4 class="text-primary">Total Selling Price:
+                <span class="fw-bold">{{ number_format($totalSellingPrice, 2) }}</span>
+            </h4>
+            <h4 class="text-success">Total Return Price:
+                <span class="fw-bold">{{ number_format($totalBuyingPrice, 2) }}</span>
+            </h4>
+            <h4 class="text-danger">Profit:
+                <span class="fw-bold">{{ number_format($totalSellingPrice - $totalBuyingPrice, 2) }}</span>
+            </h4>
+        </div>
+
     </div>
 </div>

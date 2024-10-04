@@ -173,6 +173,8 @@ class ProductController extends Controller
             "slug" => Str::slug($request->name, '-'),
             "uuid" => Str::uuid(),
             'supplier_id' => $request->supplier_id,
+            'fee' => $request->fee,
+            'product_sold' => 0,
         ]);
 
         return to_route('products.index')->with('success', 'Product has been created!');
@@ -288,25 +290,34 @@ class ProductController extends Controller
             $product->thumbnail_url = $thumbnailUrl; // Cập nhật đường dẫn thumbnail
         }
 
-        // Cập nhật thông tin sản phẩm còn lại
-        $product->name = $request->name;
-        $product->slug = Str::slug($request->name, '-');
-        $product->category_id = $request->category_id;
-        $product->unit_id = $request->unit_id;
-        $product->quantity = $request->quantity;
-        $product->buying_price = $request->buying_price;
-        $product->selling_price = $request->selling_price;
-        $product->quantity_alert = $request->quantity_alert;
-        $product->tax = $request->tax;
-        $product->tax_type = $request->tax_type;
-        $product->notes = $request->notes;
+        try {
+            // Cập nhật thông tin sản phẩm
+            $product->name = $request->name;
+            $product->slug = Str::slug($request->name, '-');
+            $product->category_id = $request->category_id;
+            $product->unit_id = $request->unit_id;
+            $product->quantity = $request->quantity;
+            $product->buying_price = $request->buying_price;
+            $product->selling_price = $request->selling_price;
+            $product->quantity_alert = 0;
+            $product->tax = $request->tax;
+            $product->tax_type = $request->tax_type;
+            $product->notes = $request->notes;
+            $product->fee = $request->fee;
 
-        // Lưu thông tin sản phẩm
-        $product->save();
+            // Lưu thông tin sản phẩm
+            $product->save();
 
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Product has been updated!');
+            return redirect()
+                ->route('products.index')
+                ->with('success', 'Product has been updated!');
+        } catch (\Exception $e) {
+            dd($e);
+            // Xử lý lỗi nếu không cập nhật được sản phẩm
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to update product: ' . $e->getMessage());
+        }
     }
 
     public function destroy($uuid)
@@ -331,13 +342,21 @@ class ProductController extends Controller
 
     public function indexBySupplier($uuid)
     {
-        // Tìm nhà cung cấp theo UUID
         $supplier = Supplier::where('uuid', $uuid)->firstOrFail();
-
-        // Lấy danh sách sản phẩm của nhà cung cấp
         $products = Product::where('supplier_id', $supplier->id)->get();
 
+        // Tính tổng giá bán và giá trả lại cho các sản phẩm có `product_sold > 1`
+        $totalSellingPrice = $products->where('product_sold', '>=', 1)
+            ->sum(function ($product) {
+                return $product->product_sold * $product->selling_price;
+            });
+
+        $totalBuyingPrice = $products->where('product_sold', '>=', 1)
+            ->sum(function ($product) {
+                return $product->product_sold * $product->buying_price;
+            });
+
         // Trả về view với danh sách sản phẩm và nhà cung cấp
-        return view('suppliers.products', compact('supplier', 'products'));
+        return view('suppliers.products', compact('supplier', 'products','totalSellingPrice', 'totalBuyingPrice'));
     }
 }

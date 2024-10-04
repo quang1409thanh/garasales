@@ -169,7 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Illuminate\Filesystem\FilesystemServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
         * Third Party Service Providers...
         */

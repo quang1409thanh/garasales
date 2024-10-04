@@ -2,22 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SuppliersExport;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Http\Requests\Supplier\StoreSupplierRequest;
 use App\Http\Requests\Supplier\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Str;
 
 class SupplierController extends Controller
 {
     public function index()
     {
-        $suppliers = Supplier::where("user_id", auth()->id())->count();
+        $suppliers = Supplier::where("user_id", auth()->id())->get();
 
-        return view('suppliers.index', [
-            'suppliers' => $suppliers
-        ]);
+        // Khởi tạo giá trị
+        $totalSellingPrice = 0;
+        $totalBuyingPrice = 0;
+
+        // Lặp qua từng nhà cung cấp để tính tổng giá bán và tổng giá trả lại
+        foreach ($suppliers as $supplier) {
+            $products = $supplier->products()->where('product_sold', '>', 0)->get();
+
+            foreach ($products as $product) {
+                $totalSellingPrice += $product->product_sold * $product->selling_price; // Tính tổng giá bán
+                $totalBuyingPrice += $product->product_sold * $product->buying_price; // Tính tổng giá trả lại
+            }
+        }
+
+        return view('suppliers.index', compact('suppliers', 'totalSellingPrice', 'totalBuyingPrice'));
     }
 
     public function showProducts()
@@ -59,25 +73,40 @@ class SupplierController extends Controller
             $imageUrl = Storage::disk('gcs')->url($filePath);
         }
 
-        // Tạo mới nhà cung cấp và lưu URL ảnh vào cơ sở dữ liệu
-        $supplier = Supplier::create([
-            "user_id" => auth()->id(),
-            "uuid" => Str::uuid(),
-            'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'shopname' => $request->shopname,
-            'type' => $request->type,
-            'account_holder' => $request->account_holder,
-            'account_number' => $request->account_number,
-            'bank_name' => $request->bank_name,
-            'address' => $request->address,
-        ]);
+        try {
+            // Tạo mới nhà cung cấp và lưu URL ảnh vào cơ sở dữ liệu
+            $supplier = Supplier::create([
+                "user_id" => auth()->id(),
+                "uuid" => Str::uuid(),
+                'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'shopname' => $request->shopname,
+                'type' => $request->type,
+                'account_holder' => $request->account_holder,
+                'account_number' => $request->account_number,
+                'bank_name' => $request->bank_name,
+                'address' => $request->address,
+            ]);
 
-        return redirect()
-            ->route('suppliers.show', ['supplier' => $supplier->uuid]) // Thay thế $supplier->uuid bằng cách lấy UUID từ nhà cung cấp mới
-            ->with('success', 'New supplier has been created!');
+            return redirect()
+                ->route('suppliers.show', ['supplier' => $supplier->uuid]) // Thay thế $supplier->uuid bằng UUID từ nhà cung cấp mới
+                ->with('success', 'New supplier has been created!');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Kiểm tra lỗi có liên quan đến trùng email hay các trường unique khác
+            if ($e->errorInfo[1] == 1062) { // Mã lỗi SQL 1062 là Duplicate entry
+                return back()->withErrors([
+                    'error' => 'A supplier with the same email, phone, or other unique field already exists.'
+                ])->withInput();
+            }
+
+            // Các lỗi khác
+            return back()->withErrors([
+                'error' => 'There was an error while creating the supplier. Please try again later.'
+            ])->withInput();
+        }
     }
 
 
@@ -107,7 +136,6 @@ class SupplierController extends Controller
          * Xử lý việc upload ảnh với Google Cloud Storage.
          */
         $imageUrl = $supplier->photo; // Lưu URL ảnh hiện tại của nhà cung cấp
-
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên file duy nhất
@@ -128,23 +156,28 @@ class SupplierController extends Controller
             $imageUrl = Storage::disk('gcs')->url($filePath);
         }
 
-        // Cập nhật thông tin nhà cung cấp trong cơ sở dữ liệu
-        $supplier->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
-            'shopname' => $request->shopname,
-            'type' => $request->type,
-            'account_holder' => $request->account_holder,
-            'account_number' => $request->account_number,
-            'bank_name' => $request->bank_name,
-            'address' => $request->address,
-        ]);
-
-        return redirect()
-            ->route('suppliers.index')
-            ->with('success', 'Supplier has been updated!');
+        try {
+            // Cập nhật thông tin nhà cung cấp trong cơ sở dữ liệu
+            $supplier->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
+                'shopname' => $request->shopname,
+                'type' => $request->type,
+                'account_holder' => $request->account_holder,
+                'account_number' => $request->account_number,
+                'bank_name' => $request->bank_name,
+                'address' => $request->address,
+            ]);
+            return redirect()
+                ->route('suppliers.index')
+                ->with('success', 'Supplier has been updated!');
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu không cập nhật được nhà cung cấp
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to update supplier: ' . $e->getMessage());
+        }
     }
 
     public function destroy($uuid)

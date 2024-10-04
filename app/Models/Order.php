@@ -62,4 +62,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public static function getTotalOrdersAmount()
+    {
+        return self::sum('total'); // Tổng số tiền trong tất cả các đơn hàng
+    }
+
 }

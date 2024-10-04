@@ -15,6 +15,15 @@ class ProductBySupplierTable extends Component
     public $sortField = 'name';
     public $sortAsc = true;
     public $supplier = null;
+    public $totalSellingPrice;
+    public $totalBuyingPrice;
+
+    public function mount($supplier, $totalSellingPrice, $totalBuyingPrice)
+    {
+        $this->supplier = $supplier;
+        $this->totalSellingPrice = $totalSellingPrice;
+        $this->totalBuyingPrice = $totalBuyingPrice;
+    }
 
     public function sortBy($field): void
     {
@@ -25,11 +34,6 @@ class ProductBySupplierTable extends Component
         }
 
         $this->sortField = $field;
-    }
-
-    public function mount($supplier)
-    {
-        $this->supplier = $supplier;
     }
 
     public function render()

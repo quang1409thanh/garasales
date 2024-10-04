@@ -35,26 +35,26 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('orders.complete') }}" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none">
 
-                            <div class="d-flex align-items-center">
-                                <div class="subheader">Total Products Sold</div>
-                                <div class="ms-auto lh-1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item " href="#">Last 7 days</a>
-                                            <a class="dropdown-item" href="#">Last 30 days</a>
-                                            <a class="dropdown-item active" href="#">Last 3 months</a>
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Total Products Sold</div>
+                                    <div class="ms-auto lh-1">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item " href="#">Last 7 days</a>
+                                                <a class="dropdown-item" href="#">Last 30 days</a>
+                                                <a class="dropdown-item active" href="#">Last 3 months</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="h1 mb-3">{{ $totalProductSold }}</div>
-                            <div class="d-flex mb-2">
-                                <div>Conversion rate</div>
-                                <div class="ms-auto">
+                                <div class="h1 mb-3">{{ $totalProductSold }}</div>
+                                <div class="d-flex mb-2">
+                                    <div>Conversion rate</div>
+                                    <div class="ms-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
                         {{ $conversionRateChange }}%
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
@@ -65,44 +65,44 @@
                             <path d="M14 7l7 0l0 7"/>
                         </svg>
                     </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="progress progress-sm">
-                                <div class="progress-bar bg-primary" style="width: {{ $totalProductSold }}%"
-                                     role="progressbar" aria-valuenow="{{ $totalProductSold }}" aria-valuemin="0"
-                                     aria-valuemax="100" aria-label="{{ $totalProductSold }}% Complete">
-                                    <span class="visually-hidden">{{ $totalProductSold }}% Complete</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-primary" style="width: {{ $totalProductSold }}%"
+                                         role="progressbar" aria-valuenow="{{ $totalProductSold }}" aria-valuemin="0"
+                                         aria-valuemax="100" aria-label="{{ $totalProductSold }}% Complete">
+                                        <span class="visually-hidden">{{ $totalProductSold }}% Complete</span>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('orders.complete') }}" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none">
 
-                            <div class="d-flex align-items-center">
-                                <div class="subheader">Revenue</div>
-                                <div class="ms-auto lh-1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item " href="#">Last 7 days</a>
-                                            <a class="dropdown-item" href="#">Last 30 days</a>
-                                            <a class="dropdown-item active" href="#">Last 3 months</a>
-                                            <!-- Không cần thay đổi ở đây nếu vẫn muốn giữ tùy chọn -->
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Total Selling Price</div>
+                                    <div class="ms-auto lh-1">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item " href="#">Last 7 days</a>
+                                                <a class="dropdown-item" href="#">Last 30 days</a>
+                                                <a class="dropdown-item active" href="#">Last 3 months</a>
+                                                <!-- Không cần thay đổi ở đây nếu vẫn muốn giữ tùy chọn -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-0 me-2">{{ number_format($revenue) }} ₫</div>
-                                <!-- Đổi ký hiệu tiền tệ từ $ thành ₫ -->
-                                <div class="me-auto">
+                                <div class="d-flex align-items-baseline">
+                                    <div class="h1 mb-0 me-2">{{ number_format($totalSellingPrice) }} ₫</div>
+                                    <!-- Đổi ký hiệu tiền tệ từ $ thành ₫ -->
+                                    <div class="me-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
-                        {{ $revenueChange }}%
+                        {{ $totalSellingPriceChange }}%
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
                              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                              stroke-linecap="round" stroke-linejoin="round">
@@ -111,8 +111,8 @@
                             <path d="M14 7l7 0l0 7"/>
                         </svg>
                     </span>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                         <div id="chart-revenue-bg" class="chart-sm"></div>
                     </div>
@@ -121,24 +121,25 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('orders.pending') }}" class="text-decoration-none">
-                            <div class="d-flex align-items-center">
-                                <div class="subheader">Pending order</div>
-                                <div class="ms-auto lh-1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item " href="#">Last 7 days</a>
-                                            <a class="dropdown-item" href="#">Last 30 days</a>
-                                            <a class="dropdown-item active" href="#">Last 3 months</a>
+                            <a href="#" class="text-decoration-none">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Total Return Price</div>
+                                    <div class="ms-auto lh-1">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item " href="#">Last 7 days</a>
+                                                <a class="dropdown-item" href="#">Last 30 days</a>
+                                                <a class="dropdown-item active" href="#">Last 3 months</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-3 me-2">{{ number_format($orderPending) }}</div>
-                                <div class="me-auto">
+                                <div class="d-flex align-items-baseline">
+
+                                    <div class="h1 mb-3 me-2">{{ number_format($totalBuyingPrice) }} ₫</div>
+                                    <div class="me-auto">
                     <span class="text-yellow d-inline-flex align-items-center lh-1">
                         {{ '0' }}%
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
@@ -148,9 +149,9 @@
                             <path d="M5 12l14 0"/>
                         </svg>
                     </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="chart-new-clients" class="chart-sm"></div>
+                                <div id="chart-new-clients" class="chart-sm"></div>
                         </div>
                     </div>
                 </div>
@@ -158,25 +159,25 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('orders.pending') }}" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none">
 
-                            <div class="d-flex align-items-center">
-                                <div class="subheader">Pending Order Count</div>
-                                <div class="ms-auto lh-1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false">Last 3 months</a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item " href="#">Last 7 days</a>
-                                            <a class="dropdown-item" href="#">Last 30 days</a>
-                                            <a class="dropdown-item active" href="#">Last 3 months</a>
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Profit</div>
+                                    <div class="ms-auto lh-1">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">Last 3 months</a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item " href="#">Last 7 days</a>
+                                                <a class="dropdown-item" href="#">Last 30 days</a>
+                                                <a class="dropdown-item active" href="#">Last 3 months</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-baseline">
-                                <div class="h1 mb-3 me-2">{{ number_format($pendingOrderCount) }}</div>
-                                <div class="me-auto">
+                                <div class="d-flex align-items-baseline">
+                                    <div class="h1 mb-3 me-2">{{ number_format($profit) }} ₫</div>
+                                    <div class="me-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
                         {{ 7 }}%
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
@@ -187,9 +188,9 @@
                             <path d="M14 7l7 0l0 7"/>
                         </svg>
                     </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="chart-active-users" class="chart-sm"></div>
+                                <div id="chart-active-users" class="chart-sm"></div>
                         </div>
                     </div>
                 </div>

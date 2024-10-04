@@ -30,7 +30,14 @@ class SupplierTable extends Component
 
         $this->sortField = $field;
     }
+    public $totalSellingPrice;
+    public $totalBuyingPrice;
 
+    public function mount( $totalSellingPrice, $totalBuyingPrice)
+    {
+        $this->totalSellingPrice = $totalSellingPrice;
+        $this->totalBuyingPrice = $totalBuyingPrice;
+    }
     public function render()
     {
         return view('livewire.tables.supplier-table', [

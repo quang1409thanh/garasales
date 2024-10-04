@@ -29,12 +29,12 @@ class StoreProductRequest extends FormRequest
             'category_id'       => 'required|integer',
             'unit_id'           => 'required|integer',
             'quantity'          => 'required|integer',
-            'buying_price'      => 'required|integer',
+            'buying_price'      => 'required|numeric|min:0.01',
             'selling_price'     => 'required|integer',
-            'quantity_alert'    => 'required|integer',
             'tax'               => 'nullable|numeric',
             'tax_type'          => 'nullable|integer',
-            'notes'             => 'nullable|max:1000'
+            'notes'             => 'nullable|max:1000',
+            'fee'               => 'nullable|numeric',
         ];
     }
 

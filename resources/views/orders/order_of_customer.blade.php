@@ -81,11 +81,21 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-footer">
-                        {{--- ---}}
+                    <div class="mt-3 bg-light p-3 rounded shadow-sm">
+                        <h4 class="text-primary">Total Selling Price:
+                            <span class="fw-bold">{{ number_format($totalAmount, 2) }}</span>
+                        </h4>
+                        {{--        <h4 class="text-success">Total Return Price:--}}
+                        {{--            <span class="fw-bold">{{ number_format($totalBuyingPrice, 2) }}</span>--}}
+                        {{--        </h4>--}}
+                        {{--        <h4 class="text-danger">Profit:--}}
+                        {{--            <span class="fw-bold">{{ number_format($totalSellingPrice - $totalBuyingPrice, 2) }}</span>--}}
+                        {{--        </h4>--}}
                     </div>
                 </div>
             </div>
+
         @endif
     </div>
+
 @endsection

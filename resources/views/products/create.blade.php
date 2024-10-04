@@ -169,17 +169,6 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-6 col-md-6">
-                                        <x-input type="number"
-                                                 label="Buying Price"
-                                                 name="buying_price"
-                                                 id="buying_price"
-                                                 placeholder="0"
-                                                 value="{{ old('buying_price') }}"
-                                        />
-                                    </div>
-
                                     <div class="col-sm-6 col-md-6">
                                         <x-input type="number"
                                                  label="Selling Price"
@@ -187,6 +176,40 @@
                                                  id="selling_price"
                                                  placeholder="0"
                                                  value="{{ old('selling_price') }}"
+                                        />
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="fee">
+                                                {{ __('Phí (%)') }}
+                                                <span class="text-danger">*</span>
+                                            </label>
+
+                                            <select name="fee" id="fee" class="form-select @error('fee') is-invalid @enderror">
+                                                <option value="0" selected>0%</option>
+                                                <option value="5">5%</option>
+                                                <option value="10">10%</option>
+                                                <option value="15">15%</option>
+                                                <option value="20">20%</option>
+                                            </select>
+
+                                            @error('fee')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <x-input type="number"
+                                                 label="Giá Trả Lại Sản Phẩm"
+                                                 name="buying_price"
+                                                 id="buying_price"
+                                                 placeholder="0"
+                                                 value="0"
+                                                 readonly
                                         />
                                     </div>
 
@@ -200,13 +223,14 @@
                                         />
                                     </div>
 
-                                    <div class="col-sm-6 col-md-6">
+                                    <div class="col-sm-6 col-md-6" style="display: none;">
                                         <x-input type="number"
                                                  label="Quantity Alert"
                                                  name="quantity_alert"
                                                  id="quantity_alert"
                                                  placeholder="0"
-                                                 value="{{ old('quantity_alert') }}"
+                                                 value="0"
+                                                 readonly
                                         />
                                     </div>
 
@@ -320,6 +344,25 @@
 
             document.getElementById('image').addEventListener('change', previewImage);
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            const sellingPriceInput = document.getElementById('selling_price');
+            const feeSelect = document.getElementById('fee');
+            const buyingPriceInput = document.getElementById('buying_price');
+
+            function calculateBuyingPrice() {
+                const sellingPrice = parseFloat(sellingPriceInput.value) || 0;
+                const fee = parseFloat(feeSelect.value) || 0;
+                const remainingPercentage = (100 - fee) / 100;
+
+                const buyingPrice = sellingPrice * remainingPercentage;
+                buyingPriceInput.value = buyingPrice.toFixed(2); // Hiển thị 2 chữ số sau dấu thập phân
+            }
+
+            // Lắng nghe sự kiện thay đổi giá trị
+            sellingPriceInput.addEventListener('input', calculateBuyingPrice);
+            feeSelect.addEventListener('change', calculateBuyingPrice);
+        });
+
     </script>
 
 @endpushonce

@@ -8,6 +8,9 @@
 
         <div class="card-actions">
             <x-action.create route="{{ route('suppliers.create') }}" />
+            <a href="{{ route('export_supplier') }}" class="btn btn-primary">
+                Xuất Excel
+            </a>
         </div>
     </div>
 
@@ -40,9 +43,7 @@
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
             <tr>
-                <th class="align-middle text-center w-1">
-                    {{ __('ID.') }}
-                </th>
+                <th class="align-middle text-center w-1">{{ __('ID.') }}</th>
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('name')" href="#" role="button">
                         {{ __('Name') }}
@@ -50,9 +51,9 @@
                     </a>
                 </th>
                 <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('email')" href="#" role="button">
-                        {{ __('Email address') }}
-                        @include('inclues._sort-icon', ['field' => 'email'])
+                    <a wire:click.prevent="sortBy('phone')" href="#" role="button">
+                        {{ __('Phone') }}
+                        @include('inclues._sort-icon', ['field' => 'phone'])
                     </a>
                 </th>
                 <th scope="col" class="align-middle text-center">
@@ -67,41 +68,31 @@
                         @include('inclues._sort-icon', ['field' => 'type'])
                     </a>
                 </th>
+                <th scope="col" class="align-middle text-center">{{ __(' Selling Price') }}</th> <!-- Cột tổng giá bán -->
+                <th scope="col" class="align-middle text-center">{{ __(' Return Price') }}</th> <!-- Cột tổng giá trả lại -->
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
                         {{ __('Created at') }}
                         @include('inclues._sort-icon', ['field' => 'created_at'])
                     </a>
                 </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Action') }}
-                </th>
+                <th scope="col" class="align-middle text-center">{{ __('Action') }}</th>
             </tr>
             </thead>
             <tbody>
             @forelse ($suppliers as $supplier)
                 <tr>
+                    <td class="align-middle text-center">{{ $loop->index }}</td>
+                    <td class="align-middle text-center">{{ $supplier->name }}</td>
+                    <td class="align-middle text-center">{{ $supplier->phone }}</td>
+                    <td class="align-middle text-center">{{ $supplier->shopname }}</td>
                     <td class="align-middle text-center">
-                        {{ $loop->index }}
+                        <span class="badge bg-primary text-white text-uppercase">{{ $supplier->type }}</span>
                     </td>
+                    <td class="align-middle text-center">{{ number_format($supplier->total_selling_price, 2) }}</td> <!-- Hiển thị tổng giá bán -->
+                    <td class="align-middle text-center">{{ number_format($supplier->total_return_price, 2) }}</td> <!-- Hiển thị tổng giá trả lại -->
                     <td class="align-middle text-center">
-                        {{ $supplier->name }}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{ $supplier->email }}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{ $supplier->shopname }}
-                    </td>
-                    <td class="align-middle text-center">
-                        <span class="badge bg-primary text-white text-uppercase">
-                            {{ $supplier->type }}
-                        </span>
-                    </td>
-                    <td class="align-middle text-center">
-                        <span class="">
-                            {{ $supplier->created_at->diffForHumans() }}
-                        </span>
+                        <span class="">{{ $supplier->created_at->diffForHumans() }}</span>
                     </td>
                     <td class="align-middle text-center">
                         <x-button.show class="btn-icon" route="{{ route('suppliers.show', $supplier->uuid) }}"/>
@@ -115,9 +106,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td class="align-middle text-center" colspan="8">
-                        No results found
-                    </td>
+                    <td class="align-middle text-center" colspan="8">No results found</td>
                 </tr>
             @endforelse
             </tbody>
@@ -133,4 +122,16 @@
             {{ $suppliers->links() }}
         </ul>
     </div>
+    <div class="mt-3 bg-light p-3 rounded shadow-sm">
+        <h4 class="text-primary">Total Selling Price:
+            <span class="fw-bold">{{ number_format($totalSellingPrice, 2) }}</span>
+        </h4>
+        <h4 class="text-success">Total Return Price:
+            <span class="fw-bold">{{ number_format($totalBuyingPrice, 2) }}</span>
+        </h4>
+        <h4 class="text-danger">Profit:
+            <span class="fw-bold">{{ number_format($totalSellingPrice - $totalBuyingPrice, 2) }}</span>
+        </h4>
+    </div>
+
 </div>

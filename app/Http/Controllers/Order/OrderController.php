@@ -22,12 +22,21 @@ use Str;
 
 class OrderController extends Controller
 {
+
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->count();
+        $orders_count = Order::where('user_id', auth()->id())->count();
+        // Lấy tất cả các đơn hàng có order_status là 1 và thuộc về người dùng đang đăng nhập
+        $orders = Order::where('order_status', 1)
+            ->where('user_id', auth()->id())
+            ->get();
+
+        // Tính tổng số tiền cho tất cả các đơn hàng có order_status là 1
+        $totalOrdersAmount = $orders->sum('total');
 
         return view('orders.index', [
-            'orders' => $orders
+            'orders' => $orders_count,
+            'totalOrdersAmount' => $totalOrdersAmount
         ]);
     }
 
@@ -36,11 +45,17 @@ class OrderController extends Controller
         // Lấy khách hàng dựa trên UUID
         $customer = Customer::where('uuid', $uuid)->firstOrFail();
 
-        // Lấy danh sách đơn hàng của khách hàng
-        $orders = Order::where('customer_id', $customer->id)->get();
+        // Lấy danh sách đơn hàng của khách hàng có trạng thái 1
+        $orders = Order::where('customer_id', $customer->id)
+            ->where('order_status', 1) // Chỉ lấy đơn hàng có order_status là 1
+            ->get();
+
+        // Tính tổng tất cả các đơn hàng
+        $totalAmount = $orders->sum('total'); // Giả sử trường 'total' lưu giá trị đơn hàng
 
         return view('orders.order_of_customer', [
-            'orders' => $orders
+            'orders' => $orders,
+            'totalAmount' => $totalAmount // Truyền tổng vào view
         ]);
     }
 
@@ -144,7 +159,9 @@ class OrderController extends Controller
             if ($newQty < $productEntity->quantity_alert) {
                 $stockAlertProducts[] = $productEntity;
             }
+            $product_sold = $productEntity->product_sold + $product->quantity;
             $productEntity->update(['quantity' => $newQty]);
+            $productEntity->update(['product_sold' => $product_sold]);
         }
 
         if (count($stockAlertProducts) > 0) {
