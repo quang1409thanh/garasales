@@ -20,7 +20,7 @@
                                 <img class="img-account-profile mb-2" src="{{ asset('assets/img/products/default.webp') }}" alt="" id="image-preview" />
 
                                 <div class="small font-italic text-muted mb-2">
-                                    JPG or PNG no larger than 2 MB
+                                    JPG or PNG no larger than 6 MB
                                 </div>
 
                                 <input
