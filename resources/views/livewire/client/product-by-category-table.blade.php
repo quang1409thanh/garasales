@@ -16,8 +16,8 @@
         <div class="card-body border-bottom py-3">
             <div class="d-flex">
                 <div class="text-secondary">
-                    Show
-                    <div class="mx-2 d-inline-block">
+                    <p class=" bg-blue-lt" style="padding-left: 8px">Show</p>
+                    <div class=" bg-blue-lt" class="mx-2 d-inline-block" style=" border: solid 1px">
                         <select wire:model.live="perPage" class="form-select form-select-sm"
                                 aria-label="result per page">
                             <option value="5">5</option>
@@ -26,17 +26,19 @@
                             <option value="25">25</option>
                         </select>
                     </div>
-                    entries
+                    <span class="d-none d-md-inline">entries</span>
+                    <!-- Ẩn từ "entries" trên màn hình nhỏ, hiện trên màn hình lớn -->
                 </div>
                 <div class="ms-auto text-secondary">
-                    Search:
-                    <div class="ms-2 d-inline-block">
+                    <p class=" bg-blue-lt" style="padding-left: 8px">Search: </p>
+                    <div class=" bg-blue-lt" class="ms-2 d-inline-block" style=" border: solid 1px">
                         <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                               aria-label="Search invoice">
+                               aria-label="Search product">
                     </div>
                 </div>
             </div>
         </div>
+
 
         <x-spinner.loading-spinner/>
 
@@ -110,16 +112,16 @@
 
                         <style>
                             .responsive-image {
-                                width: 90px;       /* Đặt chiều rộng */
-                                height: 90px;      /* Đặt chiều cao */
+                                width: 90px; /* Đặt chiều rộng */
+                                height: 90px; /* Đặt chiều cao */
                                 object-fit: cover; /* Giữ nguyên tỷ lệ và cắt bớt hình ảnh nếu cần */
                                 border-radius: 5px; /* Thêm góc tròn nếu bạn muốn */
                             }
 
                             @media (max-width: 768px) {
                                 .responsive-image {
-                                    width: 90px;   /* Chiều rộng cụ thể khi ở chế độ mobile */
-                                    height: 90px;  /* Chiều cao cụ thể khi ở chế độ mobile */
+                                    width: 90px; /* Chiều rộng cụ thể khi ở chế độ mobile */
+                                    height: 90px; /* Chiều cao cụ thể khi ở chế độ mobile */
                                     object-fit: cover; /* Cắt bớt hình ảnh nếu cần */
                                 }
                             }
@@ -143,7 +145,8 @@
                             {{ $product->selling_price }}
                         </td>
                         <td>
-                            <a class="badge bg-green-lt" href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                            <a class="badge bg-green-lt"
+                               href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
                                 {{ optional($product->supplier)->name ?? '--' }}
                             </a>
                         </td>

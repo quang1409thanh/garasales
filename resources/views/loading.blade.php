@@ -3,7 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Garasale by thanyk14') }}</title>
+    <meta name="msapplication-TileColor" content="#ff6600"/>
+    <meta name="theme-color" content="#ff6600"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="MobileOptimized" content="320"/>
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
+
+    <!-- Meta description for search engines -->
+    <meta name="description" content="Garasale - A platform to buy and sell items easily and securely. Developed by thanyk14, Garasale provides an intuitive and reliable marketplace experience."/>
+
+    <!-- Canonical URL for SEO -->
+    <meta name="canonical" content="https://garasale.com">
+
+    <!-- Twitter Cards Metadata -->
+    <meta name="twitter:image:src" content="https://garasales-1027992830683.asia-east2.run.app/iu.jpg">
+    <meta name="twitter:site" content="@garasale_official">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Garasale - Buy & Sell with Ease | Developed by thanyk14">
+    <meta name="twitter:description" content="Garasale is a secure marketplace platform where you can buy and sell items quickly and safely. Join us today!">
+
+    <!-- Open Graph Metadata for Facebook and other social media -->
+    <meta property="og:image" content="https://garasales-1027992830683.asia-east2.run.app/iu.jpg">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="640">
+    <meta property="og:site_name" content="Garasale">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Garasale - Buy & Sell with Ease | Developed by thanyk14">
+    <meta property="og:url" content="https://garasales-1027992830683.asia-east2.run.app/">
+    <meta property="og:description" content="Garasale, developed by thanyk14, offers a smooth and secure platform for users to buy and sell products. Enjoy a reliable marketplace experience today!">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -142,7 +178,7 @@
 </head>
 <body>
 <div>
-    <h1>Chúng tôi đang tải tất cả sản phẩm...</h1>
+    <h1>Chúng tôi đang tải tài nguyên...</h1>
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
