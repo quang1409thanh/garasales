@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <title>Loading...</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Garasale by thanyk14') }}</title>
@@ -40,6 +39,7 @@
     <meta property="og:title" content="Garasale - Buy & Sell with Ease | Developed by thanyk14">
     <meta property="og:url" content="https://garasales-1027992830683.asia-east2.run.app/">
     <meta property="og:description" content="Garasale, developed by thanyk14, offers a smooth and secure platform for users to buy and sell products. Enjoy a reliable marketplace experience today!">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -178,7 +178,7 @@
 </head>
 <body>
 <div>
-    <h1>Chúng tôi đang tải tài nguyên...</h1>
+    <h1>Chúng tôi đang tải tất cả sản phẩm...</h1>
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
