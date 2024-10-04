@@ -30,6 +30,7 @@ class OrderController extends Controller
             'orders' => $orders
         ]);
     }
+
     public function detail($uuid)
     {
         // Lấy khách hàng dựa trên UUID
@@ -134,6 +135,11 @@ class OrderController extends Controller
 
         foreach ($products as $product) {
             $productEntity = Product::where('id', $product->product_id)->first();
+            // Kiểm tra xem sản phẩm có tồn tại không (phòng trường hợp dữ liệu bị lỗi)
+            if (!$productEntity || $productEntity->quantity <= 0) {
+                return redirect()->back()->withErrors(['error' => 'Sản phẩm .' . $productEntity->name . ' đã hết hàng! Vui lòng xóa order và chọn sản phẩm khác']);
+            }
+
             $newQty = $productEntity->quantity - $product->quantity;
             if ($newQty < $productEntity->quantity_alert) {
                 $stockAlertProducts[] = $productEntity;
@@ -186,7 +192,7 @@ class OrderController extends Controller
         $order->update([
             'order_status' => 2
         ]);
-        $orders = Order::where('user_id',auth()->id())->count();
+        $orders = Order::where('user_id', auth()->id())->count();
 
         return redirect()
             ->route('orders.index', [

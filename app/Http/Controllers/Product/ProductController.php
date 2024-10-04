@@ -33,18 +33,34 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
+        // Lấy danh sách các categories, units, và suppliers từ database theo người dùng hiện tại
         $categories = Category::where("user_id", auth()->id())->get(['id', 'name']);
         $units = Unit::where("user_id", auth()->id())->get(['id', 'name']);
-        $suppliers = Supplier::all(); // Lấy danh sách tất cả nhà cung cấp từ DB
+
+        // Lấy danh sách tất cả nhà cung cấp từ DB
+        $suppliers = Supplier::all();
+
+        // Kiểm tra và lấy giá trị 'category' từ request, nếu có thì chỉ lọc category theo slug
         if ($request->has('category')) {
-            $categories = Category::where("user_id", auth()->id())->whereSlug($request->get('category'))->get();
+            $categories = Category::where("user_id", auth()->id())
+                ->whereSlug($request->get('category'))->get();
         }
-        // Lấy giá trị supplier từ request
-        $supplier_id = $request->query('supplier'); // hoặc $request->supplier
 
+        // Lấy giá trị 'supplier' từ query string (nếu có)
+        $supplier_id = $request->query('supplier');
 
+        // Kiểm tra xem supplier_id có hợp lệ không
+        if ($supplier_id) {
+            $supplier = Supplier::find($supplier_id);
+            if (!$supplier) {
+                return redirect()->back()->withErrors(['error' => 'Supplier không tồn tại']);
+            }
+        }
+
+        // Kiểm tra và lấy giá trị 'unit' từ request, nếu có thì chỉ lọc unit theo slug
         if ($request->has('unit')) {
-            $units = Unit::where("user_id", auth()->id())->whereSlug($request->get('unit'))->get();
+            $units = Unit::where("user_id", auth()->id())
+                ->whereSlug($request->get('unit'))->get();
         }
 
         return view('products.create', [
@@ -54,6 +70,7 @@ class ProductController extends Controller
             'supplier_id' => $supplier_id,
         ]);
     }
+
     public function generateProductCode()
     {
         // Lấy mã sản phẩm lớn nhất trong bảng

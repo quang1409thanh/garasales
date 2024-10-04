@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="page-body">
+    <script>
+        console.log("supplier_id" + @json($supplier_id));
+    </script>
+
     <div class="container-xl">
         <x-alert/>
 
