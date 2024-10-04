@@ -32,7 +32,7 @@
                                     </h3>
 
                                     <img class="img-account-profile mb-2"
-                                        src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.webp') }}"
+                                        src="{{ $product->product_image ? $product->product_image : "https://storage.googleapis.com/garasales/thumbnails/default.png" }}"
                                         alt="" id="image-preview">
 
                                     <div class="small font-italic text-muted mb-2">

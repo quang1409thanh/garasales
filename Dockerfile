@@ -39,6 +39,7 @@ RUN mkdir -p /run/nginx /app
 
 # Copy nginx configuration
 COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/php.ini /usr/local/etc/php/
 
 # Copy application files
 COPY . /app

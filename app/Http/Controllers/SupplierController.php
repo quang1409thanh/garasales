@@ -60,7 +60,7 @@ class SupplierController extends Controller
         }
 
         // Tạo mới nhà cung cấp và lưu URL ảnh vào cơ sở dữ liệu
-        Supplier::create([
+        $supplier = Supplier::create([
             "user_id" => auth()->id(),
             "uuid" => Str::uuid(),
             'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
@@ -76,7 +76,7 @@ class SupplierController extends Controller
         ]);
 
         return redirect()
-            ->route('suppliers.index')
+            ->route('suppliers.show', ['supplier' => $supplier->uuid]) // Thay thế $supplier->uuid bằng cách lấy UUID từ nhà cung cấp mới
             ->with('success', 'New supplier has been created!');
     }
 
