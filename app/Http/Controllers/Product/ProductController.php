@@ -90,8 +90,8 @@ class ProductController extends Controller
 
             try {
                 // Resize và lưu thumbnail tạm thời
-                $img = Image::make($image->getRealPath());
-                $img->resize(90, 90, function ($constraint) {
+                $thumbnail = Image::make($image->getRealPath());
+                $thumbnail->resize(90, 90, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($thumbnailTmpPath);
@@ -103,8 +103,9 @@ class ProductController extends Controller
             $compressedTmpPath = sys_get_temp_dir() . '/' . $fileName;
 
             try {
-                // Resize và nén ảnh trước khi upload lên Cloud Storage
-                $img->save($compressedTmpPath, 75); // Lưu ảnh nén với chất lượng 80%
+                // Nén ảnh trước khi upload lên Cloud Storage
+                $compressedImage = Image::make($image->getRealPath());
+                $compressedImage->save($compressedTmpPath, 75); // Lưu ảnh nén với chất lượng 75%
             } catch (\Exception $e) {
                 return redirect()->back()->withErrors(['photo' => 'Có lỗi xảy ra khi xử lý ảnh: ' . $e->getMessage()]);
             }

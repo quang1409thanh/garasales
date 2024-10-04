@@ -43,7 +43,6 @@
                         <option value="25">25</option>
                     </select>
                 </div>
-                <span class="d-none d-md-inline">entries</span> <!-- Ẩn từ "entries" trên màn hình nhỏ, hiện trên màn hình lớn -->
             </div>
             <div class="ms-auto text-secondary">
                 <p class=" bg-blue-lt" style="padding-left: 8px">Search: </p>
