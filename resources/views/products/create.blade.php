@@ -38,6 +38,7 @@
                                 </div>
                                 @enderror
                             </div>
+
                         </div>
                     </div>
 
@@ -282,4 +283,39 @@
 
 @pushonce('page-scripts')
     <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log('Script is running');
+
+            function previewImage() {
+                const fileInput = document.getElementById('image');
+                const file = fileInput.files[0];
+
+                if (!file) {
+                    console.log('No file selected');
+                    return;
+                }
+
+                const fileType = file.type;
+
+                console.log('File type selected:', fileType);
+
+                if (fileType === 'image/webp') {
+                    alert('WebP images are not allowed. Please upload a JPG or PNG file.');
+                    fileInput.value = '';
+                    document.getElementById('image-preview').src = '{{ asset('assets/img/products/default.webp') }}';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            document.getElementById('image').addEventListener('change', previewImage);
+        });
+    </script>
+
 @endpushonce

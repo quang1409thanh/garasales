@@ -27,9 +27,9 @@
 
                                 <div>
                                     <picture>
-                                        <source srcset="{{ $product->product_image ? $product->product_image : asset('assets/img/products/default.webp') }}" type="image/webp">
+                                        <source srcset="{{ $product->product_image ? $product->product_image : 'https://storage.googleapis.com/garasales/products/default.webp' }}" type="image/webp">
                                         <img id="image-preview"
-                                             src="{{ $product->product_image ? $product->product_image : asset('assets/img/products/default.png') }}"
+                                             src="{{ $product->product_image ? $product->product_image : 'https://storage.googleapis.com/garasales/products/default.webp' }}"
                                              alt="{{ $product->name }}"
                                              class="img-account-profile mb-2"
                                              loading="lazy">

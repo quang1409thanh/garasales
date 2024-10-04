@@ -111,7 +111,7 @@
                                         <td class="align-middle text-center">
                                             <div >
                                                 <img class="img-fluid"
-                                                     src="{{ $item->product->thumbnail_url ? $item->product->thumbnail_url : asset('assets/img/products/default.webp') }}"
+                                                     src="{{ $item->product->thumbnail_url ? $item->product->thumbnail_url : 'https://storage.googleapis.com/garasales/thumbnails/default.png' }}"
                                                  alt="">
                                             </div>
                                         </td>

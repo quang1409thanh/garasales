@@ -31,7 +31,7 @@
                                     </h3>
 
                                     <img class="img-account-profile mb-2"
-                                        src="{{ $customer->photo ? asset('storage/' . $customer->photo) : asset('assets/img/demo/user-placeholder.svg') }}"
+                                        src="{{ $customer->photo ?  $customer->photo : asset('assets/img/demo/user-placeholder.svg') }}"
                                         alt="" id="image-preview" />
 
                                     <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 2 MB</div>

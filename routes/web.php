@@ -56,8 +56,8 @@ Route::get('/', function () {
         // Nếu đã đăng nhập, điều hướng đến trang dashboard
         return redirect('/dashboard');
     }
-    // Nếu chưa đăng nhập, điều hướng đến trang xem sản phẩm (product_client)
-    return redirect()->route('product_client.index'); // Sử dụng tên route
+    // Nếu chưa đăng nhập, hiển thị trang loading
+    return view('loading');
 });
 
 // Route kiểm tra

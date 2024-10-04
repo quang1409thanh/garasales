@@ -10,5 +10,5 @@ if [ -z "$IP_ADDRESS" ]; then
 fi
 
 # Chạy ứng dụng Laravel trên địa chỉ IP và cổng 8000
-echo "Chạy ứng dụng Laravel tại http://$IP_ADDRESS:8000"
-php artisan serve --host="$IP_ADDRESS" --port=8000
+echo "Chạy ứng dụng Laravel tại http://$IP_ADDRESS:8001"
+php artisan serve --host="$IP_ADDRESS" --port=8001

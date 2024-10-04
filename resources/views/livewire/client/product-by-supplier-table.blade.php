@@ -103,7 +103,7 @@
                         </td>
                         <td class="align-middle text-center">
                             <img class="responsive-image"
-                                 src="{{ $product->thumbnail_url ? $product->thumbnail_url : asset('assets/img/products/default.png') }}"
+                                 src="{{ $product->thumbnail_url ? $product->thumbnail_url : 'https://storage.googleapis.com/garasales/thumbnails/default.png' }}"
                                  alt="{{ $product->name }}" loading="lazy">
                         </td>
 
