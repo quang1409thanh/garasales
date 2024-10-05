@@ -141,7 +141,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-end">
-                                <button class="btn btn-primary" type="submit">
+                                <button class="btn btn-primary" id="save-button" type="submit">
                                     {{ __('Save') }}
                                 </button>
 
@@ -149,6 +149,14 @@
                                     {{ __('Cancel') }}
                                 </a>
                             </div>
+                            <script>
+                                document.querySelector('form').addEventListener('submit', function(event) {
+                                    // Vô hiệu hóa nút khi form được submit
+                                    document.getElementById('save-button').disabled = true;
+                                });
+                            </script>
+
+
                         </div>
                     </div>
                 </div>
