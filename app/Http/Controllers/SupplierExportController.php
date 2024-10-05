@@ -19,15 +19,54 @@ class SupplierExportController extends Controller
         $supplier_array[] = array(
             'Name',
             'Phone',
+            'Dorm Room', // Trường mới
+            'Total Selling Price', // Trường mới
+            'Total Buying Price',  // Trường mới
+            'Profit', // Trường mới
         );
+
+        // Khởi tạo tổng giá trị
+        $totalSellingPrice = 0;
+        $totalBuyingPrice = 0;
 
         // Lặp qua từng nhà cung cấp và thêm vào mảng
         foreach ($suppliers as $supplier) {
+            $sellingPrice = 0;
+            $buyingPrice = 0;
+
+            $products = $supplier->products()->where('product_sold', '>', 0)->get();
+
+            // Tính tổng giá bán và giá trả lại cho mỗi nhà cung cấp
+            foreach ($products as $product) {
+                $sellingPrice += $product->product_sold * $product->selling_price;
+                $buyingPrice += $product->product_sold * $product->buying_price;
+            }
+
+            // Tổng cộng cho các nhà cung cấp
+            $totalSellingPrice += $sellingPrice;
+            $totalBuyingPrice += $buyingPrice;
+
+            // Tính lợi nhuận
+            $profit = $sellingPrice - $buyingPrice;
+
+            // Thêm thông tin vào mảng
             $supplier_array[] = array(
                 'Name' => $supplier->name,
                 'Phone' => $supplier->phone,
+                'Dorm Room' => $supplier->shopname ?? '--',
+                'Total Selling Price' => number_format($sellingPrice, 2),
+                'Total Buying Price' => number_format($buyingPrice, 2),
+                'Profit' => number_format($profit, 2),
             );
         }
+
+        // Thêm tổng giá trị cuối cùng
+        $supplier_array[] = array(
+            'Total', '', '', '',
+            number_format($totalSellingPrice, 2),
+            number_format($totalBuyingPrice, 2),
+            number_format($totalSellingPrice - $totalBuyingPrice, 2)
+        );
 
         // Gọi hàm để lưu và xuất file
         $this->store($supplier_array);

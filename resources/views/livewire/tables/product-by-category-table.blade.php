@@ -27,6 +27,18 @@
                             <x-icon.plus/>
                             {{ __('Add Product') }}
                         </a>
+                        <!-- Thêm nút export -->
+                        <a href="{{ route('categories.export', ['category' => $category->slug]) }}" class="dropdown-item">
+                            <x-icon.plus/>
+                            {{ __('Export Products') }}
+                        </a>
+{{--                        <div class="card-actions">--}}
+{{--                            <x-action.create route="{{ route('suppliers.create') }}" />--}}
+{{--                            <a href="{{ route('export_supplier') }}" class="btn btn-primary">--}}
+{{--                                Xuất Excel--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
+
                     </div>
                 </div>
 
@@ -39,7 +51,8 @@
                 <div class="text-secondary">
                     <p class=" bg-blue-lt" style="padding-left: 8px">Show</p>
                     <div class=" bg-blue-lt" class="mx-2 d-inline-block" style=" border: solid 1px">
-                        <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
+                        <select wire:model.live="perPage" class="form-select form-select-sm"
+                                aria-label="result per page">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>

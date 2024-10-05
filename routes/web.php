@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryExportController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboards\DashboardController;
@@ -150,7 +151,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchases/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
     Route::post('/purchases/update/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::delete('/purchases/delete/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.delete');
-// routes/api.php
+    // routes/api.php
+    Route::get('categories/{category}/export', [CategoryExportController::class, 'exportByCategory'])->name('categories.export');
 
     Route::get('/logAll', [LogController::class, 'getLogs']);
     Route::get('/api/953ce2c72476e8a57ab482f9c079a2ab/sessions', [SessionController::class, 'getAllSessions']);
