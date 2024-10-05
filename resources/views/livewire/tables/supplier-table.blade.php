@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-actions">
-            <x-action.create route="{{ route('suppliers.create') }}" />
+            <x-action.create route="{{ route('suppliers.create') }}"/>
             <a href="{{ route('export_supplier') }}" class="btn btn-primary">
                 Xuất Excel
             </a>
@@ -31,7 +31,8 @@
             <div class="ms-auto text-secondary">
                 Search:
                 <div class="ms-2 d-inline-block">
-                    <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search invoice">
+                    <input type="text" wire:model.live="search" class="form-control form-control-sm"
+                           aria-label="Search invoice">
                 </div>
             </div>
         </div>
@@ -62,38 +63,45 @@
                         @include('inclues._sort-icon', ['field' => 'shopname'])
                     </a>
                 </th>
+                <th scope="col" class="align-middle text-center">{{ __('Selling Price') }}</th>
+                <!-- Cột tổng giá bán -->
+                <th scope="col" class="align-middle text-center">{{ __('Return Price') }}</th>
+                <!-- Cột tổng giá trả lại -->
                 <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('type')" href="#" role="button">
-                        {{ __('Type') }}
-                        @include('inclues._sort-icon', ['field' => 'type'])
+                    <a wire:click.prevent="sortBy('payment_status')" href="#" role="button">
+                        {{ __('Payment Status') }}
+                        @include('inclues._sort-icon', ['field' => 'payment_status'])
                     </a>
                 </th>
-                <th scope="col" class="align-middle text-center">{{ __(' Selling Price') }}</th> <!-- Cột tổng giá bán -->
-                <th scope="col" class="align-middle text-center">{{ __(' Return Price') }}</th> <!-- Cột tổng giá trả lại -->
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
-                        {{ __('Created at') }}
-                        @include('inclues._sort-icon', ['field' => 'created_at'])
-                    </a>
-                </th>
+
+                <!-- Cột trạng thái thanh toán -->
+                <th scope="col" class="align-middle text-center">{{ __('Sold Products') }}</th>
+                <!-- Cột số sản phẩm đã bán -->
                 <th scope="col" class="align-middle text-center">{{ __('Action') }}</th>
             </tr>
             </thead>
             <tbody>
             @forelse ($suppliers as $supplier)
                 <tr>
-                    <td class="align-middle text-center">{{ $loop->index }}</td>
+                    <td class="align-middle text-center">{{ $loop->index + 1 }}</td>
                     <td class="align-middle text-center">{{ $supplier->name }}</td>
                     <td class="align-middle text-center">{{ $supplier->phone }}</td>
                     <td class="align-middle text-center">{{ $supplier->shopname }}</td>
+{{--                    <td class="align-middle text-center">--}}
+{{--                        <span class="badge bg-primary text-white text-uppercase">{{ $supplier->type }}</span>--}}
+{{--                    </td>--}}
+                    <td class="align-middle text-center">{{ number_format($supplier->total_selling_price, 2) }}</td>
+                    <!-- Hiển thị tổng giá bán -->
+                    <td class="align-middle text-center">{{ number_format($supplier->total_return_price, 2) }}</td>
+                    <!-- Hiển thị tổng giá trả lại -->
                     <td class="align-middle text-center">
-                        <span class="badge bg-primary text-white text-uppercase">{{ $supplier->type }}</span>
+                        <span class="badge
+                            {{ $supplier->payment_status === 'complete' ? 'bg-success' : 'bg-warning' }}">
+                            {{ ucfirst($supplier->payment_status) }}
+                        </span> <!-- Trạng thái thanh toán -->
                     </td>
-                    <td class="align-middle text-center">{{ number_format($supplier->total_selling_price, 2) }}</td> <!-- Hiển thị tổng giá bán -->
-                    <td class="align-middle text-center">{{ number_format($supplier->total_return_price, 2) }}</td> <!-- Hiển thị tổng giá trả lại -->
-                    <td class="align-middle text-center">
-                        <span class="">{{ $supplier->created_at->diffForHumans() }}</span>
-                    </td>
+                    <td class="align-middle text-center">{{ number_format($supplier->total_selling_price, 0) }}</td>
+                    <!-- Hiển thị tổng giá bán -->
                     <td class="align-middle text-center">
                         <x-button.show class="btn-icon" route="{{ route('suppliers.show', $supplier->uuid) }}"/>
                         <x-button.edit class="btn-icon" route="{{ route('suppliers.edit', $supplier->uuid) }}"/>
@@ -106,7 +114,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td class="align-middle text-center" colspan="8">No results found</td>
+                    <td class="align-middle text-center" colspan="9">No results found</td>
                 </tr>
             @endforelse
             </tbody>
@@ -115,7 +123,8 @@
 
     <div class="card-footer d-flex align-items-center">
         <p class="m-0 text-secondary">
-            Showing <span>{{ $suppliers->firstItem() }}</span> to <span>{{ $suppliers->lastItem() }}</span> of <span>{{ $suppliers->total() }}</span> entries
+            Showing <span>{{ $suppliers->firstItem() }}</span> to <span>{{ $suppliers->lastItem() }}</span> of
+            <span>{{ $suppliers->total() }}</span> entries
         </p>
 
         <ul class="pagination m-0 ms-auto">

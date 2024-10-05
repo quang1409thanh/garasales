@@ -83,6 +83,10 @@
                                         <a href="{{ route('suppliers.products', $supplier->uuid) }}" class="btn btn-primary">
                                             View Products
                                         </a>
+                                        <a href="{{ route('suppliers.payments.index', $supplier->uuid) }}" class="btn btn-success">
+                                            Thanh toán
+                                        </a>
+
                                     </td>
                                 </tr>
 

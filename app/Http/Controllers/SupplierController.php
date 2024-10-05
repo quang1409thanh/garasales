@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\SuppliersExport;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Http\Requests\Supplier\StoreSupplierRequest;
@@ -10,6 +9,8 @@ use App\Http\Requests\Supplier\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Str;
+use Illuminate\Http\Request;
+
 
 class SupplierController extends Controller
 {
@@ -195,5 +196,42 @@ class SupplierController extends Controller
         return redirect()
             ->route('suppliers.index')
             ->with('success', 'Supplier has been deleted!');
+    }
+    // Lưu thông tin thanh toán
+    public function store_bill(Request $request, $uuid)
+    {
+        $request->validate([
+            'bill_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'payment_status' => 'required|in:pending,complete',
+        ]);
+
+        $supplier = Supplier::where('uuid', $uuid)->firstOrFail();
+
+        // Xử lý upload hình ảnh
+        if ($request->hasFile('bill_image')) {
+            // Tạo tên file duy nhất
+            $imageName = time() . '.' . $request->bill_image->extension();
+
+            // Lưu file vào Google Cloud Storage
+            $path = $request->file('bill_image')->storeAs('bills', $imageName, 'gcs'); // Lưu file vào GCS
+
+            // Lưu đường dẫn hình ảnh vào trường bill_image
+            $supplier->bill_image = Storage::disk('gcs')->url($path); // Lấy URL công khai của tệp đã lưu
+        }
+
+        // Cập nhật trạng thái thanh toán
+        $supplier->payment_status = $request->payment_status;
+        $supplier->save();
+
+        return redirect()->route('suppliers.payments.index', $supplier->uuid)
+            ->with('success', 'Thông tin thanh toán đã được lưu.');
+    }
+
+    public function view_bill($uuid)
+    {
+
+        $supplier = Supplier::where('uuid', $uuid)->firstOrFail();
+
+        return view('suppliers.view_bill',compact('supplier'));
     }
 }

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('payment_type');
             $table->integer('pay');
             $table->integer('due');
+            $table->string('payment_image_url')->nullable(); // Thêm trường payment_image_url
             $table->timestamps();
         });
     }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
 
 class Supplier extends Model
 {
@@ -28,14 +27,17 @@ class Supplier extends Model
         'account_holder',
         'account_number',
         'bank_name',
-        "user_id",
-        "uuid"
+        'user_id',
+        'uuid',
+        'payment_status', // Thêm trường payment_status
+        'bill_image',     // Thêm trường bill_image
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'type' => SupplierType::class
+        'type' => SupplierType::class,
+        'payment_status' => 'string', // Thêm để chuyển đổi payment_status
     ];
 
     public function purchases(): HasMany
@@ -67,6 +69,13 @@ class Supplier extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Hàm tính số lượng sản phẩm đã bán
+
+    public function soldProductsCount()
+    {
+        return $this->products()->where('product_sold', '>', 0)->sum('product_sold');
+    }
+
     public function getTotalSellingPriceAttribute()
     {
         // Lấy tất cả sản phẩm có product_sold > 0
@@ -93,5 +102,4 @@ class Supplier extends Model
     {
         return $this->total_selling_price - $this->total_return_price; // Lợi nhuận
     }
-
 }

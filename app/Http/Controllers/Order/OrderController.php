@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Str;
 
 class OrderController extends Controller
@@ -84,7 +85,18 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request)
     {
+        // Xử lý upload file
+        if ($request->hasFile('payment_proof')) {
+            $file = $request->file('payment_proof');
+            $filename = time() . '_' . $file->getClientOriginalName(); // Tạo tên file duy nhất
+            $filePath = $file->storeAs('payment_proofs', $filename, 'gcs'); // Lưu file vào GCS trong thư mục payment_proofs
 
+            $paymentImageUrl = Storage::disk('gcs')->url($filePath); // Tạo URL để lưu vào database
+        } else {
+            $paymentImageUrl = null; // Nếu không có ảnh, gán là null
+        }
+
+        // Tạo đơn hàng
         $order = Order::create([
             'customer_id' => $request->customer_id,
             'payment_type' => $request->payment_type,
@@ -104,6 +116,7 @@ class OrderController extends Controller
             'due' => (Cart::total() - $request->pay),
             'user_id' => auth()->id(),
             'uuid' => Str::uuid(),
+            'payment_image_url' => $paymentImageUrl, // Lưu URL của ảnh vào đây
         ]);
 
         // Create Order Details
@@ -121,7 +134,7 @@ class OrderController extends Controller
             OrderDetails::insert($oDetails);
         }
 
-        // Delete Cart Sopping History
+        // Delete Cart Shopping History
         Cart::destroy();
 
         return redirect()

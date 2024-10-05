@@ -154,6 +154,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // routes/api.php
     Route::get('categories/{category}/export', [CategoryExportController::class, 'exportByCategory'])->name('categories.export');
 
+// Route để hiển thị thông tin thanh toán cho nhà cung cấp
+    Route::get('/suppliers/{uuid}/payments', [SupplierController::class, 'view_bill'])
+        ->name('suppliers.payments.index');
+
+// Route để xử lý lưu thông tin thanh toán
+    Route::post('/suppliers/{uuid}/payments', [SupplierController::class, 'store_bill'])
+        ->name('suppliers.payments.store');
+
     Route::get('/logAll', [LogController::class, 'getLogs']);
     Route::get('/api/953ce2c72476e8a57ab482f9c079a2ab/sessions', [SessionController::class, 'getAllSessions']);
     Route::get('/ilog', [LogController::class, 'showILog']);

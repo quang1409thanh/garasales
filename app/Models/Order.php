@@ -26,7 +26,8 @@ class Order extends Model
         'pay',
         'due',
         "user_id",
-        "uuid"
+        "uuid",
+        'payment_image_url', // Thêm payment_image_url vào đây
     ];
 
     protected $casts = [
