@@ -7,8 +7,12 @@
         </div>
 
         <div class="card-actions">
-            <x-action.create route="{{ route('orders.create') }}" />
+            <x-action.create route="{{ route('orders.create') }}"/>
+            <a href="{{ route('export.invoices') }}" class="btn btn-primary">
+                Xuất Excel
+            </a>
         </div>
+
     </div>
 
     <div class="card-body border-bottom py-3">

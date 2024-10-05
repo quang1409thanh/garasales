@@ -72,45 +72,6 @@ class ProductSeeder extends Seeder
                 'supplier_id' => 3,
                 'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
             ],
-            [
-                'name' => 'Tai nghe Bluetooth',
-                'slug' => 'tai-nghe-bluetooth',
-                'code' => 'PC0000004',
-                'quantity' => 3,
-                'buying_price' => 300000,
-                'selling_price' => 450000,
-                'quantity_alert' => 0,
-                'tax' => 0,
-                'tax_type' => 1,
-                'notes' => null,
-                'category_id' => 4, // Đồ điện tử
-                'unit_id' => 3,
-                'user_id' => 1,
-                'uuid' => Str::uuid(),
-                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
-                'supplier_id' => 4,
-                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
-            ],
-            [
-                'name' => 'Son môi Lì',
-                'slug' => 'son-moi-li',
-                'code' => 'PC0000005',
-                'quantity' => 2,
-                'buying_price' => 100000,
-                'selling_price' => 150000,
-                'quantity_alert' => 0,
-                'tax' => 0,
-                'tax_type' => 1,
-                'notes' => null,
-                'category_id' => 5, // Mỹ phẩm
-                'unit_id' => 3,
-                'user_id' => 1,
-                'uuid' => Str::uuid(),
-                'product_image' => 'https://storage.googleapis.com/garasales/default.jpg',
-                'supplier_id' => 1,
-                'thumbnail_url' => 'https://storage.googleapis.com/garasales/thumbnail.jpg'
-
-            ]
         ]);
 
         $products->each(function ($product){

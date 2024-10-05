@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner />
+    <x-spinner.loading-spinner/>
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
@@ -103,16 +103,16 @@
 
                     <style>
                         .responsive-image {
-                            width: 90px;       /* Đặt chiều rộng */
-                            height: 90px;      /* Đặt chiều cao */
+                            width: 90px; /* Đặt chiều rộng */
+                            height: 90px; /* Đặt chiều cao */
                             object-fit: cover; /* Giữ nguyên tỷ lệ và cắt bớt hình ảnh nếu cần */
                             border-radius: 5px; /* Thêm góc tròn nếu bạn muốn */
                         }
 
                         @media (max-width: 768px) {
                             .responsive-image {
-                                width: 90px;   /* Chiều rộng cụ thể khi ở chế độ mobile */
-                                height: 90px;  /* Chiều cao cụ thể khi ở chế độ mobile */
+                                width: 90px; /* Chiều rộng cụ thể khi ở chế độ mobile */
+                                height: 90px; /* Chiều cao cụ thể khi ở chế độ mobile */
                                 object-fit: cover; /* Cắt bớt hình ảnh nếu cần */
                             }
                         }
@@ -136,9 +136,11 @@
                         {{ $product->selling_price }}
                     </td>
                     <td>
-                        <a class="badge bg-green-lt" href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                        <a class="badge bg-green-lt"
+                           href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '' : '#' }}">
                             {{ optional($product->supplier)->name ?? '--' }}
                         </a>
+
                     </td>
                     <!-- Các cột khác -->
 

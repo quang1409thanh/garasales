@@ -71,10 +71,16 @@ class Supplier extends Model
 
     // Hàm tính số lượng sản phẩm đã bán
 
-    public function soldProductsCount()
+    public function getTotalProductSoldAttribute()
     {
-        return $this->products()->where('product_sold', '>', 0)->sum('product_sold');
-    }
+        // Lấy tất cả sản phẩm có product_sold > 0
+        $products = $this->products()->where('product_sold', '>', 0)->get();
+
+        // Tính tổng giá bán
+        return $products->sum(function ($product) {
+            return $product->product_sold;
+        });
+        }
 
     public function getTotalSellingPriceAttribute()
     {

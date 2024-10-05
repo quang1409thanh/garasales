@@ -50,6 +50,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/client/suppliers/{uuid}', [ClientController::class, 'suppliersShow'])->name('supplier_client.show');
     Route::get('/client/suppliers/{uuid}/products', [ClientController::class, 'supplierProductsIndex'])->name('supplier_client.products.index');
     Route::get('/client/category/{slug}/products', [ClientController::class, 'categoryProductsIndex'])->name('category_client.products.show');
+    Route::get('/client/category', [ClientController::class, 'categoryIndex'])->name('category_client.index');
+    Route::get('clients/{uuid}/payments', [ClientController::class, 'view_bill'])->name('clients.payments.index');
 
 });
 
@@ -153,6 +155,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/purchases/delete/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.delete');
     // routes/api.php
     Route::get('categories/{category}/export', [CategoryExportController::class, 'exportByCategory'])->name('categories.export');
+    Route::get('/export-invoices', [CategoryExportController::class, 'exportInvoices'])->name('export.invoices');
 
 // Route để hiển thị thông tin thanh toán cho nhà cung cấp
     Route::get('/suppliers/{uuid}/payments', [SupplierController::class, 'view_bill'])

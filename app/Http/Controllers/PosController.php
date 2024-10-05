@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -24,10 +26,9 @@ class PosController extends Controller
         ]);
     }
 
-    public function addCartItem (Request $request)
+    public function addCartItem(Request $request)
     {
         $request->all();
-
         // Định nghĩa các quy tắc xác thực
         $rules = [
             'id' => 'required|numeric',
@@ -37,6 +38,33 @@ class PosController extends Controller
 
 
         $validatedData = $request->validate($rules);
+        // Lấy số lượng sản phẩm từ kho
+        $product = Product::find($validatedData['id']);
+        if (!$product) {
+            return redirect()
+                ->back()
+                ->with('error', 'Product not found!');
+        }
+
+        // Kiểm tra số lượng đơn hàng pending cho sản phẩm
+        $pendingOrdersCount = Order::where('order_status', OrderStatus::PENDING->value)
+            ->whereHas('details', function ($query) use ($validatedData) {
+                $query->where('product_id', $validatedData['id']);
+            })
+            ->with('details') // Tải các chi tiết đơn hàng
+            ->get()
+            ->sum(function ($order) {
+                return $order->details->sum('quantity'); // Tổng số lượng sản phẩm trong các đơn hàng pending
+            });
+
+        // So sánh số lượng đơn hàng pending với số lượng trong kho
+        if ($pendingOrdersCount + 1 > $product->quantity) {
+            return redirect()
+                ->back()
+                ->with('error', 'Không đủ hàng! Sản phẩm "' . $validatedData['name'] . '" hiện đang được xử lý bởi các đơn hàng khác.');
+        }
+
+
         // Kiểm tra số lượng có lớn hơn 0 không
         if ($request['quantity'] <= 0) {
             return redirect()
@@ -64,12 +92,35 @@ class PosController extends Controller
             'qty' => 'required|numeric',
             'product_id' => 'numeric'
         ];
+        $product = Product::find($request['product_id']);
+        if (!$product) {
+            return redirect()
+                ->back()
+                ->with('error', 'Product not found!');
+        }
+
+        // Kiểm tra số lượng đơn hàng pending cho sản phẩm
+        $pendingOrdersCount = Order::where('order_status', OrderStatus::PENDING->value)
+            ->whereHas('details', function ($query) use ($request) {
+                $query->where('product_id', $request['product_id']);
+            })
+            ->with('details') // Tải các chi tiết đơn hàng
+            ->get()
+            ->sum(function ($order) {
+                return $order->details->sum('quantity'); // Tổng số lượng sản phẩm trong các đơn hàng pending
+            });
+        if ($pendingOrdersCount + $request['qty'] > $product->quantity) {
+            return redirect()
+                ->back()
+                ->with('error', 'Không đủ hàng! Sản phẩm này hiện đang được xử lý bởi các đơn hàng khác.');
+        }
+
 
         $validatedData = $request->validate($rules);
         if ($validatedData['qty'] > Product::where('id', intval($validatedData['product_id']))->value('quantity')) {
             return redirect()
-            ->back()
-            ->with('error', 'The requested quantity is not available in stock.');
+                ->back()
+                ->with('error', 'The requested quantity is not available in stock.');
         }
 
 
@@ -80,7 +131,7 @@ class PosController extends Controller
             ->with('success', 'Product has been updated from cart!');
     }
 
-    public function deleteCartItem(String $rowId)
+    public function deleteCartItem(string $rowId)
     {
         Cart::remove($rowId);
 

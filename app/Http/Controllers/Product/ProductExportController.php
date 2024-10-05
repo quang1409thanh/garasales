@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class ProductExportController extends Controller
 {
@@ -24,7 +25,7 @@ class ProductExportController extends Controller
             'Unit Id',
             'Product Code',
             'Stock',
-//            'Stock Alert',
+            // 'Stock Alert',
             'Buying Price',
             'Selling Price',
             'Product Image',
@@ -39,10 +40,10 @@ class ProductExportController extends Controller
                 'Category Id' => $product->category_id,
                 'Unit Id' => $product->unit_id,
                 'Product Code' => $product->code,
-                'Stock' => $product->quantity,
-//                'Stock Alert' => $product->quantity_alert,
-                'Buying Price' => number_format($product->buying_price, 2), // Định dạng số
-                'Selling Price' => number_format($product->selling_price, 2), // Định dạng số
+                'Stock' => (string)$product->quantity, // Chuyển đổi thành chuỗi
+                // 'Stock Alert' => (string)$product->quantity_alert,
+                'Buying Price' => (string)number_format($product->buying_price, 2), // Định dạng số
+                'Selling Price' => (string)number_format($product->selling_price, 2), // Định dạng số
                 'Product Image' => $product->product_image,
                 'Note' => $product->note
             );
@@ -66,6 +67,10 @@ class ProductExportController extends Controller
             $spreadSheet = new Spreadsheet();
             $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
             $spreadSheet->getActiveSheet()->fromArray($products);
+
+            // Đặt định dạng cho tất cả các ô trong bảng
+            $spreadSheet->getActiveSheet()->getStyle('A1:J' . count($products))->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+
             $Excel_writer = new Xls($spreadSheet);
 
             // Log thông tin số lượng sản phẩm

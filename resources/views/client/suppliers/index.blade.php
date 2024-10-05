@@ -1,4 +1,4 @@
-{{--@extends('layouts.tabler')--}}
+@extends('layouts.client_tabler')
 
 @section('content')
     <div class="page-body">
@@ -19,7 +19,9 @@
                         <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                     </div>
                 @endif
-                @livewire('tables.supplier-table')
+                @livewire('client.supplier-table', [
+                'suppliers' => $suppliers,
+                ])
             </div>
         @endif
     </div>

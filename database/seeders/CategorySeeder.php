@@ -31,18 +31,6 @@ class CategorySeeder extends Seeder
                 'name'  => 'Đồ dùng phụ kiện',
                 'slug'  => 'do-dung-phu-kien',
                 'user_id' => 1,
-            ],
-            [
-                'id'    => 4,
-                'name'  => 'Đồ điện tử',
-                'slug'  => 'do-dien-tu',
-                'user_id' => 1,
-            ],
-            [
-                'id'    => 5,
-                'name'  => 'Mỹ phẩm',
-                'slug'  => 'my-pham',
-                'user_id' => 1,
             ]
         ]);
         $categories->each(function ($category) {

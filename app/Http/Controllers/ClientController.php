@@ -21,6 +21,14 @@ class ClientController extends Controller
 
     }
 
+    public function view_bill($uuid)
+    {
+
+        $supplier = Supplier::where('uuid', $uuid)->firstOrFail();
+
+        return view('client.suppliers.client_bill', compact('supplier'));
+    }
+
     // Hiển thị chi tiết sản phẩm
     public function productsShow($uuid)
     {
@@ -44,6 +52,12 @@ class ClientController extends Controller
         return view('client.suppliers.index', compact('suppliers'));
     }
 
+    public function categoryIndex()
+    {
+        $categories = Category::all();
+        return view('client.categories.index',compact('categories'));
+    }
+
     // Hiển thị chi tiết nhà cung cấp
     public function suppliersShow($uuid)
     {
@@ -61,8 +75,9 @@ class ClientController extends Controller
         $products = Product::where('supplier_id', $supplier->id)->get();
 
         // Trả về view với danh sách sản phẩm và nhà cung cấp
-        return view('client.suppliers.show', compact('supplier', 'products'));
+        return view('client.suppliers.show_products', compact('supplier', 'products'));
     }
+
     public function categoryProductsIndex($slug)
     {
         // Lấy category dựa trên slug

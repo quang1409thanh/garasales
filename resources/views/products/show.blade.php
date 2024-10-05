@@ -91,7 +91,7 @@
                                         <td>Owner Information</td>
                                         <td>
                                             <a class="badge bg-green-lt"
-                                               href="{{ optional($product->supplier)->uuid ? route('supplier_client.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
+                                               href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
                                                 {{ optional($product->supplier)->name ?? '--' }}
                                             </a>
                                         </td>
