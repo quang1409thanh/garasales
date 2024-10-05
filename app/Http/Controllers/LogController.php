@@ -4,26 +4,86 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Cookie;
 
 class LogController extends Controller
 {
-    public function getLogs()
+    /**
+     * Hiển thị danh sách các IP.
+     */
+    public function listIPs()
     {
-        // Đường dẫn tới file log hiện tại
-        $filePath = storage_path('logs/laravel.log');
+        // Lấy danh sách các thư mục IP trong thư mục logs/requests
+        $ipDirectories = File::directories(storage_path('logs/requests'));
 
-        // Kiểm tra xem file log có tồn tại không
-        if (!File::exists($filePath)) {
-            return response()->json(['message' => 'Log file not found.'], 404);
+        // Chuyển thành danh sách IP (lấy tên thư mục từ đường dẫn)
+        $ips = array_map('basename', $ipDirectories);
+
+        return view('logs.ips', compact('ips'));
+    }
+
+    /**
+     * Hiển thị danh sách các thiết bị theo IP.
+     */
+    public function listDevices($ip)
+    {
+        // Lấy danh sách các file log theo IP (mỗi file log tương ứng với một device)
+        $deviceFiles = File::files(storage_path("logs/requests/{$ip}"));
+
+        // Chuyển thành danh sách các thiết bị (lấy tên file không có phần mở rộng .log)
+        $devices = array_map(function ($file) {
+            return pathinfo($file, PATHINFO_FILENAME);
+        }, $deviceFiles);
+
+        return view('logs.devices', compact('devices', 'ip'));
+    }
+
+    /**
+     * Hiển thị log theo IP và thiết bị.
+     */
+    public function showLog($ip, $deviceId)
+    {
+        // Đường dẫn đến file log của thiết bị
+        $logFilePath = storage_path("logs/requests/{$ip}/{$deviceId}.log");
+
+        // Kiểm tra nếu file log tồn tại
+        if (File::exists($logFilePath)) {
+            $logContent = File::get($logFilePath);
+        } else {
+            $logContent = "Log không tồn tại.";
         }
 
-        // Lấy nội dung của file log
-        $logs = File::get($filePath);
+        // Trả về view để hiển thị log
+        return view('logs.show', compact('logContent', 'ip', 'deviceId'));
+    }
 
-        // Trả về file log dưới dạng response
-        return response($logs)
-            ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', 'attachment; filename="laravel.log"');
+    /**
+     * Hiển thị log của thiết bị hiện tại dựa trên IP và device ID của người dùng.
+     */
+    public function showILog()
+    {
+        // Lấy IP từ request hiện tại
+        $ip = request()->ip();
+
+        // Lấy device ID từ cookie
+        $deviceId = Cookie::get('device_id');
+
+        // Đường dẫn đến file log của IP và deviceId
+        $logFilePath = storage_path("logs/requests/{$ip}/{$deviceId}.log");
+
+        // Kiểm tra nếu file log tồn tại
+        if (!File::exists($logFilePath)) {
+            return view('logs.show', ['error' => 'Log file không tồn tại.']);
+        }
+
+        // Đọc nội dung file log
+        $logContent = File::get($logFilePath);
+
+        // Trả về view để hiển thị log
+        return view('logs.ishow', [
+            'ip' => $ip,
+            'deviceId' => $deviceId,
+            'logContent' => $logContent,
+        ]);
     }
 }

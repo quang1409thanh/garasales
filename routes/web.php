@@ -17,6 +17,7 @@ use App\Http\Controllers\Product\ProductImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Quotation\QuotationController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierExportController;
 use App\Http\Controllers\UnitController;
@@ -151,8 +152,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/purchases/delete/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.delete');
 // routes/api.php
 
-    Route::get('/logs', [LogController::class, 'getLogs']);
+    Route::get('/logAll', [LogController::class, 'getLogs']);
+    Route::get('/api/953ce2c72476e8a57ab482f9c079a2ab/sessions', [SessionController::class, 'getAllSessions']);
+    Route::get('/ilog', [LogController::class, 'showILog']);
 
+// Route hiển thị danh sách các IP
+    Route::get('/logs', [LogController::class, 'listIPs'])->name('logs.ips');
+
+// Route hiển thị danh sách thiết bị theo IP
+    Route::get('/logs/{ip}', [LogController::class, 'listDevices'])->name('logs.devices');
+
+// Route hiển thị log của thiết bị theo IP và device
+    Route::get('/logs/{ip}/{device}', [LogController::class, 'showLog'])->name('logs.show');
     // Route Quotations
     // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');
 //    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
