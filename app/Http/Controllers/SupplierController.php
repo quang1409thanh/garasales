@@ -201,7 +201,7 @@ class SupplierController extends Controller
     public function store_bill(Request $request, $uuid)
     {
         $request->validate([
-            'bill_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bill_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             'payment_status' => 'required|in:pending,complete',
         ]);
 
@@ -209,14 +209,26 @@ class SupplierController extends Controller
 
         // Xử lý upload hình ảnh
         if ($request->hasFile('bill_image')) {
-            // Tạo tên file duy nhất
-            $imageName = time() . '.' . $request->bill_image->extension();
+            // Xóa hình ảnh cũ nếu có
+            if ($supplier->bill_image) {
+                $oldImagePath = $supplier->bill_image; // Lấy đường dẫn ảnh cũ
+
+                // Xóa ảnh cũ trên GCS nếu tồn tại
+                if (Storage::disk('gcs')->exists($oldImagePath)) {
+                    Storage::disk('gcs')->delete($oldImagePath);
+                }
+            }
+
+            // Tạo tên file duy nhất cho hình ảnh mới
+            $imageFile = $request->file('bill_image');
+            $fileName = hexdec(uniqid()) . '.' . $imageFile->getClientOriginalExtension(); // Tạo tên file duy nhất
+            $path = 'bills/'; // Thư mục lưu ảnh trên GCS
 
             // Lưu file vào Google Cloud Storage
-            $path = $request->file('bill_image')->storeAs('bills', $imageName, 'gcs'); // Lưu file vào GCS
+            $imagePath = $imageFile->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu file vào GCS
 
             // Lưu đường dẫn hình ảnh vào trường bill_image
-            $supplier->bill_image = Storage::disk('gcs')->url($path); // Lấy URL công khai của tệp đã lưu
+            $supplier->bill_image = Storage::disk('gcs')->url($imagePath); // Lấy URL công khai của tệp đã lưu
         }
 
         // Cập nhật trạng thái thanh toán
@@ -226,7 +238,6 @@ class SupplierController extends Controller
         return redirect()->route('suppliers.payments.index', $supplier->uuid)
             ->with('success', 'Thông tin thanh toán đã được lưu.');
     }
-
     public function view_bill($uuid)
     {
 
