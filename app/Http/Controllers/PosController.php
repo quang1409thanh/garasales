@@ -64,6 +64,7 @@ class PosController extends Controller
         }
 
         // So sánh số lượng đơn hàng pending với số lượng trong kho
+        // 1 là khi người dùng add thêm 1 sản phẩm từ giỏ hàng thì nó sẽ thêm 1 sản phẩm.
         if ($pendingOrdersCount + 1 > $product->quantity) {
             return redirect()
                 ->back()
@@ -108,6 +109,7 @@ class PosController extends Controller
             ->sum(function ($order) {
                 return $order->details->sum('quantity'); // Tổng số lượng sản phẩm trong các đơn hàng pending
             });
+        // 'qty' là số sản phẩm cập nhật.
         if ($pendingOrdersCount + $request['qty'] > $product->quantity) {
             return redirect()
                 ->back()

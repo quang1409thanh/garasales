@@ -204,9 +204,27 @@ class OrderController extends Controller
 
     public function destroy($uuid)
     {
+        // Tìm đơn hàng dựa trên uuid
         $order = Order::where('uuid', $uuid)->firstOrFail();
+
+        /**
+         * Xóa ảnh thanh toán nếu có.
+         */
+        if ($order->payment_image_url) {
+            // Xóa ảnh thanh toán từ Google Cloud Storage
+            if (Storage::disk('gcs')->exists($order->payment_image_url)) {
+                Storage::disk('gcs')->delete($order->payment_image_url);
+            }
+        }
+
+        // Xóa đơn hàng khỏi cơ sở dữ liệu
         $order->delete();
+
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Order has been deleted!');
     }
+
 
     public function downloadInvoice($uuid)
     {

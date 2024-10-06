@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -63,33 +64,32 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-
-//        if ($validatedData['email'] != $user->email) {
-//            $validatedData['email_verified_at'] = null;
-//        }
-
+        // Cập nhật thông tin người dùng mà không bao gồm trường photo
         $user->update($request->except('photo'));
 
         /**
-         * Handle upload image with Storage.
+         * Xử lý tải ảnh lên với Storage.
          */
-        if($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
 
-            // Delete Old Photo
-            if($user->photo){
-                unlink(public_path('storage/profile/') . $user->photo);
+            // Xóa ảnh cũ nếu có
+            if ($user->photo) {
+                // Xóa ảnh từ Google Cloud Storage
+                if (Storage::disk('gcs')->exists($user->photo)) {
+                    Storage::disk('gcs')->delete($user->photo);
+                }
             }
 
-            // Prepare New Photo
+            // Chuẩn bị ảnh mới
             $file = $request->file('photo');
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
 
-            // Store an image to Storage
-            $file->storeAs('profile/', $fileName, 'public');
+            // Lưu ảnh vào Google Cloud Storage
+            $file->storeAs('profile/', $fileName, 'gcs');
 
-            // Save DB
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
             $user->update([
-                'photo' => $fileName
+                'photo' => 'profile/' . $fileName, // Cập nhật đường dẫn đầy đủ
             ]);
         }
 

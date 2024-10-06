@@ -367,17 +367,28 @@ class ProductController extends Controller
 
     public function destroy($uuid)
     {
+        // Tìm sản phẩm dựa trên uuid
         $product = Product::where("uuid", $uuid)->firstOrFail();
+
         /**
-         * Delete photo if exists.
+         * Xóa hình ảnh và thumbnail nếu có.
          */
         if ($product->product_image) {
-            // check if image exists in our file system
-            if (file_exists(public_path('storage/') . $product->product_image)) {
-                unlink(public_path('storage/') . $product->product_image);
+            // Xóa ảnh gốc từ Google Cloud Storage
+            if (Storage::disk('gcs')->exists($product->product_image)) {
+                Storage::disk('gcs')->delete($product->product_image);
             }
         }
 
+        // Xóa thumbnail nếu có thumbnail_url
+        if ($product->thumbnail_url) {
+            // Xóa thumbnail từ Google Cloud Storage
+            if (Storage::disk('gcs')->exists($product->thumbnail_url)) {
+                Storage::disk('gcs')->delete($product->thumbnail_url);
+            }
+        }
+
+        // Xóa sản phẩm khỏi cơ sở dữ liệu
         $product->delete();
 
         return redirect()

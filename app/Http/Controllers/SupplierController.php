@@ -183,14 +183,20 @@ class SupplierController extends Controller
 
     public function destroy($uuid)
     {
+        // Tìm nhà cung cấp dựa trên uuid
         $supplier = Supplier::where("uuid", $uuid)->firstOrFail();
+
         /**
-         * Delete photo if exists.
+         * Xóa ảnh của nhà cung cấp nếu có.
          */
         if ($supplier->photo) {
-            unlink(public_path('storage/suppliers/') . $supplier->photo);
+            // Xóa ảnh nhà cung cấp từ Google Cloud Storage
+            if (Storage::disk('gcs')->exists($supplier->photo)) {
+                Storage::disk('gcs')->delete($supplier->photo);
+            }
         }
 
+        // Xóa nhà cung cấp khỏi cơ sở dữ liệu
         $supplier->delete();
 
         return redirect()
