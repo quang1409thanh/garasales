@@ -36,9 +36,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('php/', function () {
-    return phpinfo();
-});
 
 Route::middleware('guest')->group(function () {
     // Route cho sản phẩm
@@ -75,6 +72,9 @@ Route::get('test/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('php/', function () {
+        return phpinfo();
+    });
 
     // User Management
     // Route::resource('/users', UserController::class); //->except(['show']);
