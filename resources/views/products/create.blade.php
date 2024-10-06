@@ -36,46 +36,15 @@
                                         name="product_image"
                                         class="form-control @error('product_image') is-invalid @enderror"
                                         onchange="previewImage();"
-                                        capture="environment"
                                     >
 
                                     @error('product_image')
                                     <div class="invalid-feedback">
-                                        {{ $message }} <!-- Hiển thị thông báo lỗi nếu có -->
+                                        {{ $message }}
                                     </div>
                                     @enderror
-
-                                    <div id="camera-support-message" class="text-muted mt-2"></div>
-                                    <!-- Thông báo hỗ trợ camera -->
                                 </div>
 
-                                <script>
-                                    // Hàm kiểm tra hỗ trợ camera
-                                    function checkCameraSupport() {
-                                        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                            document.getElementById('camera-support-message').innerText = "Camera is supported on this device.";
-                                        } else {
-                                            document.getElementById('camera-support-message').innerText = "Camera is not supported on this device.";
-                                        }
-                                    }
-
-                                    // Hàm xem trước hình ảnh
-                                    function previewImage() {
-                                        const file = document.getElementById('image').files[0];
-                                        const reader = new FileReader();
-
-                                        reader.onload = function (event) {
-                                            document.getElementById('image-preview').src = event.target.result; // Cập nhật ảnh xem trước
-                                        }
-
-                                        if (file) {
-                                            reader.readAsDataURL(file); // Đọc file dưới dạng URL
-                                        }
-                                    }
-
-                                    // Gọi hàm kiểm tra camera khi trang được tải
-                                    window.onload = checkCameraSupport;
-                                </script>
                             </div>
                         </div>
 
@@ -346,7 +315,7 @@
                                 </div>
 
                                 <script>
-                                    document.querySelector('form').addEventListener('submit', function (event) {
+                                    document.querySelector('form').addEventListener('submit', function(event) {
                                         // Vô hiệu hóa nút khi form được submit
                                         document.getElementById('save-button').disabled = true;
                                     });
