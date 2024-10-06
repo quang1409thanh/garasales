@@ -79,6 +79,9 @@ class CategoryExportController extends Controller
         Log::info('Starting the export process for category: ' . $categoryName);
 
         try {
+            // Làm sạch tên danh mục
+            $categoryName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $categoryName);
+
             // Tạo đối tượng Spreadsheet
             $spreadSheet = new Spreadsheet();
             $spreadSheet->getActiveSheet()->fromArray($product_array, null, 'A1');
@@ -86,7 +89,6 @@ class CategoryExportController extends Controller
 
             // Khởi tạo writer cho tệp Excel
             $writer = new Xls($spreadSheet);
-
 
             // Kiểm tra và thiết lập tên tệp
             $filename = !empty($categoryName) ? $categoryName . '-products.xls' : 'export.xls';
@@ -111,5 +113,4 @@ class CategoryExportController extends Controller
             return response()->json(['error' => 'Error occurred while exporting products.'], 500);
         }
     }
-
 }

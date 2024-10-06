@@ -168,17 +168,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/suppliers/{uuid}/payments', [SupplierController::class, 'store_bill'])
         ->name('suppliers.payments.store');
 
-    Route::get('/logAll', [LogController::class, 'getLogs']);
+    Route::get('/api/953ce2c72476e8a57ab482f9c079a2ab/logAll', [LogController::class, 'getLogs']);
     Route::get('/api/953ce2c72476e8a57ab482f9c079a2ab/sessions', [SessionController::class, 'getAllSessions']);
     Route::get('/ilog', [LogController::class, 'showILog']);
 
-// Route hiển thị danh sách các IP
+    // Route hiển thị danh sách các IP
     Route::get('/logs', [LogController::class, 'listIPs'])->name('logs.ips');
 
-// Route hiển thị danh sách thiết bị theo IP
+    // Route hiển thị danh sách thiết bị theo IP
     Route::get('/logs/{ip}', [LogController::class, 'listDevices'])->name('logs.devices');
 
-// Route hiển thị log của thiết bị theo IP và device
+    // Route hiển thị log của thiết bị theo IP và device
     Route::get('/logs/{ip}/{device}', [LogController::class, 'showLog'])->name('logs.show');
     // Route Quotations
     // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');

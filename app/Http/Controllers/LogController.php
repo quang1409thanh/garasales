@@ -11,6 +11,26 @@ class LogController extends Controller
     /**
      * Hiển thị danh sách các IP.
      */
+    public function getLogs(Request $request)
+    {
+        // Đường dẫn đến file log, bạn có thể điều chỉnh theo nhu cầu
+        $logFilePath = storage_path('logs/laravel.log');
+
+        // Kiểm tra xem file log có tồn tại không
+        if (!file_exists($logFilePath)) {
+            return response()->json(['message' => 'File log không tồn tại.'], 404);
+        }
+
+        // Nếu bạn muốn trả về nội dung file log
+        $logs = file_get_contents($logFilePath);
+
+        // Hoặc nếu bạn muốn tải file log
+        return response()->download($logFilePath);
+
+        // Nếu muốn trả về nội dung dưới dạng JSON
+        // return response()->json(['logs' => $logs]);
+    }
+
     public function listIPs()
     {
         // Lấy danh sách các thư mục IP trong thư mục logs/requests
