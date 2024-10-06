@@ -50,7 +50,7 @@
                                         alt="" id="image-preview">
 
                                     <div class="small font-italic text-muted mb-2">
-                                        JPG or PNG no larger than 6 MB
+                                        JPG or PNG no larger than 10 MB
                                     </div>
 
                                     <input type="file" accept="image/*" id="image" name="product_image"

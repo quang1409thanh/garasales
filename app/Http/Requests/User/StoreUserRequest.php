@@ -22,7 +22,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => 'image|file|max:1024',
+            'photo' => 'image|file|max:10240',
             'name' => 'required|max:50',
             'email' => 'required|email|max:50|unique:users,email',
             //'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username',

@@ -34,7 +34,7 @@
                                         src="{{ $customer->photo ?  $customer->photo : asset('assets/img/demo/user-placeholder.svg') }}"
                                         alt="" id="image-preview" />
 
-                                    <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 2 MB</div>
+                                    <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 10 MB</div>
 
                                     <input class="form-control @error('photo') is-invalid @enderror" type="file"
                                         id="image" name="photo" accept="image/*" onchange="previewImage();">
