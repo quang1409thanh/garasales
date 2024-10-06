@@ -88,15 +88,19 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request)
     {
+        $paymentImageUrl = ""; // Biến để lưu URL của ảnh thanh toán
+
         // Xử lý upload file
         if ($request->hasFile('payment_proof')) {
             $file = $request->file('payment_proof');
-            $filename = time() . '_' . $file->getClientOriginalName(); // Tạo tên file duy nhất
-            $filePath = $file->storeAs('payment_proofs', $filename, 'gcs'); // Lưu file vào GCS trong thư mục payment_proofs
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên file duy nhất
+            $path = 'payment_proofs/'; // Thư mục lưu ảnh trên GCS
 
-            $paymentImageUrl = Storage::disk('gcs')->url($filePath); // Tạo URL để lưu vào database
-        } else {
-            $paymentImageUrl = null; // Nếu không có ảnh, gán là null
+            // Lưu file mới lên Google Cloud Storage
+            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
+
+            // Lấy URL của ảnh đã lưu
+            $paymentImageUrl = Storage::disk('gcs')->url($filePath);
         }
 
         // Tạo đơn hàng
@@ -122,7 +126,7 @@ class OrderController extends Controller
             'payment_image_url' => $paymentImageUrl, // Lưu URL của ảnh vào đây
         ]);
 
-        // Create Order Details
+        // Tạo chi tiết đơn hàng
         $contents = Cart::content();
         $oDetails = [];
 
@@ -137,7 +141,7 @@ class OrderController extends Controller
             OrderDetails::insert($oDetails);
         }
 
-        // Delete Cart Shopping History
+        // Xóa giỏ hàng sau khi tạo đơn hàng
         Cart::destroy();
 
         return redirect()
