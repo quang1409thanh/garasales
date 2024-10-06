@@ -63,7 +63,10 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products = Product::where('user_id', auth()->id())->with(['category', 'unit'])->get();
+        $products = Product::where('user_id', auth()->id())
+            ->where('quantity', '>', 0)
+            ->with(['category', 'unit'])
+            ->get();
 
         $customers = Customer::where('user_id', auth()->id())->get(['id', 'name']);
         // Nếu chỉ có một khách hàng, có thể lấy trực tiếp

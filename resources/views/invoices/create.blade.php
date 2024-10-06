@@ -150,10 +150,9 @@
                                     </label>
                                     <select class="form-control @error('payment_type') is-invalid @enderror"
                                             id="payment_type" name="payment_type" required>
-                                        <option selected="" disabled="">Select a payment:</option>
-                                        <option value="HandCash">HandCash</option>
-                                        <option value="Cheque">Cheque</option>
-                                        <option value="Due">Due</option>
+                                        <option selected="" disabled="">Chọn phương thức thanh toán:</option>
+                                        <option value="Tiền mặt">Tiền mặt</option>
+                                        <option value="Chuyển khoản">Chuyển khoản</option>
                                     </select>
                                     @error('payment_type')
                                     <div class="invalid-feedback">

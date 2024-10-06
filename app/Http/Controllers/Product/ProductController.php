@@ -330,9 +330,7 @@ class ProductController extends Controller
             return redirect()
                 ->route('products.index')
                 ->with('success', 'Product has been updated!');
-        } catch (\Exception $e) {
-            dd($e);
-            // Xử lý lỗi nếu không cập nhật được sản phẩm
+        } catch (\Exception $e) {// Xử lý lỗi nếu không cập nhật được sản phẩm
             return redirect()
                 ->back()
                 ->with('error', 'Failed to update product: ' . $e->getMessage());
