@@ -109,13 +109,17 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
+        /**
+         * Handle upload image
+         */
         $imageUrl = ""; // Đường dẫn hình ảnh gốc
         $thumbnailUrl = ""; // Đường dẫn thumbnail
 
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');
-            $fileName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension(); // Tạo tên file duy nhất
-            $path = 'products/'; // Thư mục lưu ảnh trên GCS
+
+            // Tạo tên file duy nhất
+            $fileName = time() . '_' . $image->getClientOriginalName();
 
             // Tạo thumbnail và lưu vào một file tạm
             $thumbnailTmpPath = sys_get_temp_dir() . '/' . 'thumbnail_' . $fileName;
@@ -142,10 +146,10 @@ class ProductController extends Controller
                 return redirect()->back()->withErrors(['photo' => 'Có lỗi xảy ra khi xử lý ảnh: ' . $e->getMessage()]);
             }
 
-            // Lưu ảnh gốc đã nén lên Google Cloud Storage
+            // Upload ảnh gốc đã được nén lên Google Cloud Storage
             try {
-                $filePath = Storage::disk('gcs')->putFileAs($path, new File($compressedTmpPath), $fileName); // Lưu ảnh lên GCS
-                $imageUrl = Storage::disk('gcs')->url($filePath); // Lấy URL của ảnh đã lưu
+                $imagePath = Storage::disk('gcs')->putFileAs('products', new File($compressedTmpPath), $fileName);
+                $imageUrl = Storage::disk('gcs')->url($imagePath);
             } catch (\Exception $e) {
                 return redirect()->back()->withErrors(['photo' => 'Có lỗi xảy ra khi upload ảnh gốc: ' . $e->getMessage()]);
             }
@@ -154,7 +158,7 @@ class ProductController extends Controller
             try {
                 $thumbnailPath = 'thumbnails/' . $fileName;
                 Storage::disk('gcs')->put($thumbnailPath, file_get_contents($thumbnailTmpPath));
-                $thumbnailUrl = Storage::disk('gcs')->url($thumbnailPath); // Lưu URL thumbnail
+                $thumbnailUrl = Storage::disk('gcs')->url($thumbnailPath);
             } catch (\Exception $e) {
                 return redirect()->back()->withErrors(['photo' => 'Có lỗi xảy ra khi upload thumbnail: ' . $e->getMessage()]);
             }
@@ -163,7 +167,11 @@ class ProductController extends Controller
             unlink($thumbnailTmpPath);
             unlink($compressedTmpPath); // Xóa file ảnh nén tạm sau khi upload
         }
+        // Lấy giá trị lớn nhất hiện tại trong cơ sở dữ liệu
+        $latestCode = Product::where('code', 'like', 'PC%')->max('code');
 
+        // Tạo mã mới
+        $newCode = 'PC' . str_pad((intval(substr($latestCode, 2)) + 1), 6, '0', STR_PAD_LEFT);
 
         // Tạo sản phẩm và lưu vào cơ sở dữ liệu với URL hình ảnh từ Cloud Storage
         Product::create([
@@ -180,9 +188,9 @@ class ProductController extends Controller
             'tax' => $request->tax,
             'tax_type' => 1,
             'notes' => $request->notes,
-            'user_id' => auth()->id(),
-            'slug' => Str::slug($request->name, '-'),
-            'uuid' => Str::uuid(),
+            "user_id" => auth()->id(),
+            "slug" => Str::slug($request->name, '-'),
+            "uuid" => Str::uuid(),
             'supplier_id' => $request->supplier_id,
             'fee' => $request->fee,
             'product_sold' => 0,
@@ -249,19 +257,24 @@ class ProductController extends Controller
 
             // Tạo tên file duy nhất cho hình ảnh mới
             $imageFile = $request->file('product_image');
-            $fileName = hexdec(uniqid()) . '.' . $imageFile->getClientOriginalExtension(); // Tạo tên file duy nhất
-            $path = 'products/'; // Thư mục lưu ảnh trên GCS
+            $fileName = time() . '_' . $imageFile->getClientOriginalName();
 
             try {
-                // Nén ảnh trước khi upload lên Cloud Storage
-                $compressedTmpPath = sys_get_temp_dir() . '/' . $fileName;
-                $compressedImage = Image::make($imageFile->getRealPath());
-                $compressedImage->save($compressedTmpPath, 80); // Chất lượng 80%
+                // Resize và nén ảnh trước khi upload lên Cloud Storage
+                $img = Image::make($imageFile->getRealPath());
 
-                // Upload ảnh gốc đã nén lên Google Cloud Storage
-                $imagePath = Storage::disk('gcs')->putFileAs($path, new File($compressedTmpPath), $fileName);
+                // Đường dẫn tạm thời để lưu ảnh đã nén
+                $compressedTmpPath = sys_get_temp_dir() . '/' . $fileName;
+
+                // Lưu ảnh nén tạm thời với chất lượng nén
+                $img->save($compressedTmpPath, 80); // Chất lượng 80%
+
+                // Upload ảnh gốc đã được nén lên Google Cloud Storage
+                $imagePath = Storage::disk('gcs')->putFileAs('products', new File($compressedTmpPath), $fileName);
                 $imageUrl = Storage::disk('gcs')->url($imagePath);
-                unlink($compressedTmpPath); // Xóa file tạm sau khi upload
+
+                // Xóa ảnh tạm sau khi upload
+                unlink($compressedTmpPath);
             } catch (\Exception $e) {
                 // Xử lý lỗi nếu có xảy ra trong quá trình nén và upload
                 return redirect()->back()->withErrors(['photo' => 'Có lỗi xảy ra khi xử lý ảnh: ' . $e->getMessage()]);
@@ -272,8 +285,7 @@ class ProductController extends Controller
 
             try {
                 // Resize và lưu thumbnail tạm thời
-                $thumbnail = Image::make($imageFile->getRealPath());
-                $thumbnail->resize(90, 90, function ($constraint) {
+                $img->resize(90, 90, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($thumbnailTmpPath);
@@ -306,8 +318,8 @@ class ProductController extends Controller
             $product->quantity = $request->quantity;
             $product->buying_price = $request->buying_price;
             $product->selling_price = $request->selling_price;
-            $product->quantity_alert = $request->quantity_alert; // Cập nhật lại
-            $product->tax = $request->tax;
+            $product->quantity_alert = 0;
+            $product->tax = 1;
             $product->tax_type = 1;
             $product->notes = $request->notes;
             $product->fee = $request->fee;
@@ -318,7 +330,7 @@ class ProductController extends Controller
             return redirect()
                 ->route('products.index')
                 ->with('success', 'Product has been updated!');
-        } catch (\Exception $e) { // Xử lý lỗi nếu không cập nhật được sản phẩm
+        } catch (\Exception $e) {// Xử lý lỗi nếu không cập nhật được sản phẩm
             return redirect()
                 ->back()
                 ->with('error', 'Failed to update product: ' . $e->getMessage());
