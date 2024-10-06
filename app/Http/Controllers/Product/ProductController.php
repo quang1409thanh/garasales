@@ -109,9 +109,6 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        /**
-         * Handle upload image
-         */
         $imageUrl = ""; // Đường dẫn hình ảnh gốc
         $thumbnailUrl = ""; // Đường dẫn thumbnail
 
@@ -120,6 +117,7 @@ class ProductController extends Controller
 
             // Tạo tên file duy nhất
             $fileName = time() . '_' . $image->getClientOriginalName();
+            $path = 'products/'; // Thư mục lưu ảnh trên GCS
 
             // Tạo thumbnail và lưu vào một file tạm
             $thumbnailTmpPath = sys_get_temp_dir() . '/' . 'thumbnail_' . $fileName;
@@ -139,15 +137,33 @@ class ProductController extends Controller
             $compressedTmpPath = sys_get_temp_dir() . '/' . $fileName;
 
             try {
-                // Nén ảnh trước khi upload lên Cloud Storage
+                // Nén ảnh trước khi upload lên Cloud Storage, giữ nguyên orientation
                 $compressedImage = Image::make($image->getRealPath());
+
+                // Kiểm tra và xoay ảnh dựa trên EXIF (nếu có)
+                if ($compressedImage->exif('Orientation')) {
+                    switch ($compressedImage->exif('Orientation')) {
+                        case 3:
+                            $compressedImage->rotate(180);
+                            break;
+                        case 6:
+                            $compressedImage->rotate(-90);
+                            break;
+                        case 8:
+                            $compressedImage->rotate(90);
+                            break;
+                    }
+                }
+
+                // Lưu ảnh đã xoay (nếu cần) và nén lại
                 $compressedImage->save($compressedTmpPath, 75); // Lưu ảnh nén với chất lượng 75%
             } catch (\Exception $e) {
                 return redirect()->back()->withErrors(['photo' => 'Có lỗi xảy ra khi xử lý ảnh: ' . $e->getMessage()]);
             }
 
-            // Upload ảnh gốc đã được nén lên Google Cloud Storage
+            // Upload **ảnh nén** đã được tạo lên Google Cloud Storage
             try {
+                // Đẩy file ảnh nén thay vì ảnh gốc
                 $imagePath = Storage::disk('gcs')->putFileAs('products', new File($compressedTmpPath), $fileName);
                 $imageUrl = Storage::disk('gcs')->url($imagePath);
             } catch (\Exception $e) {
@@ -167,16 +183,11 @@ class ProductController extends Controller
             unlink($thumbnailTmpPath);
             unlink($compressedTmpPath); // Xóa file ảnh nén tạm sau khi upload
         }
-        // Lấy giá trị lớn nhất hiện tại trong cơ sở dữ liệu
-        $latestCode = Product::where('code', 'like', 'PC%')->max('code');
-
-        // Tạo mã mới
-        $newCode = 'PC' . str_pad((intval(substr($latestCode, 2)) + 1), 6, '0', STR_PAD_LEFT);
 
         // Tạo sản phẩm và lưu vào cơ sở dữ liệu với URL hình ảnh từ Cloud Storage
         Product::create([
             'code' => $this->generateProductCode(),
-            'product_image' => $imageUrl, // Lưu URL ảnh gốc vào cơ sở dữ liệu
+            'product_image' => $imageUrl, // Lưu URL ảnh gốc (đã nén) vào cơ sở dữ liệu
             'thumbnail_url' => $thumbnailUrl, // Lưu URL thumbnail vào cơ sở dữ liệu
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -198,6 +209,7 @@ class ProductController extends Controller
 
         return to_route('products.index')->with('success', 'Product has been created!');
     }
+
 
     public function show($uuid)
     {
@@ -262,6 +274,21 @@ class ProductController extends Controller
             try {
                 // Resize và nén ảnh trước khi upload lên Cloud Storage
                 $img = Image::make($imageFile->getRealPath());
+
+                // Kiểm tra và xoay ảnh dựa trên EXIF (nếu có)
+                if ($img->exif('Orientation')) {
+                    switch ($img->exif('Orientation')) {
+                        case 3:
+                            $img->rotate(180);
+                            break;
+                        case 6:
+                            $img->rotate(-90);
+                            break;
+                        case 8:
+                            $img->rotate(90);
+                            break;
+                    }
+                }
 
                 // Đường dẫn tạm thời để lưu ảnh đã nén
                 $compressedTmpPath = sys_get_temp_dir() . '/' . $fileName;
@@ -330,7 +357,8 @@ class ProductController extends Controller
             return redirect()
                 ->route('products.index')
                 ->with('success', 'Product has been updated!');
-        } catch (\Exception $e) {// Xử lý lỗi nếu không cập nhật được sản phẩm
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu không cập nhật được sản phẩm
             return redirect()
                 ->back()
                 ->with('error', 'Failed to update product: ' . $e->getMessage());
