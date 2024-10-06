@@ -14,7 +14,7 @@
     <div class="card-body border-bottom py-3">
         <div class="d-flex">
             <div class="text-secondary">
-                Show
+                <p class=" bg-blue-lt" style="padding-left: 8px">Show</p>
                 <div class="mx-2 d-inline-block">
                     <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
                         <option value="5">5</option>
@@ -23,15 +23,16 @@
                         <option value="25">25</option>
                     </select>
                 </div>
-                entries
             </div>
             <div class="ms-auto text-secondary">
-                Search:
-                <div class="ms-2 d-inline-block">
-                    <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search invoice">
+                <p class=" bg-blue-lt" style="padding-left: 8px">Search: </p>
+                <div class=" bg-blue-lt" class="ms-2 d-inline-block">
+                    <input type="text" wire:model.live="search" class="form-control form-control-sm"
+                           aria-label="Search Customer">
                 </div>
             </div>
         </div>
+
     </div>
 
     <x-spinner.loading-spinner/>

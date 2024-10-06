@@ -122,7 +122,7 @@
                 <div class="container-xl">
                     <ul class="navbar-nav">
 
-                        <li class="nav-item {{ request()->is('products*') ? 'active' : null }}">
+                        <li class="nav-item {{ request()->is('client/products*') ? 'active' : null }}">
                             <a class="nav-link" href="{{ route('product_client.index') }}">
                                         <span
                                             class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -150,7 +150,7 @@
                         </li>
 
 
-                        <li class="nav-item {{ request()->is('suppliers*') ? 'active' : null }}">
+                        <li class="nav-item {{ request()->is('client/suppliers*') ? 'active' : null }}">
                             <a class="nav-link" href="{{ route('supplier_client.index') }}">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -164,7 +164,7 @@
                                         <path d="M16 16v2a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h2"/>
                                     </svg>
                                 </span>
-                                                        <span class="nav-link-title">
+                                <span class="nav-link-title">
                                     {{ __('Suppliers') }}
                                 </span>
 
@@ -172,7 +172,7 @@
                         </li>
 
 
-                        <li class="nav-item {{ request()->is('categories*') ? 'active' : null }}">
+                        <li class="nav-item {{ request()->is('client/category*') ? 'active' : null }}">
                             <a class="nav-link" href="{{ route('category_client.index') }}">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"

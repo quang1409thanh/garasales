@@ -19,6 +19,7 @@ class ProductByCategoryTable extends Component
     public $sortAsc = true;
 
     public $category = null;
+    public $inStock = false; // Thêm biến để theo dõi trạng thái checkbox
 
     public function sortBy($field): void
     {
@@ -43,6 +44,9 @@ class ProductByCategoryTable extends Component
         return view('livewire.tables.product-by-category-table',[
             'products' => Product::where('category_id', $this->category->id)
                 ->search($this->search)
+                ->when($this->inStock, function ($query) {
+                    return $query->where('quantity', '>', 0); // Lọc sản phẩm còn hàng
+                })
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);

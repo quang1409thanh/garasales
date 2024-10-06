@@ -43,6 +43,7 @@ Route::get('php/', function () {
 Route::middleware('guest')->group(function () {
     // Route cho sản phẩm
     Route::get('/client/products', [ClientController::class, 'productsIndex'])->name('product_client.index');
+    Route::get('/client', [ClientController::class, 'productsIndex'])->name('product_client.index');
     Route::get('/client/products/{uuid}', [ClientController::class, 'productsShow'])->name('product_client.show');
 
     // Route cho nhà cung cấp

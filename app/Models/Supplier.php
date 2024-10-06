@@ -80,7 +80,18 @@ class Supplier extends Model
         return $products->sum(function ($product) {
             return $product->product_sold;
         });
-        }
+    }
+
+    public function getTotalQuantityAttribute()
+    {
+        // Lấy tất cả sản phẩm có product_sold > 0
+        $products = $this->products()->get();
+        // Tính tổng giá bán
+        return $products->sum(function ($product) {
+            return $product->quantity;
+        });
+
+    }
 
     public function getTotalSellingPriceAttribute()
     {

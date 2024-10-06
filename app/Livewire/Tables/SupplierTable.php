@@ -17,6 +17,9 @@ class SupplierTable extends Component
     public $sortField = 'name';
 
     public $sortAsc = false;
+    public $totalSellingPrice;
+    public $totalBuyingPrice;
+
 
     public function sortBy($field): void
     {
@@ -30,9 +33,6 @@ class SupplierTable extends Component
 
         $this->sortField = $field;
     }
-    public $totalSellingPrice;
-    public $totalBuyingPrice;
-
     public function mount( $totalSellingPrice, $totalBuyingPrice)
     {
         $this->totalSellingPrice = $totalSellingPrice;

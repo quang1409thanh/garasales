@@ -17,6 +17,7 @@ class ProductBySupplierTable extends Component
     public $supplier = null;
     public $totalSellingPrice;
     public $totalBuyingPrice;
+    public $inStock = false; // Thêm biến để theo dõi trạng thái checkbox
 
     public function mount($supplier, $totalSellingPrice, $totalBuyingPrice)
     {
@@ -41,6 +42,9 @@ class ProductBySupplierTable extends Component
         return view('livewire.tables.product-by-supplier-table', [
             'products' => Product::where('supplier_id', $this->supplier->id)
                 ->search($this->search) // Đảm bảo có phương thức search trong model Product
+                ->when($this->inStock, function ($query) {
+                    return $query->where('quantity', '>', 0); // Lọc sản phẩm còn hàng
+                })
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);

@@ -23,12 +23,19 @@
                 </div>
             </div>
             <div class="ms-auto text-secondary">
-                <p class=" bg-blue-lt" style="padding-left: 8px">Search: </p>
-                <div class=" bg-blue-lt" class="ms-2 d-inline-block" style=" border: solid 1px">
-                    <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                           aria-label="Search product">
+                <p class="bg-blue-lt" style="padding-left: 8px">Search: </p>
+                <div class="bg-blue-lt d-inline-block" style="border: solid 1px">
+                    <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search product">
                 </div>
             </div>
+
+            <div class="ms-auto text-secondary">
+                <p class="bg-blue-lt" style="padding-left: 8px">In Stock</p>
+                <div class="bg-blue-lt d-inline-block" style="border: solid 1px">
+                    <input type="checkbox" wire:model.live="inStock" class="form-check-input">
+                </div>
+            </div>
+
         </div>
     </div>
 

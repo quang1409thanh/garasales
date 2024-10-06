@@ -11,7 +11,7 @@
     <div class="card-body border-bottom py-3">
         <div class="d-flex">
             <div class="text-secondary">
-                Show
+                <p class=" bg-blue-lt" style="padding-left: 8px">Show</p>
                 <div class="mx-2 d-inline-block">
                     <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
                         <option value="5">5</option>
@@ -20,16 +20,16 @@
                         <option value="25">25</option>
                     </select>
                 </div>
-                entries
             </div>
             <div class="ms-auto text-secondary">
-                Search:
-                <div class="ms-2 d-inline-block">
+                <p class=" bg-blue-lt" style="padding-left: 8px">Search: </p>
+                <div class=" bg-blue-lt" class="ms-2 d-inline-block">
                     <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                           aria-label="Search invoice">
+                           aria-label="Search Supplier">
                 </div>
             </div>
         </div>
+
     </div>
 
     <x-spinner.loading-spinner/>
@@ -54,6 +54,7 @@
 
                 <!-- Cột trạng thái thanh toán -->
                 <th scope="col" class="align-middle text-center">{{ __('Sold Products') }}</th>
+                <th scope="col" class="align-middle text-center">{{ __('Quantity') }}</th>
                 <!-- Cột số sản phẩm đã bán -->
                 <th scope="col" class="align-middle text-center">{{ __('Action') }}</th>
             </tr>
@@ -70,6 +71,7 @@
                         </span> <!-- Trạng thái thanh toán -->
                     </td>
                     <td class="align-middle text-center">{{ number_format($supplier->total_product_sold, 0) }}</td>
+                    <td class="align-middle text-center">{{ number_format($supplier->total_quantity, 0) }}</td>
                     <!-- Hiển thị tổng giá bán -->
                     <td class="align-middle text-center">
                         <x-button.show class="btn-icon" route="{{ $supplier->uuid ? route('supplier_client.show', $supplier->uuid) . '' : '#' }}"/>

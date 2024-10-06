@@ -34,6 +34,14 @@
                                aria-label="Search product">
                     </div>
                 </div>
+                <div class="ms-auto text-secondary">
+                    <p class="bg-blue-lt" style="padding-left: 8px">In Stock</p>
+                    <div class="bg-blue-lt d-inline-block" style="border: solid 1px">
+                        <input type="checkbox" wire:model.live="inStock" class="form-check-input">
+                    </div>
+                </div>
+
+
             </div>
         </div>
 

@@ -25,9 +25,10 @@
                 <p class=" bg-blue-lt" style="padding-left: 8px">Search: </p>
                 <div class=" bg-blue-lt" class="ms-2 d-inline-block">
                     <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                           aria-label="Search invoice">
+                           aria-label="Search Category">
                 </div>
             </div>
+
         </div>
     </div>
 

@@ -56,21 +56,20 @@ class PosController extends Controller
             ->sum(function ($order) {
                 return $order->details->sum('quantity'); // Tổng số lượng sản phẩm trong các đơn hàng pending
             });
+        // Kiểm tra số lượng có lớn hơn 0 không
+        if ($request['quantity'] <= 0) {
+            return redirect()
+                ->back()
+                ->with('error', 'Số lượng phải lớn hơn 0 ! ❌'); // Thông báo lỗi nếu số lượng không hợp lệ
+        }
 
         // So sánh số lượng đơn hàng pending với số lượng trong kho
         if ($pendingOrdersCount + 1 > $product->quantity) {
             return redirect()
                 ->back()
-                ->with('error', 'Không đủ hàng! Sản phẩm "' . $validatedData['name'] . '" hiện đang được xử lý bởi các đơn hàng khác.');
+                ->with('error', 'Không đủ hàng! Sản phẩm "' . $validatedData['name'] . '" hiện đang được xử lý bởi các đơn hàng khác. Hãy xử lý trước khi tạo order mới 🫣');
         }
 
-
-        // Kiểm tra số lượng có lớn hơn 0 không
-        if ($request['quantity'] <= 0) {
-            return redirect()
-                ->back()
-                ->with('error', 'Quantity must be greater than zero!'); // Thông báo lỗi nếu số lượng không hợp lệ
-        }
 
         Cart::add(
             $validatedData['id'],
