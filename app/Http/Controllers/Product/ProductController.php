@@ -320,7 +320,7 @@ class ProductController extends Controller
             $product->selling_price = $request->selling_price;
             $product->quantity_alert = 0;
             $product->tax = $request->tax;
-            $product->tax_type = $request->tax_type;
+            $product->tax_type = 1;
             $product->notes = $request->notes;
             $product->fee = $request->fee;
 
