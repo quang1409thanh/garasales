@@ -3,6 +3,7 @@
 @section('content')
     <div class="page-header d-print-none">
         <div class="container-xl">
+            <p></p>
             <div class="row g-2 align-items-center mb-3">
                 <div class="col">
                     <h2 class="page-title">
