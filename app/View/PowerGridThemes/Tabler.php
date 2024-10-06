@@ -42,7 +42,7 @@ class Tabler extends Bootstrap5
     {
         return Theme::cols()
             ->div('')
-            ->clearFilter('' );
+            ->clearFilter('');
     }
 
     public function footer(): Footer
@@ -142,5 +142,12 @@ class Tabler extends Bootstrap5
             ->input('col-12 col-sm-8 form-control') // form-control form-control-sm
             ->iconSearch('bi bi-search')
             ->iconClose('');
+    }
+
+    public function hideButton(): string
+    {
+        return view($this->root() . '.buttons.hide-button', [
+            'route' => route('products.index'), // Thay đổi route này theo nhu cầu của bạn
+        ])->render();
     }
 }

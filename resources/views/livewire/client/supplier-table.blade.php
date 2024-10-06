@@ -70,8 +70,8 @@
                             {{ ucfirst($supplier->payment_status) }}
                         </span> <!-- Trạng thái thanh toán -->
                     </td>
-                    <td class="align-middle text-center">{{ number_format($supplier->total_product_sold, 0) }}</td>
-                    <td class="align-middle text-center">{{ number_format($supplier->total_quantity, 0) }}</td>
+                    <td class="align-middle text-center">{{ number_format($supplier->total_product_sold_client, 0) }}</td>
+                    <td class="align-middle text-center">{{ number_format($supplier->total_quantity_client, 0) }}</td>
                     <!-- Hiển thị tổng giá bán -->
                     <td class="align-middle text-center">
                         <x-button.show class="btn-icon" route="{{ $supplier->uuid ? route('supplier_client.show', $supplier->uuid) . '' : '#' }}"/>

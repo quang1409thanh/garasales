@@ -26,15 +26,15 @@ class CategoryExportController extends Controller
                 $invoice->invoice_no,
                 $invoice->customer_id,
                 $invoice->order_date,
-                $invoice->order_status instanceof \App\Enums\OrderStatus ? $invoice->order_status->value : $invoice->order_status, // Convert enum to string
-                $invoice->total_products ?? 0, // Hiển thị 0 nếu giá trị là null
-                $invoice->sub_total ?? 0, // Hiển thị 0 nếu giá trị là null
-                $invoice->vat ?? 0, // Hiển thị 0 nếu giá trị là null
-                $invoice->total ?? 0, // Hiển thị 0 nếu giá trị là null
+                $invoice->order_status instanceof \App\Enums\OrderStatus ? $invoice->order_status->value : $invoice->order_status, // Chuyển đổi enum thành chuỗi
+                $invoice->total_products !== null ? (string)$invoice->total_products : '0', // Hiển thị "0" nếu giá trị là null
+                $invoice->sub_total !== null ? (string)$invoice->sub_total : '0', // Hiển thị "0" nếu giá trị là null
+                $invoice->vat !== null ? (string)$invoice->vat : '0', // Hiển thị "0" nếu giá trị là null
+                $invoice->total !== null ? (string)$invoice->total : '0', // Hiển thị "0" nếu giá trị là null
                 $invoice->payment_type ?? 'N/A', // Hiển thị giá trị mặc định nếu giá trị là null
-                $invoice->pay ?? 0, // Hiển thị 0 nếu giá trị là null
-                $invoice->due ?? 0, // Hiển thị 0 nếu giá trị là null
-                $invoice->user_id ?? 0, // Hiển thị 0 nếu giá trị là null
+                $invoice->pay !== null ? (string)$invoice->pay : '0', // Hiển thị "0" nếu giá trị là null
+                $invoice->due !== null ? (string)$invoice->due : '0', // Hiển thị "0" nếu giá trị là null
+                $invoice->user_id !== null ? (string)$invoice->user_id : '0', // Hiển thị "0" nếu giá trị là null
                 $invoice->uuid ?? 'N/A', // Hiển thị giá trị mặc định nếu giá trị là null
                 $invoice->payment_image_url ?? 'N/A', // Hiển thị giá trị mặc định nếu giá trị là null
             ];
@@ -42,6 +42,7 @@ class CategoryExportController extends Controller
 
         return $this->exportToExcel('invoices', $invoice_array);
     }
+
     public function exportByCategory(Category $category)
     {
         // Lấy các sản phẩm theo danh mục
@@ -57,56 +58,13 @@ class CategoryExportController extends Controller
             $product_array[] = [
                 $product->name,
                 $product->code,
-                $product->quantity,
-                $product->selling_price,
+                $product->quantity !== null ? (string)$product->quantity : '0', // Chuyển đổi giá trị 0 thành chuỗi "0"
+                $product->selling_price !== null ? (string)$product->selling_price : '0', // Chuyển đổi giá trị 0 thành chuỗi "0"
             ];
         }
 
         // Gọi hàm để xuất file Excel
-        return $this->exportToExcel($category->name, $product_array);
-    }
-    private function exportToExcel_1($fileName, $dataArray)
-    {
-        // Bắt đầu output buffer
-        ob_start();
-
-        // Thiết lập thời gian và bộ nhớ tối đa
-        ini_set('max_execution_time', 0);
-        ini_set('memory_limit', '4000M');
-
-        Log::info('Starting the export process for file: ' . $fileName);
-
-        try {
-            // Tạo đối tượng Spreadsheet
-            $spreadSheet = new Spreadsheet();
-            $spreadSheet->getActiveSheet()->fromArray($dataArray, null, 'A1');
-            $spreadSheet->getActiveSheet()->setTitle($fileName);
-
-            // Khởi tạo writer cho tệp Excel
-            $writer = new Xls($spreadSheet);
-
-            // Kiểm tra và thiết lập tên tệp
-            $filename = !empty($fileName) ? $fileName . '.xls' : 'export.xls';
-
-            // Thiết lập header cho file Excel
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
-            header('Cache-Control: max-age=0');
-
-            // Xóa output buffer trước khi xuất file
-            ob_end_clean();
-
-            // Xuất tệp
-            $writer->save('php://output');
-
-            Log::info('Export process completed successfully for file: ' . $fileName);
-            exit(); // Ngừng thực thi script sau khi xuất tệp
-        } catch (\Exception $e) {
-            // Ghi log lỗi
-            Log::error('Error exporting invoices: ' . $e->getMessage());
-            ob_end_clean(); // Đảm bảo buffer được xóa khi có lỗi
-            return response()->json(['error' => 'Error occurred while exporting invoices.'], 500);
-        }
+        return $this->exportToExcel($category->slug, $product_array);
     }
 
     private function exportToExcel($categoryName, $product_array)
@@ -129,8 +87,9 @@ class CategoryExportController extends Controller
             // Khởi tạo writer cho tệp Excel
             $writer = new Xls($spreadSheet);
 
+
             // Kiểm tra và thiết lập tên tệp
-            $filename = !empty($categoryName) ? $categoryName . '_products.xls' : 'export.xls';
+            $filename = !empty($categoryName) ? $categoryName . '-products.xls' : 'export.xls';
 
             // Thiết lập header cho file Excel
             header('Content-Type: application/vnd.ms-excel');
@@ -152,4 +111,5 @@ class CategoryExportController extends Controller
             return response()->json(['error' => 'Error occurred while exporting products.'], 500);
         }
     }
+
 }

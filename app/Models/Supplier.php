@@ -82,7 +82,34 @@ class Supplier extends Model
         });
     }
 
+    public function getTotalProductSoldClientAttribute()
+    {
+        // Lấy tất cả sản phẩm có product_sold > 0
+        $products = $this->products()
+            ->where('product_sold', '>', 0)
+            ->where('tax_type', 1) // Điều kiện tax_type = 1
+            ->get();
+
+        // Tính tổng giá bán
+        return $products->sum(function ($product) {
+            return $product->product_sold;
+        });
+    }
+
     public function getTotalQuantityAttribute()
+    {
+        // Lấy tất cả sản phẩm có product_sold > 0
+        $products = $this->products()
+            ->where('tax_type', 1) // Điều kiện tax_type = 1
+            ->get();
+        // Tính tổng giá bán
+        return $products->sum(function ($product) {
+            return $product->quantity;
+        });
+
+    }
+
+    public function getTotalQuantityClientAttribute()
     {
         // Lấy tất cả sản phẩm có product_sold > 0
         $products = $this->products()->get();

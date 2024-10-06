@@ -41,6 +41,7 @@ class Products extends Component
                 ->when($this->inStock, function ($query) {
                     return $query->where('quantity', '>', 0); // Chỉ lấy sản phẩm có quantity > 0
                 })
+                ->where('tax_type', 1) // Điều kiện lấy những sản phẩm có tax_type === 1
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);

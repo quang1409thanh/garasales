@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Category extends Model
 {
     use HasFactory;
-    
+
     public $timestamps = true;
 
     protected $guarded = [
@@ -32,6 +32,13 @@ class Category extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function getCountClientAttribute()
+    {
+        return $this->products()
+            ->where('tax_type', 1) // Điều kiện tax_type = 1
+            ->count();
     }
 
     public function scopeSearch($query, $value): void

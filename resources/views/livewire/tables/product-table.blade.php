@@ -176,8 +176,17 @@
 
 
                     <td class="align-middle text-center" style="width: 10%">
-                        <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
-
+                        @if($product->is_show_visible)
+                            <x-button.per_show class="btn-icon"
+                                               route="{{ route('products.toggleVisibility', $product->uuid) }}"/>
+                        @else
+                            <x-button.per_hide class="btn-icon"
+                                               route="{{ route('products.toggleVisibility', $product->uuid) }}"/>
+                        @endif
+                        @if($product->is_show_visible)
+                            <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}"/>
+                        @else
+                        @endif
                         <x-button.edit class="btn-icon {{ $product->product_sold > 0 ? 'btn-disabled' : '' }}"
                                        route="{{ route('products.edit', $product->uuid) }}"
                                        onclick="return confirm('Are you sure to update product {{ $product->name }} ?')"/>
@@ -186,6 +195,36 @@
                                          route="{{ route('products.destroy', $product->uuid) }}"
                                          onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')"/>
                     </td>
+
+
+                    <script>
+                        function toggleVisibility(uuid, button) {
+                            fetch(`/products/toggle-visibility/${uuid}`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Content-Type': 'application/json'
+                                },
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        // Thay đổi giao diện dựa trên trạng thái mới
+                                        const iconElement = button.querySelector('.btn-icon');
+
+                                        // Thay đổi icon dựa trên trạng thái mới
+                                        if (data.is_show_visible) {
+                                            iconElement.innerHTML = '<x-button.per_show class="btn-icon" route="{{ route('products.toggleVisibility', $product->uuid) }}"/>';
+                                        } else {
+                                            iconElement.innerHTML = '<x-button.per_hide class="btn-icon" route="{{ route('products.toggleVisibility', $product->uuid) }}"/>';
+                                        }
+                                    } else {
+                                        alert('Có lỗi xảy ra!');
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+                    </script>
 
                     <style>
                         .btn-disabled {

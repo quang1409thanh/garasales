@@ -83,7 +83,7 @@
                         {{ $category->slug }}
                     </td>
                     <td class="align-middle text-center d-none d-sm-table-cell">
-                        {{ $category->products->count() }}
+                        {{ $category->count_client }}
                     </td>
                     <td class="align-middle text-center d-none d-sm-table-cell" style="width: 15%">
                         {{ $category->created_at ? $category->created_at->format('d-m-Y') : '--' }}

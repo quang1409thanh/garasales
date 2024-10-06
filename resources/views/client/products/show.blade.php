@@ -145,10 +145,10 @@
                                     {{--                                            <td>Tax Type</td>--}}
                                     {{--                                            <td>{{ $product->tax_type->label() }}</td>--}}
                                     {{--                                        </tr>--}}
-                                    {{--                                        <tr>--}}
-                                    {{--                                            <td>{{ __('Notes') }}</td>--}}
-                                    {{--                                            <td>{{ $product->notes }}</td>--}}
-                                    {{--                                        </tr>--}}
+                                                                            <tr>
+                                                                                <td>{{ __('Notes') }}</td>
+                                                                                <td>{{ $product->notes }}</td>
+                                                                            </tr>
                                     </tbody>
                                 </table>
                             </div>

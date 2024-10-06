@@ -31,6 +31,25 @@ class ProductController extends Controller
         ]);
     }
 
+    public function toggleVisibility($uuid)
+    {
+        // Tìm sản phẩm theo UUID
+        $product = Product::where('uuid', $uuid)->firstOrFail();
+        if ($product->tax_type->value === 0) {
+            $product->tax_type = 1;
+        } else if ($product->tax_type->value === 1) {
+            $product->tax_type = 0;
+        };
+        // Toggle giá trị is_show_visible
+        $product->save();
+
+        // Trả về phản hồi Json
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Trạng thái xem của sản phẩm đã được cập nhật!');
+
+    }
+
     public function create(Request $request)
     {
         // Lấy danh sách các categories, units, và suppliers từ database theo người dùng hiện tại
@@ -167,7 +186,7 @@ class ProductController extends Controller
             'selling_price' => $request->selling_price,
             'quantity_alert' => $request->quantity_alert,
             'tax' => $request->tax,
-            'tax_type' => $request->tax_type,
+            'tax_type' => 1,
             'notes' => $request->notes,
             "user_id" => auth()->id(),
             "slug" => Str::slug($request->name, '-'),
@@ -357,6 +376,6 @@ class ProductController extends Controller
             });
 
         // Trả về view với danh sách sản phẩm và nhà cung cấp
-        return view('suppliers.products', compact('supplier', 'products','totalSellingPrice', 'totalBuyingPrice'));
+        return view('suppliers.products', compact('supplier', 'products', 'totalSellingPrice', 'totalBuyingPrice'));
     }
 }

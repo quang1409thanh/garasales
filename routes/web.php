@@ -103,6 +103,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
     Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
     Route::resource('/products', ProductController::class);
+    // Định nghĩa route cho toggle visibility
+    Route::get('/products/toggle-visibility/{uuid}', [ProductController::class, 'toggleVisibility'])->name('products.toggleVisibility');
 
     // Route POS
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
