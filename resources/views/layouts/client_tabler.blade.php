@@ -122,7 +122,7 @@
                 <div class="container-xl">
                     <ul class="navbar-nav">
 
-                        <li class="nav-item {{ request()->is('client/products*') ? 'active' : null }}">
+                        <li class="nav-item {{ request()->is('client') || request()->is('client/products*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('product_client.index') }}">
                                         <span
                                             class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
