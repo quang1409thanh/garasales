@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Khởi động Cloud SQL Auth Proxy
-/cloud_sql_proxy -dir=/cloudsql -instances=garasalecss:asia-east2:dbgarasaleproduction=tcp:3306 &
+/cloud_sql_proxy -dir=/cloudsql -instances=garasalevnu:asia-east2:dbgarasale=tcp:3306 &
 
 # Khởi động PHP-FPM
 php-fpm -D
