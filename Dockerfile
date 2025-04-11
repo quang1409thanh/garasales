@@ -57,7 +57,7 @@ RUN cd /app && npm run build
 
 # Change ownership of /app to www-data
 RUN chown -R www-data: /app
-
+#
 # Chuyển đến thư mục /app
 WORKDIR /app
 
