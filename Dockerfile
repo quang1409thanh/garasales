@@ -70,6 +70,6 @@ RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 # Tạo một script để khởi động các dịch vụ
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
-
+# test
 # Khởi động script
 ENTRYPOINT ["/start.sh"]
