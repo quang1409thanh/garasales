@@ -24,6 +24,7 @@ use App\Http\Controllers\SupplierExportController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -191,6 +192,35 @@ Route::post(
     [App\Http\Controllers\FileUploadController::class, "uploadFileToCloud"]
 );
 
+Route::get('/test-gcs', function () {
+    try {
+        // Thử liệt kê các file
+        $files = Storage::disk('gcs')->allFiles();
+
+        // Thử tạo file test
+        Storage::disk('gcs')->put('test.txt', 'Hello Cloud Storage');
+
+        return [
+            'success' => true,
+            'files' => $files,
+            'config' => [
+                'project_id' => config('filesystems.disks.gcs.project_id'),
+                'bucket' => config('filesystems.disks.gcs.bucket'),
+                'default_disk' => config('filesystems.default'),
+            ]
+        ];
+    } catch (\Exception $e) {
+        return [
+            'success' => false,
+            'error' => $e->getMessage(),
+            'config' => [
+                'project_id' => config('filesystems.disks.gcs.project_id'),
+                'bucket' => config('filesystems.disks.gcs.bucket'),
+                'default_disk' => config('filesystems.default'),
+            ]
+        ];
+    }
+});
 
 require __DIR__ . '/auth.php';
 
