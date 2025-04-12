@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -27,19 +28,19 @@ class DashboardController extends Controller
 
         $suppliers = Supplier::where("user_id", auth()->id())->get();
 
-        // Khởi tạo giá trị
-        $totalSellingPrice = 0;
-        $totalBuyingPrice = 0;
 
-        // Lặp qua từng nhà cung cấp để tính tổng giá bán và tổng giá trả lại
-        foreach ($suppliers as $supplier) {
-            $products_ = $supplier->products()->where('product_sold', '>', 0)->get();
+        // Sử dụng DB query builder hoặc raw SQL để tính toán trực tiếp
+        $totals = DB::table('products')
+            ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+            ->where('products.product_sold', '>', 0)
+            ->select(
+                DB::raw('SUM(products.product_sold * products.selling_price / 100) as total_selling_price'),
+                DB::raw('SUM(products.product_sold * products.buying_price / 100) as total_buying_price')
+            )
+            ->first();
 
-            foreach ($products_ as $product_i) {
-                $totalSellingPrice += $product_i->product_sold * $product_i->selling_price; // Tính tổng giá bán
-                $totalBuyingPrice += $product_i->product_sold * $product_i->buying_price; // Tính tổng giá trả lại
-            }
-        }
+        $totalSellingPrice = $totals->total_selling_price ?? 0;
+        $totalBuyingPrice = $totals->total_buying_price ?? 0;
 
         $totalProductSold = Order::where('order_status', '1')->sum('total_products'); // Tổng số lượng sản phẩm đã bán
 

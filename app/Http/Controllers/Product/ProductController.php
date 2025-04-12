@@ -12,7 +12,7 @@ use App\Models\Unit;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Picqer\Barcode\BarcodeGeneratorHTML;
@@ -20,51 +20,25 @@ use Str;
 
 class ProductController extends Controller
 {
+
     public function index()
     {
         $userId = auth()->id();
-        $page = request()->get('page', 1);
-        $sortBy = request()->get('sort_by', 'created_at');
-        $sortDir = request()->get('sort_dir', 'desc');
 
-        $cacheKey = "user_{$userId}_products_{$page}_{$sortBy}_{$sortDir}";
-        $cacheDuration = now()->addHours(1); // Cache 1 giờ
+        // Sử dụng select và join để lấy thông tin supplier luôn
+        $products = Product::where("products.user_id", $userId)
+            ->select(
+                'products.*',
+                'suppliers.name as supplier_name',
+                'suppliers.id as supplier_uuid'
+            )
+            ->leftJoin('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+            ->orderBy('products.created_at', 'desc')
+            ->paginate(15);
 
-        $products = Cache::remember($cacheKey, $cacheDuration, function() use ($userId, $sortBy, $sortDir) {
-            return Product::query()
-                ->where("user_id", $userId)
-                ->select([
-                    'id',
-                    'uuid',
-                    'code',
-                    'name',
-                    'slug',
-                    'thumbnail_url',
-                    'created_at',
-                    'category_id',
-                    'quantity',
-                    'quantity_alert',
-                    'unit_id',
-                    'buying_price',
-                    'selling_price',
-                    'tax',
-                    'tax_type',
-                    'supplier_id',
-                    'product_sold',
-                    'fee',
-                    'user_id'
-                ])
-                ->with([
-                    'category:id,name',
-                    'supplier:id,uuid,name',
-                    'unit:id,name',
-                    'user:id,name' // Thêm quan hệ user nếu cần hiển thị
-                ])
-                ->orderBy($sortBy, $sortDir)
-                ->paginate(config('constants.PER_PAGE', 25));
-        });
-
-        return view('products.index', compact('products'));
+        return view('products.index', [
+            'products' => $products,
+        ]);
     }
     public function toggleVisibility($uuid)
     {

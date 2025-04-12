@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Http\Requests\Supplier\StoreSupplierRequest;
 use App\Http\Requests\Supplier\UpdateSupplierRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Str;
@@ -18,20 +19,19 @@ class SupplierController extends Controller
     {
         $suppliers = Supplier::where("user_id", auth()->id())->get();
 
-        // Khởi tạo giá trị
-        $totalSellingPrice = 0;
-        $totalBuyingPrice = 0;
 
-        // Lặp qua từng nhà cung cấp để tính tổng giá bán và tổng giá trả lại
-        foreach ($suppliers as $supplier) {
-            $products = $supplier->products()->where('product_sold', '>', 0)->get();
+        // Phương pháp 1: Sử dụng DB Query Builder để tính toán trực tiếp từ database
+        $totals = DB::table('products')
+            ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+            ->where('products.product_sold', '>', 0)
+            ->select(
+                DB::raw('SUM(products.product_sold * products.selling_price) as total_selling_price'),
+                DB::raw('SUM(products.product_sold * products.buying_price) as total_buying_price')
+            )
+            ->first();
 
-            foreach ($products as $product) {
-                $totalSellingPrice += $product->product_sold * $product->selling_price; // Tính tổng giá bán
-                $totalBuyingPrice += $product->product_sold * $product->buying_price; // Tính tổng giá trả lại
-            }
-        }
-
+        $totalSellingPrice = $totals->total_selling_price / 100; // Chia cho 100 vì giá được lưu ở đơn vị cents
+        $totalBuyingPrice = $totals->total_buying_price / 100;
         return view('suppliers.index', compact('suppliers', 'totalSellingPrice', 'totalBuyingPrice'));
     }
 

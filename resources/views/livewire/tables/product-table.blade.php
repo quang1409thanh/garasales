@@ -167,11 +167,10 @@
                     </td>
                     <td>
                         <a class="badge bg-green-lt"
-                           href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '' : '#' }}">
-                            {{$product->supplier?->name ?? '--'}}
+                           href="{{ $product->supplier_uuid ? route('suppliers.show', $product->supplier_uuid) . '' : '#' }}">
+                            {{ $product->supplier_name ?? '--' }}
                         </a>
-
-                    </td>
+                    </td>>
                     <!-- Các cột khác -->
 
 
