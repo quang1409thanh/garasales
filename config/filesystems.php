@@ -64,6 +64,7 @@ return [
             'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
             'apiEndpoint' => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null),
             'visibility' => 'private',
+            'uniform_bucket_level_access' => true,
             'visibility_handler' => null,
             'metadata' => ['cacheControl'=> 'public,max-age=86400'],
             'throw' => true,

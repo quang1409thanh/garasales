@@ -236,12 +236,17 @@ Route::get('/debug-gcs', function() {
 
 Route::get('/test-gcs', function() {
     try {
-        Storage::disk('gcs')->put('test.txt', 'Hello World');
-        return 'Successfully wrote to GCS';
+        // Upload file (không set visibility)
+        Storage::disk('gcs')->put('test.txt', 'Test content');
+
+        // Kiểm tra URL (nếu bucket được cấu hình public)
+        $url = Storage::disk('gcs')->url('test.txt');
+        return "File uploaded! URL: " . $url;
     } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
+        return "Error: " . $e->getMessage();
     }
 });
+
 
 require __DIR__ . '/auth.php';
 
