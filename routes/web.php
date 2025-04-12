@@ -222,5 +222,16 @@ Route::get('/test', function () {
     }
 });
 
+Route::get('/debug-gcs', function() {
+    $keyPath = env('GOOGLE_CLOUD_KEY_FILE_PATH');
+    $keyContent = file_get_contents($keyPath);
+
+    return [
+        'file_exists' => file_exists($keyPath),
+        'is_readable' => is_readable($keyPath),
+        'json_valid' => json_decode($keyContent, true) ? true : false,
+        'project_id_in_json' => json_decode($keyContent, true)['project_id'] ?? null,
+    ];
+});
 require __DIR__ . '/auth.php';
 
