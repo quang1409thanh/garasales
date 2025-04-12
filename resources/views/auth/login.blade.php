@@ -20,7 +20,7 @@
                        autocomplete="off"
                        value="{{ old('email') }}"
                 >
-
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 @error('email')
                     <div class="invalid-feedback">
                         {{ $message }}
