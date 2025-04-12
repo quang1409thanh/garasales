@@ -57,6 +57,7 @@ return [
         ],
         'gcs' => [
             'driver' => 'gcs',
+            'key_file' => null,
             'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', base_path('laravel-gcs.json')),
             'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
             'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
