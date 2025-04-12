@@ -233,5 +233,15 @@ Route::get('/debug-gcs', function() {
         'project_id_in_json' => json_decode($keyContent, true)['project_id'] ?? null,
     ];
 });
+
+Route::get('/test-gcs', function() {
+    try {
+        Storage::disk('gcs')->put('test.txt', 'Hello World');
+        return 'Successfully wrote to GCS';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
 require __DIR__ . '/auth.php';
 
