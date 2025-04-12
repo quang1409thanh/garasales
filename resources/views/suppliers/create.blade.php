@@ -34,32 +34,32 @@
                 <form action="{{ route('suppliers.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">
-                                        {{ __('Profile Image') }}
-                                    </h3>
+{{--                        <div class="col-lg-4">--}}
+{{--                            <div class="card">--}}
+{{--                                <div class="card-body">--}}
+{{--                                    <h3 class="card-title">--}}
+{{--                                        {{ __('Profile Image') }}--}}
+{{--                                    </h3>--}}
 
-                                    <img class="img-account-profile rounded-circle mb-2"
-                                         src="{{ asset('assets/img/demo/user-placeholder.svg') }}" alt=""
-                                         id="image-preview"/>
+{{--                                    <img class="img-account-profile rounded-circle mb-2"--}}
+{{--                                         src="{{ asset('assets/img/demo/user-placeholder.svg') }}" alt=""--}}
+{{--                                         id="image-preview"/>--}}
 
-                                    <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 10 MB</div>
+{{--                                    <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 10 MB</div>--}}
 
-                                    <input class="form-control @error('photo') is-invalid @enderror" type="file"
-                                           id="image" name="photo" accept="image/*" onchange="previewImage();">
+{{--                                    <input class="form-control @error('photo') is-invalid @enderror" type="file"--}}
+{{--                                           id="image" name="photo" accept="image/*" onchange="previewImage();">--}}
 
-                                    @error('photo')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+{{--                                    @error('photo')--}}
+{{--                                    <div class="invalid-feedback">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </div>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <div class="col-lg-8">
+                        <div class="col-lg">
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">
@@ -70,9 +70,9 @@
                                         <div class="col-md-12">
                                             <x-input name="name" :required="true"/>
 
-                                            <x-input name="shopname" label="Dorm room" :required="true"/>
+                                            <x-input name="shopname" label="Dorm room" />
 
-                                            <x-input name="phone" label="Phone number" :required="true"/>
+                                            <x-input name="phone" label="Phone number" />
                                         </div>
 
 
@@ -195,9 +195,9 @@
                                             <x-input name="account_number" label="Account number"/>
                                         </div>
 
-                                        <div class="col-md-12">
-                                            <input type="hidden" name="address" value="ktxnn">
-                                        </div>
+{{--                                        <div class="col-md-12">--}}
+{{--                                            <input type="hidden" name="address" value="ktxnn">--}}
+{{--                                        </div>--}}
                                     </div>
                                 </div>
                                 <div class="card-footer text-end">

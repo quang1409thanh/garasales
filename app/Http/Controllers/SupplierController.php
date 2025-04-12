@@ -52,34 +52,34 @@ class SupplierController extends Controller
 
     public function store(StoreSupplierRequest $request)
     {
-        $imageUrl = ""; // Biến để lưu URL của ảnh
+//        $imageUrl = ""; // Biến để lưu URL của ảnh
 
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên tệp duy nhất
-            $path = 'suppliers/'; // Thư mục lưu ảnh trên GCS
-
-            // Nếu đã tồn tại ảnh cũ, xóa ảnh cũ trước
-            if ($request->user()->photo) {
-                $oldImagePath = $request->user()->photo; // Lấy đường dẫn ảnh cũ
-                if (Storage::disk('gcs')->exists($oldImagePath)) {
-                    Storage::disk('gcs')->delete($oldImagePath); // Xóa ảnh cũ trên GCS
-                }
-            }
-
-            // Lưu ảnh mới lên Google Cloud Storage
-            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
-
-            // Lấy URL của ảnh đã lưu
-            $imageUrl = Storage::disk('gcs')->url($filePath);
-        }
+//        if ($request->hasFile('photo')) {
+//            $file = $request->file('photo');
+//            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên tệp duy nhất
+//            $path = 'suppliers/'; // Thư mục lưu ảnh trên GCS
+//
+//            // Nếu đã tồn tại ảnh cũ, xóa ảnh cũ trước
+//            if ($request->user()->photo) {
+//                $oldImagePath = $request->user()->photo; // Lấy đường dẫn ảnh cũ
+//                if (Storage::disk('gcs')->exists($oldImagePath)) {
+//                    Storage::disk('gcs')->delete($oldImagePath); // Xóa ảnh cũ trên GCS
+//                }
+//            }
+//
+//            // Lưu ảnh mới lên Google Cloud Storage
+//            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
+//
+//            // Lấy URL của ảnh đã lưu
+//            $imageUrl = Storage::disk('gcs')->url($filePath);
+//        }
 
         try {
             // Tạo mới nhà cung cấp và lưu URL ảnh vào cơ sở dữ liệu
             $supplier = Supplier::create([
                 "user_id" => auth()->id(),
                 "uuid" => Str::uuid(),
-                'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
+                'photo' => null, // Lưu URL ảnh vào cơ sở dữ liệu
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -133,36 +133,36 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::where("uuid", $uuid)->firstOrFail();
 
-        /**
-         * Xử lý việc upload ảnh với Google Cloud Storage.
-         */
-        $imageUrl = $supplier->photo; // Lưu URL ảnh hiện tại của nhà cung cấp
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên file duy nhất
-            $path = 'suppliers/'; // Thư mục lưu ảnh trên GCS
-
-            // Xóa ảnh cũ trên GCS nếu có
-            if ($supplier->photo) {
-                $oldImagePath = $supplier->photo; // Lấy đường dẫn ảnh cũ trên GCS
-                if (Storage::disk('gcs')->exists($oldImagePath)) {
-                    Storage::disk('gcs')->delete($oldImagePath); // Xóa ảnh cũ
-                }
-            }
-
-            // Lưu ảnh mới lên Google Cloud Storage
-            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
-
-            // Lấy URL của ảnh mới
-            $imageUrl = Storage::disk('gcs')->url($filePath);
-        }
+//        /**
+//         * Xử lý việc upload ảnh với Google Cloud Storage.
+//         */
+//        $imageUrl = $supplier->photo; // Lưu URL ảnh hiện tại của nhà cung cấp
+//        if ($request->hasFile('photo')) {
+//            $file = $request->file('photo');
+//            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension(); // Tạo tên file duy nhất
+//            $path = 'suppliers/'; // Thư mục lưu ảnh trên GCS
+//
+//            // Xóa ảnh cũ trên GCS nếu có
+//            if ($supplier->photo) {
+//                $oldImagePath = $supplier->photo; // Lấy đường dẫn ảnh cũ trên GCS
+//                if (Storage::disk('gcs')->exists($oldImagePath)) {
+//                    Storage::disk('gcs')->delete($oldImagePath); // Xóa ảnh cũ
+//                }
+//            }
+//
+//            // Lưu ảnh mới lên Google Cloud Storage
+//            $filePath = $file->storeAs(rtrim($path, '/'), $fileName, 'gcs'); // Lưu ảnh lên GCS
+//
+//            // Lấy URL của ảnh mới
+//            $imageUrl = Storage::disk('gcs')->url($filePath);
+//        }
 
         try {
             // Cập nhật thông tin nhà cung cấp trong cơ sở dữ liệu
             $supplier->update([
                 'name' => $request->name,
                 'phone' => $request->phone,
-                'photo' => $imageUrl, // Lưu URL ảnh vào cơ sở dữ liệu
+                'photo' => null, // Lưu URL ảnh vào cơ sở dữ liệu
                 'shopname' => $request->shopname,
                 'type' => $request->type,
                 'account_holder' => $request->account_holder,

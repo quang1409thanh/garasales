@@ -17,23 +17,23 @@
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            {{ __('Profile Image') }}
-                        </h3>
+{{--            <div class="col-lg-4">--}}
+{{--                <div class="card">--}}
+{{--                    <div class="card-body">--}}
+{{--                        <h3 class="card-title">--}}
+{{--                            {{ __('Profile Image') }}--}}
+{{--                        </h3>--}}
 
-                        <img id="image-preview"
-                             class="img-account-profile mb-2"
-                             src="{{ $supplier->photo ? $supplier->photo : asset('assets/img/demo/user-placeholder.svg') }}"
-                             alt=""
-                        >
-                    </div>
-                </div>
-            </div>
+{{--                        <img id="image-preview"--}}
+{{--                             class="img-account-profile mb-2"--}}
+{{--                             src="{{ $supplier->photo ? $supplier->photo : asset('assets/img/demo/user-placeholder.svg') }}"--}}
+{{--                             alt=""--}}
+{{--                        >--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
-            <div class="col-lg-8">
+            <div class="col-lg">
                 <div class="card">
                     <div class="card-header">
                         <div>
@@ -78,10 +78,13 @@
                                     <td>{{ $supplier->bank_name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>List of Product</td>
+                                    <td>Details</td>
                                     <td>
+                                        <a href="{{ route('products.create', ['supplier' => $supplier]) }}" class="btn btn-success">
+                                            Thêm
+                                        </a>
                                         <a href="{{ route('suppliers.products', $supplier->uuid) }}" class="btn btn-primary">
-                                            View Products
+                                            Xem
                                         </a>
                                         <a href="{{ route('suppliers.payments.index', $supplier->uuid) }}" class="btn btn-success">
                                             Thanh toán

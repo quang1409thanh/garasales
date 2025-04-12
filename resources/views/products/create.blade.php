@@ -161,15 +161,16 @@
                                                     </select>
                                                 @else
                                                     <select name="unit_id" id="unit_id"
-                                                            class="form-select @error('unit_id') is-invalid @enderror"
-                                                    >
+                                                            class="form-select @error('unit_id') is-invalid @enderror">
                                                         <option selected="" disabled="">
                                                             Select a unit:
                                                         </option>
 
                                                         @foreach ($units as $unit)
                                                             <option value="{{ $unit->id }}"
-                                                                    @if(old('unit_id') == $unit->id) selected="selected" @endif>{{ $unit->name }}</option>
+                                                                    @if(old('unit_id') == $unit->id || (old('unit_id') === null && $unit->name == 'Piece')) selected @endif>
+                                                                {{ $unit->name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 @endif
@@ -230,9 +231,9 @@
                                             <x-input type="number"
                                                      label="Quantity"
                                                      name="quantity"
+                                                     value=1
                                                      id="quantity"
-                                                     placeholder="0"
-                                                     value="{{ old('quantity') }}"
+                                                     :value="old('quantity', 1)"
                                             />
                                         </div>
 
@@ -369,7 +370,18 @@
             const sellingPriceInput = document.getElementById('selling_price');
             const feeSelect = document.getElementById('fee');
             const buyingPriceInput = document.getElementById('buying_price');
+            const categorySelect = document.getElementById('category_id');
 
+            // Định nghĩa bảng ánh xạ giữa category và fee
+            // VD: 1 => 10% (cho sách vở), 2 => 20% (cho quần áo)
+            const feeMap = {
+                '1': 10,
+                '2': 20,
+                '3': 5
+                // Thêm các mapping nếu cần
+            };
+
+            // Hàm tính giá mua dựa vào giá bán và phí
             function calculateBuyingPrice() {
                 const sellingPrice = parseFloat(sellingPriceInput.value) || 0;
                 const fee = parseFloat(feeSelect.value) || 0;
@@ -379,9 +391,26 @@
                 buyingPriceInput.value = buyingPrice.toFixed(2); // Hiển thị 2 chữ số sau dấu thập phân
             }
 
-            // Lắng nghe sự kiện thay đổi giá trị
+            // Hàm cập nhật giá trị phí dựa vào category đã chọn
+            function updateFeeByCategory() {
+                const selectedCategory = categorySelect.value;
+                // Lấy fee tương ứng từ feeMap, nếu không có, giữ nguyên giá trị hiện tại hoặc mặc định (0%)
+                feeSelect.value = feeMap[selectedCategory] !== undefined ? feeMap[selectedCategory] : feeSelect.value;
+                // Sau khi cập nhật fee, tính lại giá mua
+                calculateBuyingPrice();
+            }
+
+            // Sự kiện thay đổi giá bán
             sellingPriceInput.addEventListener('input', calculateBuyingPrice);
+            // Sự kiện thay đổi fee
             feeSelect.addEventListener('change', calculateBuyingPrice);
+            // Sự kiện thay đổi category
+            categorySelect.addEventListener('change', updateFeeByCategory);
+
+            // Nếu muốn tự động cập nhật fee khi trang vừa load (trường hợp đã có category được chọn trước đó)
+            if(categorySelect.value) {
+                updateFeeByCategory();
+            }
         });
 
     </script>

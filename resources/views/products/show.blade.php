@@ -23,7 +23,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h3 class="card-title">
-                                    {{ __('Product Image') }}
+                                    {{ __('Hình ảnh') }}
                                 </h3>
 
                                 <div>
@@ -77,18 +77,18 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    {{ __('Product Details') }}
+                                    {{ __('Chi tiết sản phẩm') }}
                                 </h3>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered card-table table-vcenter text-nowrap datatable">
                                     <tbody>
                                     <tr>
-                                        <td>Name</td>
+                                        <td>Tên</td>
                                         <td>{{ $product->name }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Owner Information</td>
+                                        <td>Chủ sở hữu</td>
                                         <td>
                                             <a class="badge bg-green-lt"
                                                href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '/products' : '#' }}">
@@ -99,15 +99,15 @@
                                     </tr>
 
                                     <tr>
-                                        <td><span class="text-secondary">Code</span></td>
+                                        <td><span class="text-secondary">Mã</span></td>
                                         <td>{{ $product->code }}</td>
                                     </tr>
+{{--                                    <tr>--}}
+{{--                                        <td>Barcode</td>--}}
+{{--                                        <td>{!! $barcode !!}</td>--}}
+{{--                                    </tr>--}}
                                     <tr>
-                                        <td>Barcode</td>
-                                        <td>{!! $barcode !!}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Category</td>
+                                        <td>Danh mục</td>
                                         <td>
                                             <a href="{{ route('categories.show', $product->category) }}"
                                                class="badge bg-blue-lt">
@@ -126,11 +126,11 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Quantity</td>
+                                        <td>Số lượng</td>
                                         <td>{{ $product->quantity }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Product Sold</td>
+                                        <td>Đã bán</td>
                                         <td>
                                                 <span class="badge bg-red-lt">
                                                     {{ $product->product_sold }}
@@ -139,11 +139,11 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Buying Price</td>
+                                        <td>Giá nhập</td>
                                         <td>{{ $product->buying_price }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Selling Price</td>
+                                        <td>Giá bán</td>
                                         <td>{{ $product->selling_price }}</td>
                                     </tr>
                                     {{--                                        <tr>--}}

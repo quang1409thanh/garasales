@@ -10,32 +10,32 @@
                     @csrf
                     @method('put')
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">
-                                        {{ __('Profile Image') }}
-                                    </h3>
+{{--                        <div class="col-lg-4">--}}
+{{--                            <div class="card">--}}
+{{--                                <div class="card-body">--}}
+{{--                                    <h3 class="card-title">--}}
+{{--                                        {{ __('Profile Image') }}--}}
+{{--                                    </h3>--}}
 
-                                    <img class="img-account-profile mb-2"
-                                         src="{{ $supplier->photo ? $supplier->photo : asset('assets/img/demo/user-placeholder.svg') }}"
-                                         alt="" id="image-preview"/>
-                                    <!-- Profile picture help block -->
-                                    <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 10 MB</div>
-                                    <!-- Profile picture input -->
-                                    <input
-                                        class="form-control form-control-solid mb-2 @error('photo') is-invalid @enderror"
-                                        type="file" id="image" name="photo" accept="image/*" onchange="previewImage();">
-                                    @error('photo')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+{{--                                    <img class="img-account-profile mb-2"--}}
+{{--                                         src="{{ $supplier->photo ? $supplier->photo : asset('assets/img/demo/user-placeholder.svg') }}"--}}
+{{--                                         alt="" id="image-preview"/>--}}
+{{--                                    <!-- Profile picture help block -->--}}
+{{--                                    <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 10 MB</div>--}}
+{{--                                    <!-- Profile picture input -->--}}
+{{--                                    <input--}}
+{{--                                        class="form-control form-control-solid mb-2 @error('photo') is-invalid @enderror"--}}
+{{--                                        type="file" id="image" name="photo" accept="image/*" onchange="previewImage();">--}}
+{{--                                    @error('photo')--}}
+{{--                                    <div class="invalid-feedback">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </div>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <div class="col-lg-8">
+                        <div class="col-lg">
                             <div class="card">
                                 <div class="card-header">
                                     <div>
@@ -54,9 +54,9 @@
                                             <x-input name="name" :value="old('name', $supplier->name)"
                                                      :required="true"/>
                                             <x-input name="shopname" label="Dorm room"
-                                                     :value="old('shopname', $supplier->shopname)" :required="true"/>
+                                                     :value="old('shopname', $supplier->shopname)" />
                                             <x-input name="phone" label="Phone number"
-                                                     :value="old('phone', $supplier->phone)" :required="true"/>
+                                                     :value="old('phone', $supplier->phone)" />
                                         </div>
 
                                         <div class="col-sm-6 col-md-6">
