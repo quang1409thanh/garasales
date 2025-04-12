@@ -192,7 +192,7 @@ Route::post(
     [App\Http\Controllers\FileUploadController::class, "uploadFileToCloud"]
 );
 
-Route::get('/test-gcs', function () {
+Route::get('/test', function () {
     try {
         // Thử liệt kê các file
         $files = Storage::disk('gcs')->allFiles();
