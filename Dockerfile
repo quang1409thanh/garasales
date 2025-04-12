@@ -42,8 +42,8 @@ RUN mkdir -p /run/nginx /app
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/php.ini /usr/local/etc/php/
 
-# Copy application files
-COPY . /app
+# Copy application files with correct ownership
+COPY --chown=www-data:www-data . /app
 
 # Install Composer
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
@@ -55,23 +55,25 @@ RUN cd /app && npm install
 # Build assets
 RUN cd /app && npm run build
 
-# Change ownership of /app to www-data
-RUN chown -R www-data: /app
-# Set permissions for storage and cache
+# Set permissions for storage and cache directories
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
-# Chuyển đến thư mục /app
+# Switch to www-data user to avoid running as root
+USER www-data
+
+# Set working directory
 WORKDIR /app
 
 # Expose port 80
 EXPOSE 80
 
-# Cập nhật cấu hình Nginx
+# Update Nginx configuration to listen on port 8080
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
-# Tạo một script để khởi động các dịch vụ
-COPY docker/start.sh /start.sh
+# Copy and set permissions for the start script
+COPY --chown=www-data:www-data docker/start.sh /start.sh
+
 RUN chmod +x /start.sh
 # test
-# Khởi động script
+# Set the entrypoint to the start script
 ENTRYPOINT ["/start.sh"]
