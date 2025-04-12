@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Fix permissions for laravel.log to ensure PHP-FPM can write to it
+# Fix permissions for laravel.log to ensure PHP-FPM (running as www-data) can write to it
 if [ -f /app/storage/logs/laravel.log ]; then
     echo "Fixing permissions for laravel.log..."
     chown www-data:www-data /app/storage/logs/laravel.log

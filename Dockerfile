@@ -42,7 +42,7 @@ RUN mkdir -p /run/nginx /app
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/php.ini /usr/local/etc/php/
 
-# Copy application files with correct ownership
+# Copy application files (still set ownership to www-data for PHP-FPM compatibility)
 COPY --chown=www-data:www-data . /app
 
 # Install Composer
@@ -58,9 +58,6 @@ RUN cd /app && npm run build
 # Set permissions for storage and cache directories
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
-# Switch to www-data user to avoid running as root
-USER www-data
-
 # Set working directory
 WORKDIR /app
 
@@ -71,9 +68,8 @@ EXPOSE 80
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
 # Copy and set permissions for the start script
-COPY --chown=www-data:www-data docker/start.sh /start.sh
-
+COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 # test
-# Set the entrypoint to the start script
+# Set the entrypoint to the start script (container will run as root by default)
 ENTRYPOINT ["/start.sh"]
