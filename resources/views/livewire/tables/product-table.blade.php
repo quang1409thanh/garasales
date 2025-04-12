@@ -126,9 +126,9 @@
                         {{ $product->code }}
                     </td>
                     <td class="align-middle text-center">
-                        <img class="responsive-image"
-                             src="{{ $product->thumbnail_url ? $product->thumbnail_url : 'https://storage.googleapis.com/garasales/thumbnails/default.png' }}"
-                             alt="{{ $product->name }}" loading="lazy">
+                        <img loading="lazy" class="responsive-image"
+                             src="{{ $product->thumbnail_url ?: 'https://storage.googleapis.com/garasales/thumbnails/default.png' }}"
+                             alt="{{ $product->name }}">
                     </td>
                     <style>
                         .responsive-image {
@@ -168,7 +168,7 @@
                     <td>
                         <a class="badge bg-green-lt"
                            href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '' : '#' }}">
-                            {{ optional($product->supplier)->name ?? '--' }}
+                            {{$product->supplier?->name ?? '--'}}
                         </a>
 
                     </td>

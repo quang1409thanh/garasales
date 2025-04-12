@@ -70,7 +70,7 @@ class CustomerController extends Controller
     public function show($uuid)
     {
         $customer = Customer::where('uuid', $uuid)->firstOrFail();
-        $customer->loadMissing(['quotations', 'orders'])->get();
+        $customer->loadMissing(['orders'])->get();
 
         return view('customers.show', [
             'customer' => $customer

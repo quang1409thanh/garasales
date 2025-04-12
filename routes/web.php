@@ -7,7 +7,6 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboards\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LogController;
-use App\Http\Controllers\Order\DueOrderController;
 use App\Http\Controllers\Order\OrderCompleteController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderPendingController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\Product\ProductExportController;
 use App\Http\Controllers\Product\ProductImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseController;
-use App\Http\Controllers\Quotation\QuotationController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierExportController;
@@ -88,12 +86,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
     Route::resource('/suppliers', SupplierController::class);
     Route::get('/export-supplier', [SupplierExportController::class, 'create'])->name('export_supplier');
 
-// Route để hiển thị sản phẩm của nhà cung cấp
+   // Route để hiển thị sản phẩm của nhà cung cấp
     Route::get('suppliers/{uuid}/products', [ProductController::class, 'indexBySupplier'])->name('suppliers.products');
 
     Route::resource('/categories', CategoryController::class);
@@ -130,11 +127,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/orders/update/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/cancel/{order}', [OrderController::class, 'cancel'])->name('orders.cancel');
 
-    // DUES
-    Route::get('due/orders/', [DueOrderController::class, 'index'])->name('due.index');
-    Route::get('due/order/view/{order}', [DueOrderController::class, 'show'])->name('due.show');
-    Route::get('due/order/edit/{order}', [DueOrderController::class, 'edit'])->name('due.edit');
-    Route::put('due/order/update/{order}', [DueOrderController::class, 'update'])->name('due.update');
 
     // TODO: Remove from OrderController
     Route::get('/orders/details/{order_id}/download', [OrderController::class, 'downloadInvoice'])->name('order.downloadInvoice');
@@ -161,11 +153,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('categories/{category}/export', [CategoryExportController::class, 'exportByCategory'])->name('categories.export');
     Route::get('/export-invoices', [CategoryExportController::class, 'exportInvoices'])->name('export.invoices');
 
-// Route để hiển thị thông tin thanh toán cho nhà cung cấp
+    // Route để hiển thị thông tin thanh toán cho nhà cung cấp
     Route::get('/suppliers/{uuid}/payments', [SupplierController::class, 'view_bill'])
         ->name('suppliers.payments.index');
 
-// Route để xử lý lưu thông tin thanh toán
+    // Route để xử lý lưu thông tin thanh toán
     Route::post('/suppliers/{uuid}/payments', [SupplierController::class, 'store_bill'])
         ->name('suppliers.payments.store');
 
@@ -181,10 +173,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route hiển thị log của thiết bị theo IP và device
     Route::get('/logs/{ip}/{device}', [LogController::class, 'showLog'])->name('logs.show');
-    // Route Quotations
-    // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');
-//    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
-//    Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
 
 Route::post(

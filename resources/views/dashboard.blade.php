@@ -323,10 +323,10 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {{ $quotations }} Quotations
+                                                0 Quotations
                                             </div>
                                             <div class="text-muted">
-                                                {{ $todayQuotations }} today
+                                                0 today
                                             </div>
                                         </div>
                                     </div>

@@ -6,7 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class UserTable extends Component
+class serTable extends Component
 {
     use WithPagination;
 
