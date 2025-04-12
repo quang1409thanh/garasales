@@ -11,3 +11,5 @@ Có cách nào lấy được connectstring tự động khi tạo db không nh�
 db name: garasaledb_rep1
 db password: 
 db connect string: garasalecss:asia-east2:dbtest
+
+

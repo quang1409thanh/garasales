@@ -58,8 +58,7 @@ RUN cd /app && npm run build
 # Change ownership of /app to www-data
 RUN chown -R www-data: /app
 # Set permissions for storage and cache
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
-RUN chmod -R 775 /app/storage /app/bootstrap/cache
+RUN chmod -R 775 www-:www-data /app/storage /app/bootstrap/cache
 
 # Chuyển đến thư mục /app
 WORKDIR /app
