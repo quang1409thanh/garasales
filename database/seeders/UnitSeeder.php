@@ -15,18 +15,6 @@ class UnitSeeder extends Seeder
     {
         $units = collect([
             [
-                'name' => 'Meters',
-                'slug' => 'meters',
-                'short_code' => 'm',
-                'user_id'=>1
-            ],
-            [
-                'name' => 'Centimeters',
-                'slug' => 'centimeters',
-                'short_code' => 'cm',
-                'user_id'=>1
-            ],
-            [
                 'name' => 'Piece',
                 'slug' => 'piece',
                 'short_code' => 'pc',

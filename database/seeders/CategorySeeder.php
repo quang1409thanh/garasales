@@ -31,7 +31,25 @@ class CategorySeeder extends Seeder
                 'name'  => 'Đồ dùng phụ kiện',
                 'slug'  => 'do-dung-phu-kien',
                 'user_id' => 1,
-            ]
+            ],
+            [
+                'id'    => 4,
+                'name'  => 'Giày dép',
+                'slug'  => 'giay-dep',
+                'user_id' => 1,
+            ],
+            [
+                'id'    => 5,
+                'name'  => 'Đồ dùng học tập',
+                'slug'  => 'do-dung-hoc-tap',
+                'user_id' => 1,
+            ],
+            [
+                'id'    => 6,
+                'name'  => 'Khác',
+                'slug'  => 'khac',
+                'user_id' => 1,
+            ],
         ]);
         $categories->each(function ($category) {
             Category::insert($category);

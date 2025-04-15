@@ -307,9 +307,12 @@
             // Định nghĩa bảng ánh xạ giữa category và fee
             // VD: 1 => 10% (cho sách vở), 2 => 20% (cho quần áo)
             const feeMap = {
-                '1': 10,
-                '2': 20,
-                '3': 5
+                '1': 20,
+                '2': 10,
+                '3': 10,
+                '4': 10,
+                '5': 10,
+                '6': 10,
                 // Thêm các mapping nếu cần
             };
 

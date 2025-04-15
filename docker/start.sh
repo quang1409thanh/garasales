@@ -16,9 +16,9 @@ fi
 /cloud_sql_proxy -dir=/cloudsql -instances=garasalevnu:asia-east2:dbgarasale=tcp:3306 &
 
 ## Run migrate:fresh and seed to reset the database and populate it with initial data
-#echo "Running migrate:fresh and seeding..."
-#php artisan migrate --force
-#php artisan migrate:fresh --seed --force
+echo "Running migrate:fresh and seeding..."
+php artisan migrate --force
+php artisan migrate:fresh --seed --force
 
 # Start PHP-FPM in the background
 php-fpm -D

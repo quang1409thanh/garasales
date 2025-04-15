@@ -19,25 +19,7 @@ class UserSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'uuid' => Str::uuid(),
-                'photo' => 'https://storage.googleapis.com/garasales/default.jpg'
-            ],
-            [
-                'name' => 'quest',
-                'email' => 'quest@quest.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'uuid' => Str::uuid(),
-                'photo' => 'https://storage.googleapis.com/garasales/default.jpg'
-            ],
-            [
-                'name' => 'user',
-                'email' => 'user@user.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password'),
+                'password' => bcrypt('password@!#'),
                 'created_at' => now(),
                 'uuid' => Str::uuid(),
                 'photo' => 'https://storage.googleapis.com/garasales/default.jpg'

@@ -25,8 +25,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             UnitSeeder::class,
-            SupplierSeeder::class,  // Chạy SupplierSeeder trước khi ProductSeeder
-            ProductSeeder::class
         ]);
 
         Customer::factory(1)->create();
