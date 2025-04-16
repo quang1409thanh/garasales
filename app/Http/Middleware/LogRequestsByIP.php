@@ -13,7 +13,7 @@ class LogRequestsByIP
     public function handle($request, Closure $next)
     {
         // Lấy IP của yêu cầu
-        $ip = $request->ip();
+        $ip = $request->header('X-Forwarded-For') ?? $request->ip();
 
         // Kiểm tra và gán một cookie device_id cho mỗi thiết bị
         if (!Cookie::has('device_id')) {
@@ -22,9 +22,11 @@ class LogRequestsByIP
         } else {
             $deviceId = Cookie::get('device_id');
         }
+        $hashedIp = md5($ip);
+        $hashedDeviceId = md5($deviceId);
 
         // Đường dẫn đến file log (loại bỏ sessionId)
-        $logFilePath = storage_path("logs/requests/{$ip}/{$deviceId}.log");
+        $logFilePath = storage_path("logs/requests/{$hashedIp}/{$hashedDeviceId}.log");
 
         // Tạo thư mục nếu chưa có
         if (!File::exists(dirname($logFilePath))) {
@@ -33,8 +35,10 @@ class LogRequestsByIP
 
         // Chuẩn bị để log request và response trên cùng 1 dòng
         $requestLog = sprintf(
-            "[%s] [REQUEST] %s %s",
+            "[%s] [IP: %s] [Device: %s] [REQUEST] %s %s",
             now()->toDateTimeString(),
+            $ip,
+            $deviceId,
             $request->method(),
             $request->fullUrl()
         );

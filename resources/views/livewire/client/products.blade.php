@@ -57,24 +57,24 @@
                         @include('inclues._sort-icon', ['field' => 'name'])
                     </a>
                 </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
-                        {{ __('consignment date') }}
-                        @include('inclues._sort-icon', ['field' => 'created_at'])
-                    </a>
-                </th>
+{{--                <th scope="col" class="align-middle text-center">--}}
+{{--                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">--}}
+{{--                        {{ __('consignment date') }}--}}
+{{--                        @include('inclues._sort-icon', ['field' => 'created_at'])--}}
+{{--                    </a>--}}
+{{--                </th>--}}
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('category_id')" href="#" role="button">
                         {{ __('Category') }}
                         @include('inclues._sort-icon', ['field' => 'category_id'])
                     </a>
                 </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('quantity')" href="#" role="button">
-                        {{ __('Quantity') }}
-                        @include('inclues._sort-icon', ['field' => 'quantity'])
-                    </a>
-                </th>
+{{--                <th scope="col" class="align-middle text-center">--}}
+{{--                    <a wire:click.prevent="sortBy('quantity')" href="#" role="button">--}}
+{{--                        {{ __('Quantity') }}--}}
+{{--                        @include('inclues._sort-icon', ['field' => 'quantity'])--}}
+{{--                    </a>--}}
+{{--                </th>--}}
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
                         {{ __('Price') }}
@@ -127,18 +127,18 @@
                     <td class="align-middle text-center">
                         {{ $product->name }}
                     </td>
-                    <td class="align-middle text-center">
-                        {{ $product->created_at }}
-                    </td>
+{{--                    <td class="align-middle text-center">--}}
+{{--                        {{ $product->created_at }}--}}
+{{--                    </td>--}}
                     <td class="align-middle text-center">
                         <a href="{{ $product->category ? route('category_client.products.show', $product->category->slug) : '#' }}"
                            class="badge bg-blue-lt">
                             {{ $product->category ? $product->category->name : '--' }}
                         </a>
                     </td>
-                    <td class="align-middle text-center">
-                        {{ $product->quantity }}
-                    </td>
+{{--                    <td class="align-middle text-center">--}}
+{{--                        {{ $product->quantity }}--}}
+{{--                    </td>--}}
                     <td class="align-middle text-center">
                         {{ $product->selling_price }}
                     </td>
