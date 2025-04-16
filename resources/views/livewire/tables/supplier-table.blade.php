@@ -65,6 +65,7 @@
                 <th scope="col" class="align-middle text-center">{{ __('Selling Price') }}</th>
                 <!-- Cột tổng giá bán -->
                 <th scope="col" class="align-middle text-center">{{ __('Return Price') }}</th>
+                <th scope="col" class="align-middle text-center">{{ __('Products') }}</th>
                 <!-- Cột tổng giá trả lại -->
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('payment_status')" href="#" role="button">
@@ -92,6 +93,8 @@
                     <td class="align-middle text-center">{{ number_format($supplier->total_selling_price, 2) }}</td>
                     <!-- Hiển thị tổng giá bán -->
                     <td class="align-middle text-center">{{ number_format($supplier->total_return_price, 2) }}</td>
+
+                    <td class="align-middle text-center">{{ number_format($supplier->total_quantity, 0) }}</td>
                     <!-- Hiển thị tổng giá trả lại -->
                     <td class="align-middle text-center">
                         <span class="badge
