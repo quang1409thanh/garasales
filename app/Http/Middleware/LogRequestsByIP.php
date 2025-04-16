@@ -22,12 +22,14 @@ class LogRequestsByIP
         } else {
             $deviceId = Cookie::get('device_id');
         }
-        $hashedIp = md5($ip);
-        $hashedDeviceId = md5($deviceId);
+        // Làm sạch IP để tránh lỗi khi đặt tên file
+        $cleanIp = str_replace([':', '.'], '-', $ip);
 
-        // Đường dẫn đến file log (loại bỏ sessionId)
-        $logFilePath = storage_path("logs/requests/{$hashedIp}/{$hashedDeviceId}.log");
+        // Làm sạch device_id
+        $cleanDeviceId = preg_replace('/[^a-zA-Z0-9\-]/', '', $deviceId);
 
+        // Tạo path log rõ ràng, dễ debug
+        $logFilePath = storage_path("logs/requests/{$cleanIp}/{$cleanDeviceId}.log");
         // Tạo thư mục nếu chưa có
         if (!File::exists(dirname($logFilePath))) {
             File::makeDirectory(dirname($logFilePath), 0755, true, true);
