@@ -125,7 +125,7 @@ class ProductController extends Controller
             try {
                 // Resize và lưu thumbnail tạm thời
                 $thumbnail = Image::make($image->getRealPath());
-                $thumbnail->resize(90, 90, function ($constraint) {
+                $thumbnail->resize(200, 200, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($thumbnailTmpPath);
@@ -312,7 +312,7 @@ class ProductController extends Controller
 
             try {
                 // Resize và lưu thumbnail tạm thời
-                $img->resize(90, 90, function ($constraint) {
+                $img->resize(200, 200, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($thumbnailTmpPath);
