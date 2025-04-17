@@ -255,4 +255,11 @@
             {{ $products->links() }}
         </ul>
     </div>
+    <style>
+        .pagination {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
 </div>
