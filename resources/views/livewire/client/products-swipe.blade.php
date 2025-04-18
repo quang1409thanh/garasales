@@ -209,15 +209,17 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .product-swipe-item {
-            height: 100vh;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            scroll-snap-align: start;
-            position: relative;
-        }
+        /*// Đồng thời cập nhật CSS trong component Livewire:*/
+        /*// Trong .product-swipe-item*/
+           .product-swipe-item {
+               height: 100vh;
+               width: 100%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               scroll-snap-align: start;
+               position: relative;
+           }
 
         .product-swipe-content {
             width: 100%;
