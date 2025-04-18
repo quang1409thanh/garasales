@@ -1,8 +1,6 @@
-// Sửa đổi file resources/views/client/products_swipe.blade.php
 @extends('layouts.client_tabler')
 
 @section('content')
-    {{-- Sử dụng full màn hình, không có padding hay margin --}}
     <div class="page-body p-0 m-0" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background: #000;">
         @livewire('client.products-swipe')
     </div>
@@ -20,7 +18,6 @@
     </div>
 
     <style>
-        /* Ẩn các phần tử header, footer và các thanh điều hướng */
         .navbar, .footer, .page-header, .page-pretitle, .page-title {
             display: none !important;
         }
@@ -34,12 +31,10 @@
             min-height: 100vh !important;
         }
 
-        /* Đảm bảo body không có scroll */
         body {
             overflow: hidden;
         }
 
-        /* Làm cho container fullscreen */
         .container-xl {
             max-width: 100% !important;
             padding: 0 !important;

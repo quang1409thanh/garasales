@@ -79,12 +79,6 @@
                             <h3 class="product-swipe-name">{{ $product->name }}</h3>
                             <div class="product-swipe-price">{{ $product->selling_price }}</div>
 
-                            <div class="product-swipe-category">
-                                <span class="badge bg-blue-lt">
-                                    {{ $product->category ? $product->category->name : '--' }}
-                                </span>
-                            </div>
-
                             <div class="product-swipe-actions">
                                 <button
                                     class="btn btn-primary btn-sm"
@@ -92,6 +86,12 @@
                                 >
                                     Xem chi tiết
                                 </button>
+                            </div>
+
+                            <div class="product-swipe-category mt-2">
+                                <span class="badge bg-blue-lt">
+                                    {{ $product->category ? $product->category->name : '--' }}
+                                </span>
                             </div>
                         </div>
                     </div>

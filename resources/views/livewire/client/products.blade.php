@@ -1,26 +1,79 @@
 @php use App\Models\Product; @endphp
 <div class="card">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h3 class="card-title">
-                {{ __('Products') }}
-            </h3>
-            <h3>
-                <br/>
-            </h3>
-            <div>
-                <a href="{{ route('product_client.swipe') }}" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- HTML -->
+    <div class="card product-card">
+        <div class="card-header">
+            <div class="product-header-container">
+                <h3 class="card-title">Products</h3>
+                <a href="{{ route('product_client.swipe') }}" class="btn btn-primary btn-swipe">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="swipe-icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
                         <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
                     </svg>
-                    Chế độ lướt TikTok
+                    <span>Lướt xem</span>
                 </a>
             </div>
         </div>
     </div>
 
+    <!-- CSS -->
+    <style>
+        .product-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .card-header {
+            padding: 15px;
+            background-color: #fff;
+        }
+
+        .product-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            margin: 0;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .btn-swipe {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #0066cc;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .swipe-icon {
+            margin-right: 8px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .product-header-container {
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .btn-swipe {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+
+            .card-title {
+                font-size: 16px;
+            }
+        }
+    </style>
     <div class="card-body border-bottom py-3">
         <div class="d-flex">
             <div class="text-secondary">
