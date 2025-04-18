@@ -16,6 +16,7 @@
         "vite-plugin-static-copy": "^0.17.0"
     },
     "dependencies": {
+        "alpinejs": "^3.14.9",
         "laravel-datatables-vite": "^0.5.2"
     }
 }

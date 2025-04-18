@@ -247,6 +247,11 @@ Route::get('/test-gcs', function() {
     }
 });
 
+// routes/web.php
+Route::get('/products-swipe', function () {
+    return view('client.products_swipe');
+})->name('product_client.swipe');
+
 
 require __DIR__ . '/auth.php';
 

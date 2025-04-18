@@ -1,12 +1,24 @@
 @php use App\Models\Product; @endphp
 <div class="card">
     <div class="card-header">
-        <div>
+        <div class="d-flex justify-content-between align-items-center">
             <h3 class="card-title">
                 {{ __('Products') }}
             </h3>
+            <h3>
+                <br/>
+            </h3>
+            <div>
+                <a href="{{ route('product_client.swipe') }}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
+                    </svg>
+                    Chế độ lướt TikTok
+                </a>
+            </div>
         </div>
-
     </div>
 
     <div class="card-body border-bottom py-3">
@@ -59,24 +71,12 @@
                         @include('inclues._sort-icon', ['field' => 'name'])
                     </a>
                 </th>
-{{--                <th scope="col" class="align-middle text-center">--}}
-{{--                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">--}}
-{{--                        {{ __('consignment date') }}--}}
-{{--                        @include('inclues._sort-icon', ['field' => 'created_at'])--}}
-{{--                    </a>--}}
-{{--                </th>--}}
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('category_id')" href="#" role="button">
                         {{ __('Category') }}
                         @include('inclues._sort-icon', ['field' => 'category_id'])
                     </a>
                 </th>
-{{--                <th scope="col" class="align-middle text-center">--}}
-{{--                    <a wire:click.prevent="sortBy('quantity')" href="#" role="button">--}}
-{{--                        {{ __('Quantity') }}--}}
-{{--                        @include('inclues._sort-icon', ['field' => 'quantity'])--}}
-{{--                    </a>--}}
-{{--                </th>--}}
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
                         {{ __('Price') }}
