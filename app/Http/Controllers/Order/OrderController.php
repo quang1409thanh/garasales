@@ -108,7 +108,7 @@ class OrderController extends Controller
             'customer_id' => $request->customer_id,
             'payment_type' => $request->payment_type,
             'pay' => $request->pay,
-            'order_date' => Carbon::now()->format('Y-m-d'),
+            'order_date' => Carbon::now()->format('Y-m-d H:i:s'),
             'order_status' => OrderStatus::PENDING->value,
             'total_products' => Cart::count(),
             'sub_total' => Cart::subtotal(),

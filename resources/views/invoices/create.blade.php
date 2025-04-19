@@ -42,7 +42,7 @@
                                 <div class="invoice-number">
                                     <h4 class="inv-title-1">Invoice date:</h4>
                                     <p class="invo-addr-1">
-                                        {{ Carbon\Carbon::now()->format('M d, Y') }}
+                                        {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}
                                     </p>
                                 </div>
                             </div>
