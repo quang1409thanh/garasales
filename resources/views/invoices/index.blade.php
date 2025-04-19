@@ -43,7 +43,7 @@
                                 <div class="invoice-number">
                                     <h4 class="inv-title-1">Invoice date:</h4>
                                     <p class="invo-addr-1">
-                                        {{ Carbon\Carbon::now()->format('M d, Y') }}
+                                        {{ \Carbon\Carbon::now()->format('M d, Y H:i:s') }}
                                     </p>
                                 </div>
                             </div>
@@ -52,16 +52,9 @@
                             <div class="col-sm-6 mb-50">
                                 <h4 class="inv-title-1">Customer</h4>
                                 <p class="inv-from-1">{{ $customer->name }}</p>
-                                <p class="inv-from-1">{{ $customer->phone }}</p>
-                                <p class="inv-from-1">{{ $customer->email }}</p>
-                                <p class="inv-from-2">{{ $customer->address }}</p>
                             </div>
                             <div class="col-sm-6 text-end mb-50">
                                 <h4 class="inv-title-1">Store</h4>
-                                <p class="inv-from-1">Name Store</p>
-                                <p class="inv-from-1">(+62) 123 123 123</p>
-                                <p class="inv-from-1">email@example.com</p>
-                                <p class="inv-from-2">Cirebon, Jawa Barat, Indonesia</p>
                             </div>
                         </div>
                     </div>

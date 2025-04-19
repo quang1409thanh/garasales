@@ -58,19 +58,12 @@
                                 <div class="col-sm-6 mb-50">
                                     <h4 class="inv-title-1">Customer</h4>
                                     <p class="inv-from-1">{{ $order->customer->name }}</p>
-                                    <p class="inv-from-1">{{ $order->customer->phone }}</p>
-                                    <p class="inv-from-1">{{ $order->customer->email }}</p>
-                                    <p class="inv-from-2">{{ $order->customer->address }}</p>
                                 </div>
                                 @php
                                     $user = auth()->user();
                                 @endphp
                                 <div class="col-sm-6 text-end mb-50">
                                     <h4 class="inv-title-1">Store</h4>
-                                    <p class="inv-from-1">{{ Str::title($user->store_name) }}</p>
-                                    <p class="inv-from-1">{{ $user->store_phone }}</p>
-                                    <p class="inv-from-1">{{ $user->store_email }}</p>
-                                    <p class="inv-from-2">{{ $user->store_address }}</p>
                                 </div>
                             </div>
                         </div>

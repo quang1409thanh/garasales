@@ -51,16 +51,9 @@
                             <div class="col-sm-6 mb-50">
                                 <h4 class="inv-title-1">Customer</h4>
                                 <p class="inv-from-1">{{ $customer->name }}</p>
-                                <p class="inv-from-1">{{ $customer->phone }}</p>
-                                <p class="inv-from-1">{{ $customer->email }}</p>
-                                <p class="inv-from-2">{{ $customer->address }}</p>
                             </div>
                             <div class="col-sm-6 text-end mb-50">
                                 <h4 class="inv-title-1">Store</h4>
-                                <p class="inv-from-1">{{ $user->store_name }}</p>
-                                <p class="inv-from-1">{{ $user->store_phone }}</p>
-                                <p class="inv-from-1">{{ $user->store_email }}</p>
-                                <p class="inv-from-2">{{ $user->store_address }}</p>
                             </div>
                         </div>
                     </div>
@@ -180,8 +173,13 @@
                                 <label for="payment_proof" class="form-label required">
                                     {{ __('Payment Proof (Image)') }}
                                 </label>
-                                <input type="file" class="form-control @error('payment_proof') is-invalid @enderror"
-                                       id="payment_proof" name="payment_proof" accept="image/*" required>
+                                <input type="file"
+                                       class="form-control @error('payment_proof') is-invalid @enderror"
+                                       id="payment_proof"
+                                       name="payment_proof"
+                                       accept="image/*"
+                                       capture="environment"
+                                       >
                                 @error('payment_proof')
                                 <div class="invalid-feedback">
                                     {{ $message }}
