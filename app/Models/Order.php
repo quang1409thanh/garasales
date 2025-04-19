@@ -31,7 +31,7 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'order_date'    => 'date',
+        'order_date'    => 'datetime',
         'created_at'    => 'datetime',
         'updated_at'    => 'datetime',
         'order_status'  => OrderStatus::class
