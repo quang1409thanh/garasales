@@ -84,7 +84,6 @@
                     <td class="align-middle text-center" style="width: 15%">
                         <x-button.show class="btn-icon" route="{{ route('units.show', $unit) }}"/>
                         <x-button.edit class="btn-icon" route="{{ route('units.edit', $unit) }}"/>
-                        <x-button.delete class="btn-icon" route="{{ route('units.destroy', $unit) }}"/>
                     </td>
                 </tr>
             @empty
