@@ -173,8 +173,13 @@
                                 <label for="payment_proof" class="form-label required">
                                     {{ __('Payment Proof (Image)') }}
                                 </label>
-                                <input type="file" class="form-control @error('payment_proof') is-invalid @enderror"
-                                       id="payment_proof" name="payment_proof" accept="image/*" required>
+                                <input type="file"
+                                       class="form-control @error('payment_proof') is-invalid @enderror"
+                                       id="payment_proof"
+                                       name="payment_proof"
+                                       accept="image/*"
+                                       capture="environment"
+                                       >
                                 @error('payment_proof')
                                 <div class="invalid-feedback">
                                     {{ $message }}
