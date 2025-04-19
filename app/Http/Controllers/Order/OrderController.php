@@ -109,7 +109,7 @@ class OrderController extends Controller
             'payment_type' => $request->payment_type,
             'pay' => $request->pay,
             'order_date' => Carbon::now()->format('Y-m-d'),
-            'order_status' => OrderStatus::PENDING->value,
+            'order_status' => OrderStatus::COMPLETE->value,
             'total_products' => Cart::count(),
             'sub_total' => Cart::subtotal(),
             'vat' => Cart::tax(),
@@ -145,8 +145,8 @@ class OrderController extends Controller
         Cart::destroy();
 
         return redirect()
-            ->route('orders.index')
-            ->with('success', 'Order has been created!');
+            ->route('orders.complete')
+            ->with('success', 'Order has been completed!');
     }
 
     public function show($uuid)
