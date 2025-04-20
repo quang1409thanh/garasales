@@ -145,8 +145,8 @@ class OrderController extends Controller
         Cart::destroy();
 
         return redirect()
-            ->route('orders.complete')
-            ->with('success', 'Order has been completed!');
+            ->route('orders.index')
+            ->with('success', 'Order has been created!');
     }
 
     public function show($uuid)
