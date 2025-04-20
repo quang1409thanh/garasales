@@ -102,6 +102,19 @@
                         @include('inclues._sort-icon', ['field' => 'quantity'])
                     </a>
                 </th>
+                <th scope="col" class="align-middle text-center">
+                    <a href="#" role="button">
+                        {{ __('Profit') }}
+                        {{--                            số lượng đã bán--}}
+                    </a>
+                </th>
+                <th scope="col" class="align-middle text-center">
+                    <a href="#" role="button">
+                        {{ __('Order ID') }}
+                        {{--                            số lượng đã bán--}}
+                        @include('inclues._sort-icon', ['field' => 'quantity'])
+                    </a>
+                </th>
 
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('supplier_id')" href="#" role="button">
@@ -160,8 +173,20 @@
                         {{ $product->selling_price }}
                     </td>
                     <td class="align-middle text-center">
-                        {{ $product->selling_price }}
+                        {{ $product->buying_price }}
                     </td>
+                    <td class="align-middle text-center">
+                        {{ $product->selling_price - $product->buying_price }}
+                    </td>
+                    <td>
+                        @foreach($product->orders as $order)
+                            <a href="{{ route('orders.show', $order->uuid) }}">
+                                #{{ $order->invoice_no }}
+                            </a>
+                            @if (!$loop->last), @endif
+                        @endforeach
+                    </td>
+
                     <td>
                         <a class="badge bg-green-lt"
                            href="{{ optional($product->supplier)->uuid ? route('suppliers.show', optional($product->supplier)->uuid) . '' : '#' }}">

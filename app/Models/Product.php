@@ -101,4 +101,16 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_details')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
 }

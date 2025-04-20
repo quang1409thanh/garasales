@@ -35,13 +35,9 @@ class SoldTable extends Component
     {
         return view('livewire.tables.sold-table', [
             'products' => Product::where("user_id", auth()->id())
-                ->with(['category', 'unit'])
+                ->with(['category', 'unit', 'orders'])
                 ->where('product_sold', '>', 0)
                 ->search($this->search)
-                // Thêm điều kiện lọc khi checkbox được chọn
-                ->when($this->inStock, function ($query) {
-                    return $query->where('quantity', '>', 0); // Chỉ lấy sản phẩm có quantity > 0
-                })
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);
