@@ -198,8 +198,8 @@ class OrderController extends Controller
         ]);
 
         return redirect()
-            ->route('orders.complete')
-            ->with('success', 'Order has been completed!');
+            ->route('orders.index')
+            ->with('success', 'Order has been deleted!');
     }
 
     public function destroy($uuid)
