@@ -65,7 +65,11 @@
             <thead class="thead-light">
             <tr>
                 <th class="align-middle text-center w-1">
-                    {{ __('No.') }}
+                    <a wire:click.prevent="sortBy('code')" href="#" role="button">
+                        {{ __('No.') }}
+                        @include('inclues._sort-icon', ['field' => 'code'])
+                    </a>
+
                 </th>
                 <th scope="col" class="align-middle text-center">
                     {{ __('Product Image') }}
