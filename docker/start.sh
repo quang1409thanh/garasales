@@ -13,7 +13,7 @@ else
 fi
 
 # Start Cloud SQL Auth Proxy in the background
-/cloud_sql_proxy -dir=/cloudsql -instances=garasalevnu:asia-east2:dbgarasalemax=tcp:3306 &
+/cloud_sql_proxy -dir=/cloudsql -instances=garasalevnu:asia-east2:dbgarasalemini=tcp:3306 &
 
 ### Run migrate:fresh and seed to reset the database and populate it with initial data
 #echo "Running migrate:fresh and seeding..."
