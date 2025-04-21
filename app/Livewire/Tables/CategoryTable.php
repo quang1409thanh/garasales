@@ -31,11 +31,18 @@ class CategoryTable extends Component
 
     public function render()
     {
+        $query = Category::with(['products']);
+
+        if (auth()->user()->username !== 'superadmin') {
+            $query->where('user_id', auth()->id());
+        }
+
         return view('livewire.tables.category-table', [
-            'categories' => Category::where("user_id", auth()->id())->with(['products'])
+            'categories' => $query
                 ->search($this->search)
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);
     }
+
 }

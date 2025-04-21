@@ -40,12 +40,18 @@ class SupplierTable extends Component
     }
     public function render()
     {
+        $query = Supplier::with(['purchases']);
+
+        if (auth()->user()->username !== 'superadmin') {
+            $query->where('user_id', auth()->id());
+        }
+
         return view('livewire.tables.supplier-table', [
-            'suppliers' => Supplier::where("user_id", auth()->id())
-                ->with(['purchases'])
+            'suppliers' => $query
                 ->search($this->search)
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);
     }
+
 }

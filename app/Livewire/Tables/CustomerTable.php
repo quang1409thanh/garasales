@@ -31,9 +31,14 @@ class CustomerTable extends Component
 
     public function render()
     {
+        $query = Customer::with('orders', 'quotations');
+
+        if (auth()->user()->username !== 'superadmin') {
+            $query->where('user_id', auth()->id());
+        }
+
         return view('livewire.tables.customer-table', [
-            'customers' => Customer::where("user_id", auth()->id())
-                ->with('orders', 'quotations')
+            'customers' => $query
                 ->search($this->search)
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)

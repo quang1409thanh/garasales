@@ -33,16 +33,23 @@ class ProductTable extends Component
 
     public function render()
     {
+        $query = Product::with(['category', 'unit']);
+
+        if (auth()->user()->username !== 'superadmin') {
+            $query->where('user_id', auth()->id());
+        }
+
+        // Lọc theo checkbox "Còn hàng"
+        $query->when($this->inStock, function ($query) {
+            return $query->where('quantity', '>', 0);
+        });
+
         return view('livewire.tables.product-table', [
-            'products' => Product::where("user_id", auth()->id())
-                ->with(['category', 'unit'])
+            'products' => $query
                 ->search($this->search)
-                // Thêm điều kiện lọc khi checkbox được chọn
-                ->when($this->inStock, function ($query) {
-                    return $query->where('quantity', '>', 0); // Chỉ lấy sản phẩm có quantity > 0
-                })
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)
         ]);
     }
+
 }
