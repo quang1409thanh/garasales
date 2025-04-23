@@ -265,6 +265,29 @@
                             </a>
                         </li>
 
+                        <li class="nav-item {{ request()->is('sold*') ? 'active' : null }}">
+                            <a class="nav-link" href="{{ route('sold.index') }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/shopping-cart -->
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="icon icon-tabler icon-tabler-shopping-cart" width="24"
+                                         height="24" viewBox="0 0 24 24" stroke-width="2"
+                                         stroke="currentColor" fill="none" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <circle cx="6" cy="19" r="2" />
+                                        <circle cx="17" cy="19" r="2" />
+                                        <path d="M17 17h-11v-14h-2" />
+                                        <path d="M6 5l14 1l-1 7h-13" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    {{ __('Sold') }}
+                                </span>
+                            </a>
+                        </li>
+
+
 
                         <li class="nav-item {{ request()->is('products*') ? 'active' : null }}">
                             <a class="nav-link" href="{{ route('products.index') }}">

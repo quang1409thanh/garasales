@@ -19,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Quotation\QuotationController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\SoldController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierExportController;
 use App\Http\Controllers\UnitController;
@@ -104,6 +105,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
     Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
     Route::resource('/products', ProductController::class);
+    Route::resource('/sold', SoldController::class);
     // Định nghĩa route cho toggle visibility
     Route::get('/products/toggle-visibility/{uuid}', [ProductController::class, 'toggleVisibility'])->name('products.toggleVisibility');
 

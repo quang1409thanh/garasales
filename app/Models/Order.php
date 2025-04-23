@@ -68,4 +68,16 @@ class Order extends Model
         return self::sum('total'); // Tổng số tiền trong tất cả các đơn hàng
     }
 
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_details')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
 }
