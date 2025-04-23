@@ -244,7 +244,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item {{ request()->is('suppliers*', 'customers*') ? 'active' : null }}">
+                        <li class="nav-item {{ request()->is('suppliers*') ? 'active' : null }}">
                             <a class="nav-link" href="{{ route('suppliers.index') }}"
                                data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -293,6 +293,24 @@
                             </a>
                         </li>
 
+                        <li class="nav-item {{ request()->is('customers*') ? 'active' : null }}">
+                            <a class="nav-link" href="{{ route('customers.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/user -->
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="icon icon-tabler icon-tabler-user" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <circle cx="12" cy="7" r="4" />
+                                    <path d="M5.5 21h13a2 2 0 0 0 2 -2c0 -3.866 -3.582 -7 -8 -7s-8 3.134 -8 7a2 2 0 0 0 2 2z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                {{ __('Customer') }}
+                            </span>
+                            </a>
+                        </li>
 
                         <li class="nav-item dropdown {{ request()->is('orders*') ? 'active' : null }}">
                             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
