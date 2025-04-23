@@ -44,6 +44,7 @@ class CustomerTable extends Component
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
 
+
         // Tính toán cho từng khách hàng
         $customers->getCollection()->transform(function ($customer) {
             $orders = $customer->orders;
@@ -55,8 +56,16 @@ class CustomerTable extends Component
             return $customer;
         });
 
+        // Tính tổng tiền của tất cả khách hàng
+        $totalAmount = $customers->sum('totalAmount');
+        $cashAmount = $customers->sum('cashAmount');
+        $bankAmount = $customers->sum('bankAmount');
+
         return view('livewire.tables.customer-table', [
-            'customers' => $customers
+            'customers' => $customers,
+            'totalAmount' => $totalAmount,
+            'cashAmount' => $cashAmount,
+            'bankAmount' => $bankAmount,
         ]);
     }
 

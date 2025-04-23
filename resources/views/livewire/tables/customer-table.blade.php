@@ -18,9 +18,9 @@
                 <div class="mx-2 d-inline-block">
                     <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
                         <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="250">250</option>
                     </select>
                 </div>
             </div>
@@ -120,13 +120,26 @@
         </table>
     </div>
 
-    <div class="card-footer d-flex align-items-center">
+    <div class="card-footer d-flex flex-column align-items-start">
         <p class="m-0 text-secondary">
             Showing <span>{{ $customers->firstItem() }}</span> to <span>{{ $customers->lastItem() }}</span> of <span>{{ $customers->total() }}</span> entries
         </p>
+
+        <div class="d-flex justify-content-between w-100">
+            <div>
+                <strong>Tổng tiền:</strong> 💰 {{ number_format($totalAmount) }} đ
+            </div>
+            <div>
+                <strong>Tiền mặt:</strong> 💵 {{ number_format($cashAmount) }} đ
+            </div>
+            <div>
+                <strong>Chuyển khoản:</strong> 🏦 {{ number_format($bankAmount) }} đ
+            </div>
+        </div>
 
         <ul class="pagination m-0 ms-auto">
             {{ $customers->links() }}
         </ul>
     </div>
+
 </div>
