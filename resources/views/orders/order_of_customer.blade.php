@@ -66,7 +66,7 @@
                                     <td class="text-center">{{ $loop->iteration  }}</td>
                                     <td class="text-center">{{ $order->invoice_no }}</td>
                                     <td class="text-center">{{ $order->customer->name }}</td>
-                                    <td class="text-center">{{ $order->order_date->format('d-m-Y') }}</td>
+                                    <td class="text-center">{{ $order->order_date->format('d-m-Y H:i:s') }}</td>
                                     <td class="text-center">{{ $order->payment_type }}</td>
                                     <td class="text-center">{{ Number::currency($order->total, 'VND') }}</td>
                                     <td class="text-center">
@@ -82,15 +82,15 @@
                         </table>
                     </div>
                     <div class="mt-3 bg-light p-3 rounded shadow-sm">
-                        <h4 class="text-primary">Total Selling Price:
-                            <span class="fw-bold">{{ number_format($totalAmount, 2) }}</span>
+                        <h4 class="text-primary mb-2">Tổng số tiền:
+                            <span class="fw-bold">{{ number_format($totalAmount, 2) }} đ</span>
                         </h4>
-                        {{--        <h4 class="text-success">Total Return Price:--}}
-                        {{--            <span class="fw-bold">{{ number_format($totalBuyingPrice, 2) }}</span>--}}
-                        {{--        </h4>--}}
-                        {{--        <h4 class="text-danger">Profit:--}}
-                        {{--            <span class="fw-bold">{{ number_format($totalSellingPrice - $totalBuyingPrice, 2) }}</span>--}}
-                        {{--        </h4>--}}
+                        <h5 class="text-success mb-1">Tiền mặt:
+                            <span class="fw-bold">{{ number_format($cashAmount, 2) }} đ</span>
+                        </h5>
+                        <h5 class="text-info">Chuyển khoản:
+                            <span class="fw-bold">{{ number_format($bankAmount, 2) }} đ</span>
+                        </h5>
                     </div>
                 </div>
             </div>

@@ -53,12 +53,30 @@
                         @include('inclues._sort-icon', ['field' => 'name'])
                     </a>
                 </th>
+                <!-- Tổng -->
                 <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('email')" href="#" role="button">
-                        {{ __('Email') }}
-                        @include('inclues._sort-icon', ['field' => 'email'])
+                    <a wire:click.prevent="sortBy('totalAmount')" href="#" role="button">
+                        {{ __('Tổng') }}
+                        @include('inclues._sort-icon', ['field' => 'totalAmount'])
                     </a>
                 </th>
+
+                <!-- Tiền mặt -->
+                <th scope="col" class="align-middle text-center">
+                    <a wire:click.prevent="sortBy('cashAmount')" href="#" role="button">
+                        {{ __('Tiền mặt') }}
+                        @include('inclues._sort-icon', ['field' => 'cashAmount'])
+                    </a>
+                </th>
+
+                <!-- Chuyển khoản -->
+                <th scope="col" class="align-middle text-center">
+                    <a wire:click.prevent="sortBy('bankAmount')" href="#" role="button">
+                        {{ __('Chuyển khoản') }}
+                        @include('inclues._sort-icon', ['field' => 'bankAmount'])
+                    </a>
+                </th>
+
                 <th scope="col" class="align-middle text-center">
                     <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
                         {{ __('Created at') }}
@@ -79,9 +97,10 @@
                     <td class="align-middle text-center">
                         {{ $customer->name }}
                     </td>
-                    <td class="align-middle text-center">
-                        {{ $customer->email }}
-                    </td>
+                    <td>💰: {{ number_format($customer->totalAmount) }} đ</td>
+                    <td>💵:  {{ number_format($customer->cashAmount) }} đ</td>
+                    <td>🏦: {{ number_format($customer->bankAmount) }} đ</td>
+
                     <td class="align-middle text-center">
                         {{ $customer->created_at->diffForHumans() }}
                     </td>

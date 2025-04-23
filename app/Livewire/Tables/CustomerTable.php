@@ -31,17 +31,33 @@ class CustomerTable extends Component
 
     public function render()
     {
-        $query = Customer::with('orders', 'quotations');
+        $query = Customer::with(['orders' => function ($q) {
+            $q->where('order_status', 1); // Chỉ lấy đơn hàng trạng thái 1
+        }, 'quotations']);
 
         if (auth()->user()->username !== 'superadmin') {
             $query->where('user_id', auth()->id());
         }
 
+        $customers = $query
+            ->search($this->search)
+            ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+            ->paginate($this->perPage);
+
+        // Tính toán cho từng khách hàng
+        $customers->getCollection()->transform(function ($customer) {
+            $orders = $customer->orders;
+
+            $customer->totalAmount = $orders->sum('total');
+            $customer->cashAmount = $orders->where('payment_type', 'Tiền mặt')->sum('total');
+            $customer->bankAmount = $orders->where('payment_type', 'Chuyển khoản')->sum('total');
+
+            return $customer;
+        });
+
         return view('livewire.tables.customer-table', [
-            'customers' => $query
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'customers' => $customers
         ]);
     }
+
 }

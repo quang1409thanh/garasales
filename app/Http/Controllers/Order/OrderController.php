@@ -51,12 +51,20 @@ class OrderController extends Controller
             ->where('order_status', 1) // Chỉ lấy đơn hàng có order_status là 1
             ->get();
 
-        // Tính tổng tất cả các đơn hàng
-        $totalAmount = $orders->sum('total'); // Giả sử trường 'total' lưu giá trị đơn hàng
+        // Tổng tất cả đơn hàng
+        $totalAmount = $orders->sum('total');
+
+        // Tổng tiền mặt
+        $cashAmount = $orders->where('payment_type', 'Tiền mặt')->sum('total');
+
+        // Tổng chuyển khoản
+        $bankAmount = $orders->where('payment_type', 'Chuyển khoản')->sum('total');
 
         return view('orders.order_of_customer', [
             'orders' => $orders,
-            'totalAmount' => $totalAmount // Truyền tổng vào view
+            'totalAmount' => $totalAmount, // Truyền tổng vào view
+            'cashAmount' => $cashAmount,
+            'bankAmount' => $bankAmount,
         ]);
     }
 
