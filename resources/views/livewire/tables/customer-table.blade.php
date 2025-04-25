@@ -55,7 +55,7 @@
                 </th>
                 <!-- Tổng -->
                 <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('totalAmount')" href="#" role="button">
+                    <a href="#" role="button">
                         {{ __('Tổng') }}
                         @include('inclues._sort-icon', ['field' => 'totalAmount'])
                     </a>
@@ -63,7 +63,7 @@
 
                 <!-- Tiền mặt -->
                 <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('cashAmount')" href="#" role="button">
+                    <a href="#" role="button">
                         {{ __('Tiền mặt') }}
                         @include('inclues._sort-icon', ['field' => 'cashAmount'])
                     </a>
@@ -71,7 +71,7 @@
 
                 <!-- Chuyển khoản -->
                 <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('bankAmount')" href="#" role="button">
+                    <a  href="#" role="button">
                         {{ __('Chuyển khoản') }}
                         @include('inclues._sort-icon', ['field' => 'bankAmount'])
                     </a>
